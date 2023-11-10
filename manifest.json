@@ -29,7 +29,6 @@
   "host_permissions": [
     "<all_urls>"
   ],
-    // If this field is not specified, no web pages can connect.
     "matches": [
       "<all_urls>"
     ],
