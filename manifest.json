@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "Adobe Launch Debugger++",
+  "description": "An updated debugger for Adobe Launch and Analytics",
+  "version": "0.74",
+  "action": {
+    "default_popup": "main.html",
+    "default_icon": "favicon.png"
+  },
+  "background": {
+    "service_worker": "js/background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["js/content-script.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "matches": ["<all_urls>"],
+      "resources": [ "js/page-script.js" ]
+    }
+  ],
+  "externally_connectable": {
+    "ids": [
+      "*"
+    ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+    // If this field is not specified, no web pages can connect.
+    "matches": [
+      "<all_urls>"
+    ],
+    "accepts_tls_channel_id": false
+  },
+  "permissions": [
+    "webRequest",
+    "activeTab",
+    "scripting",
+    "nativeMessaging"
+  ]
+}
