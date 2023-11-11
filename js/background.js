@@ -1,23 +1,35 @@
-const filter = {urls: ["<all_urls>"]}
-const urls = new Map();
+main()
 
-chrome.webRequest.onBeforeRequest.addListener((info) => {
-  //if(/b\/ss/.test(info.url))
-  sendToTab({info: info, eventTriggered:"onBeforeRequest"});
-}, filter);
+async function main(){
+  chrome.storage.sync.get('launchbox', async function (data) {
+    mainListener((data?.launchbox !== false));
+  });
+}
 
-chrome.webRequest.onHeadersReceived.addListener(info => {
-  if(info.statusCode === 200){
-    //sendToTab({info: info, eventTriggered:"onHeadersReceived"});
-  }
-}, filter);
-/*
-chrome.webRequest.onErrorOccurred.addListener(info => {
-  sendToTab({info: info, eventTriggered:"onErrorOccured"});
-  urls.delete(info.requestId);
-}, filter);
-*/
-//let interval = setInterval(() => {sendToTab("@@@ Debugging: Testing the messaging")},1000);
+async function mainListener(isLoggingEnabled){
+  const filter = {urls: ["<all_urls>"]}//   *://*/*/b/ss/*   --   <all_urls>
+  chrome.webRequest.onHeadersReceived.addListener(async info => {
+    if(info.statusCode === 200 && /\/b\/ss\//.test(info.url) && isLoggingEnabled){
+      sendToTab({info: info, eventTriggered:"onHeadersReceived", _satelliteInfo:JSON.parse(await getSatelliteInfo())});
+    }
+  }, filter);
+}
+
+async function getSatelliteInfo() {
+  const [{result}] = await chrome.scripting.executeScript({
+    func: () =>  JSON.stringify({
+      property: _satellite.property.name, 
+      environment: _satellite.environment.stage,
+      buildtime: _satellite.buildInfo.buildDate
+    }),
+    args: [],
+    target: {
+      tabId: (await chrome.tabs.query({active: true, currentWindow: true}))[0].id
+    },
+    world: 'MAIN',
+  });
+  return result;
+}
 
 async function sendToTab(msg) {
   const [tab] = await chrome.tabs.query({active: true, lastFocusedWindow: true});
@@ -30,3 +42,4 @@ async function sendToTab(msg) {
     }
   }
 }
+

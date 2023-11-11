@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Adobe Launch Debugger++",
   "description": "An updated debugger for Adobe Launch and Analytics",
-  "version": "0.74",
+  "version": "0.75",
   "action": {
     "default_popup": "main.html",
     "default_icon": "favicon.png"
@@ -22,19 +22,20 @@
       "resources": [ "js/page-script.js" ]
     }
   ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
   "externally_connectable": {
     "ids": [
       "*"
     ],
-  "host_permissions": [
-    "<all_urls>"
-  ],
     "matches": [
       "<all_urls>"
     ],
     "accepts_tls_channel_id": false
   },
   "permissions": [
+    "storage",
     "webRequest",
     "activeTab",
     "scripting",

@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
+  settingsSetter()
   const client = {};
   client.timing = JSON.parse(await getTiming());
   client._satellite = JSON.parse(await getPageVar('_satellite'));
@@ -272,6 +273,7 @@ function formattedTimeSinceLastBuild(_satellite) {
 
 async function settingsLoad() {
   chrome.storage.sync.get('aabox', function (data) {
+    console.log("@@@ Debugging: aabox data object is", data);
     if (data) {
       if (data.aabox === true) {
         document.getElementById("aabox").checked = true;
@@ -281,6 +283,7 @@ async function settingsLoad() {
     }
   }); 
   chrome.storage.sync.get('launchbox', function (data) {
+    console.log("@@@ Debugging: launchbox data object is", data);
     if (data) {
       if (data.launchbox === true) {
         document.getElementById("launchbox").checked = true;
