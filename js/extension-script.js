@@ -4,9 +4,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   client.timing = JSON.parse(await getTiming());
   client._satellite = JSON.parse(await getPageVar('_satellite'));
   client.serverCalls = JSON.parse(await getAACalls());
-  console.log("@@@ DEBUGGING: timing is ", client.timing);
-  console.log("@@@ DEBUGGING: _satellite is ", client._satellite);
-  console.log("@@@ DEBUGGING: AA Calls: ", client.serverCalls);
   client.pvs = client.serverCalls.filter((url) => {
     return !/pe=lnk/i.test(url.name)
   });
@@ -273,7 +270,6 @@ function formattedTimeSinceLastBuild(_satellite) {
 
 async function settingsLoad() {
   chrome.storage.sync.get('aabox', function (data) {
-    console.log("@@@ Debugging: aabox data object is", data);
     if (data) {
       if (data.aabox === true) {
         document.getElementById("aabox").checked = true;
@@ -283,7 +279,6 @@ async function settingsLoad() {
     }
   }); 
   chrome.storage.sync.get('launchbox', function (data) {
-    console.log("@@@ Debugging: launchbox data object is", data);
     if (data) {
       if (data.launchbox === true) {
         document.getElementById("launchbox").checked = true;

@@ -1,16 +1,49 @@
 main()
 
 async function main(){
-  chrome.storage.sync.get('launchbox', async function (data) {
-    mainListener((data?.launchbox !== false));
+  setDebugLogicListener()
+  mainListener();
+}
+
+function setDebugLogicListener(){
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.type === 'setDebug') {
+      setDebug(message.value);
+    }
   });
 }
 
-async function mainListener(isLoggingEnabled){
+async function setDebug(flag){
+  if(flag){
+    chrome.scripting.executeScript({
+      func: () => _satellite.setDebug(1),
+      args: [],
+      target: {
+        tabId: (await chrome.tabs.query({active: true, currentWindow: true}))[0].id
+      },
+      world: 'MAIN'
+    });
+  } else{
+    chrome.scripting.executeScript({
+      func: () => _satellite.setDebug(0),
+      args: [],
+      target: {
+        tabId: (await chrome.tabs.query({active: true, currentWindow: true}))[0].id
+      },
+      world: 'MAIN'
+    });
+  }
+}
+
+async function mainListener(){
   const filter = {urls: ["<all_urls>"]}//   *://*/*/b/ss/*   --   <all_urls>
   chrome.webRequest.onHeadersReceived.addListener(async info => {
-    if(info.statusCode === 200 && /\/b\/ss\//.test(info.url) && isLoggingEnabled){
-      sendToTab({info: info, eventTriggered:"onHeadersReceived", _satelliteInfo:JSON.parse(await getSatelliteInfo())});
+    if(info.statusCode === 200 && /\/b\/ss\//.test(info.url)){
+      sendToTab({
+        info: info, 
+        eventTriggered:"onHeadersReceived", 
+        _satelliteInfo:JSON.parse(await getSatelliteInfo())
+      });
     }
   }, filter);
 }

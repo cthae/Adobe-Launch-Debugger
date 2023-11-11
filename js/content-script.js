@@ -1,32 +1,24 @@
- console.log("@@@ Debugging content-script.js");
+console.log("@@@ Debugging content-script.js");
 
-/*
-const script = this.document.createElement('script');
-script.src = chrome.runtime.getURL("js/page-script.js");
-this.document.documentElement.appendChild(script);
-// clean it up afterwards
-this.document.documentElement.removeChild(script);
-*/
+chrome.runtime.onMessage.addListener(info => {
+  chrome.storage.sync.get('aabox', function (data) {
+    console.log("@@@ CS: aabox: ", data?.aabox);
+    if(data?.aabox !== false){
+      console.log("@@@ Debugging CS listener 2:", info);
+    }
+  });
+});
 
-chrome.runtime.onMessage.addListener(msg => console.log("@@@ Debugging CS listener 2:", msg));
-
-chrome.storage.sync.get('aabox', async function (data) {
-  if (data && data.aabox !== false) {
-    injectJS("_satellite.setDebug(1)");
+chrome.storage.sync.get('launchbox', async function (data) {
+  console.log("@@@ CS: launchbox: ", data?.launchbox);
+  if (data?.launchbox !== false) {
+    talkToBG({type: 'setDebug', value:1});
   } else {
-    injectJS("_satellite.setDebug(0)");
+    talkToBG({type: 'setDebug', value:0});
   }
 }); 
 
-function injectJS(js){
-  const script = this.document.createElement('script');
-  script.type = 'text/javascript';
-  try {
-    script.appendChild(document.createTextNode(js));
-    this.document.body.appendChild(script);
-  } catch (e) {
-    script.text = js;
-    this.document.body.appendChild(script);
-  }
-  this.document.documentElement.removeChild(script);
+function talkToBG(message){
+  console.log("@@@ CS: talkToBG: ", message);
+  chrome.runtime.sendMessage(message);
 }
