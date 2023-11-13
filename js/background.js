@@ -48,7 +48,6 @@ async function mainListener() {
         eventTriggered: "onBeforeRequest",
         _satelliteInfo: JSON.parse(await getSatelliteInfo())
       });
-      sendToTab();
     }
   }, filter, ['requestBody']);
 
@@ -57,7 +56,7 @@ async function mainListener() {
       const postRequest = requests.get(info.requestId);
       if (postRequest) {
         sendToTab(postRequest);
-        urls.delete(info.requestId);
+        requests.delete(info.requestId);
       } else {
         sendToTab({
           info: info,

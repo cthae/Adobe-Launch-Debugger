@@ -1,9 +1,12 @@
 chrome.runtime.onMessage.addListener(info => {
   chrome.storage.sync.get('aabox', function (data) {
     if (data?.aabox !== false) {
-      info.postPayload = info.postPayload ? info.postPayload : '';
-      logServerCall(info.info.url + info.postPayload, info?._satelliteInfo);
-      console.log("@@@ Debugging: The Info object is: ", info)
+      console.log("@@@ Debugging: The Info object is: ", info);
+      if(info.postPayload){
+        logServerCall(info.info.url + info.postPayload, info?._satelliteInfo);  
+      } else {
+        logServerCall(info.info.url, info?._satelliteInfo);  
+      }
     }
   });
 });
@@ -71,7 +74,7 @@ function printVars(vars, name) {
   console.group(name + ": " + vars.length);
   var varString = "";
   vars.forEach((param) => {
-    varString += decodeURIComponent(param).replace("=", " : ") + "\n";
+    varString += decodeURIComponent(param).replace(/(\w\d\d)$/,"$1 ").replace(/(\w\d)$/,"$1  ").replace("=", " : ") + "\n";
   });
   console.log(varString.slice(0, -1));
   console.groupEnd();//close the Misc section
@@ -161,5 +164,5 @@ function getComponent(allParams, paramName) {
   if(typeof foundElement === "undefined"){
     return false;
   }
-  return decodeURIComponent(foundElement)?.split("=")[1];
+  return decodeURIComponent(foundElement)?.split(/=(.+)?/, 2);[1];
 }
