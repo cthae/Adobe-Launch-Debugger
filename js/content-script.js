@@ -1,7 +1,9 @@
 chrome.runtime.onMessage.addListener(info => {
   chrome.storage.sync.get('aabox', function (data) {
     if (data?.aabox !== false) {
-      logServerCall(info.info.url, info?._satelliteInfo);
+      info.postPayload = info.postPayload ? info.postPayload : '';
+      logServerCall(info.info.url + info.postPayload, info?._satelliteInfo);
+      console.log("@@@ Debugging: The Info object is: ", info)
     }
   });
 });
@@ -88,11 +90,11 @@ function printMisc(pName, pType, campaign, currency, hierarchies) {
   printOne("Campaign    ", campaign);
   printOne("Currency    ", currency);
   if (hierarchies.length > 0) {
-    let hierarchies = '';
+    let hierarchiesString = '';
     hierarchies.forEach((h) => {
-      hierarchies += decodeURIComponent(h).replace("=", "   : ").replace("h", "Hierarchy") + "\n";
+      hierarchiesString += decodeURIComponent(h).replace("=", "  : ").replace("h", "Hierarchy ") + "\n";
     })
-    console.log(hierarchies.slice(0, -1));
+    console.log(hierarchiesString.slice(0, -1));
   }
   console.groupEnd();//close the Misc section
   return true;

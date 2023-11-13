@@ -35,15 +35,36 @@ async function setDebug(flag){
   }
 }
 
-async function mainListener(){
-  const filter = {urls: ["<all_urls>"]}//   *://*/*/b/ss/*   --   <all_urls>
-  chrome.webRequest.onHeadersReceived.addListener(async info => {
-    if(info.statusCode === 200 && /\/b\/ss\//.test(info.url)){
-      sendToTab({
-        info: info, 
-        eventTriggered:"onHeadersReceived", 
-        _satelliteInfo:JSON.parse(await getSatelliteInfo())
+async function mainListener() {
+  const filter = { urls: ["<all_urls>"] }//   *://*/*/b/ss/*   --   <all_urls>
+  const requests = new Map();
+  chrome.webRequest.onBeforeRequest.addListener(async info => {
+    if (/\/b\/ss\//.test(info.url) && info.method === "POST") {
+      let postedString = decodeURIComponent(String.fromCharCode.apply(null,
+        new Uint8Array(info.requestBody.raw[0].bytes)));
+      requests.set(info.requestId, {
+        info: info,
+        postPayload: postedString,
+        eventTriggered: "onBeforeRequest",
+        _satelliteInfo: JSON.parse(await getSatelliteInfo())
       });
+      sendToTab();
+    }
+  }, filter, ['requestBody']);
+
+  chrome.webRequest.onHeadersReceived.addListener(async info => {
+    if (info.statusCode === 200 && /\/b\/ss\//.test(info.url)) {
+      const postRequest = requests.get(info.requestId);
+      if (postRequest) {
+        sendToTab(postRequest);
+        urls.delete(info.requestId);
+      } else {
+        sendToTab({
+          info: info,
+          eventTriggered: "onHeadersReceived",
+          _satelliteInfo: JSON.parse(await getSatelliteInfo())
+        });
+      }
     }
   }, filter);
 }
