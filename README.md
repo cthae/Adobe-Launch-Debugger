@@ -29,6 +29,7 @@ This extension essentially has three parts accomplishing different facets of AA/
 
 ## Plan
 The dev plan:
+* Add logic to parse POST b/ss requests too
 * Finish the Hierarchies parsing and logging
 * Finish the Product string parsing and reporting
 * Adjust colors in the console logging to work well in the light console
