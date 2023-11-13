@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Adobe Launch Debugger++",
   "description": "An updated debugger for Adobe Launch and Analytics",
-  "version": "0.77",
+  "version": "0.8",
   "action": {
     "default_popup": "main.html",
     "default_icon": "favicon.png"
