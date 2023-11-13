@@ -34,7 +34,7 @@ The dev plan:
 * Adjust colors in the console logging to work well in the light console
 * Add settings to change the default behavior of the main console log to be collapsed
 * Add a settings and info tabs to the popup
-* Get some help from designers on the favicon, ui and logging
+* Get some help from designers on the favicon, popup ui and logging
 * Release to the Chrome web store - first release
 * Implement the library switching logic
 
