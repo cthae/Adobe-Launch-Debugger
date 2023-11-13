@@ -22,4 +22,4 @@ This extension essentially has three parts accomplishing different facets of AA/
 Contributions are welcome! Whether it's code, ux/ui solutions or just advice.
 
 ## License
-GNU Lesser General Public License v3.0
+Mozilla Public License Version 2.0
