@@ -1,4 +1,4 @@
-# Adobe-Launch-Debugger
+# Adobe Launch Debugger
 Debugger tool for Adobe Launch and Adobe Analytics.
 
 ### Table of Contents
