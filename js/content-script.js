@@ -41,8 +41,8 @@ function logServerCall(fullURL, _satelliteInfo) {
   printVars(parsingResult.allListVars, "ListVars");
   printVars(parsingResult.alleVars, "eVars");
   printVars(parsingResult.allProps, "props");
-  printOther(parsingResult.url + parsingResult.url2, parsingResult.server,
-    _satelliteInfo.property, _satelliteInfo.environment, _satelliteInfo.buildtime);
+  printOther(parsingResult.url2 ? parsingResult.url + parsingResult.url2 : parsingResult.url, 
+    parsingResult.server, _satelliteInfo.property, _satelliteInfo.environment, _satelliteInfo.buildtime);
   console.groupEnd();//close the main group
   // console.log( '1 %c 2 %c 3 %c 4', 'color:red', 'color:green', 'color:blue' );
 }

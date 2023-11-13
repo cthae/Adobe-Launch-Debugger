@@ -25,7 +25,7 @@ async function setDebug(flag){
     });
   } else{
     chrome.scripting.executeScript({
-      func: () => _satellite.setDebug(0),
+      func: () => window._satellite ? _satellite.setDebug(0) : '',
       args: [],
       target: {
         tabId: (await chrome.tabs.query({active: true, currentWindow: true}))[0].id
