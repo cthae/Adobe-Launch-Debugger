@@ -2,10 +2,10 @@ chrome.runtime.onMessage.addListener(info => {
   chrome.storage.sync.get('aabox', function (data) {
     if (data?.aabox !== false) {
       console.log("@@@ Debugging: The Info object is: ", info);
-      if(info.postPayload){
-        logServerCall(info.info.url + info.postPayload, info?._satelliteInfo);  
+      if (info.postPayload) {
+        logServerCall(info.info.url + info.postPayload, info?._satelliteInfo);
       } else {
-        logServerCall(info.info.url, info?._satelliteInfo);  
+        logServerCall(info.info.url, info?._satelliteInfo);
       }
     }
   });
@@ -29,7 +29,7 @@ function logServerCall(fullURL, _satelliteInfo) {
   const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: DarkSlateBlue; color: #fc0`;
   let sCallType = 'Page View';
   let sCallName = parsingResult.pageName;
-  if (parsingResult.customLinkType){
+  if (parsingResult.customLinkType) {
     parsingResult.customLinkType === 'lnk_o' ? sCallType = "Custom Link" : "";
     parsingResult.customLinkType === 'lnk_e' ? sCallType = "Exit Link" : "";
     parsingResult.customLinkType === 'lnk_d' ? sCallType = "Download Link" : "";
@@ -46,7 +46,7 @@ function logServerCall(fullURL, _satelliteInfo) {
   printVars(parsingResult.allListVars, "ListVars");
   printVars(parsingResult.alleVars, "eVars");
   printVars(parsingResult.allProps, "props");
-  printOther(parsingResult.url2 ? parsingResult.url + parsingResult.url2 : parsingResult.url, 
+  printOther(parsingResult.url2 ? parsingResult.url + parsingResult.url2 : parsingResult.url,
     parsingResult.server, _satelliteInfo.property, _satelliteInfo.environment, _satelliteInfo.buildtime);
   console.groupEnd();//close the main group
   // console.log( '1 %c 2 %c 3 %c 4', 'color:red', 'color:green', 'color:blue' );
@@ -74,7 +74,7 @@ function printVars(vars, name) {
   console.group(name + ": " + vars.length);
   var varString = "";
   vars.forEach((param) => {
-    varString += decodeURIComponent(param).replace(/(\w\d\d)$/,"$1 ").replace(/(\w\d)$/,"$1  ").replace("=", " : ") + "\n";
+    varString += decodeURIComponent(param).replace(/^(\w\d\d\d)=/, "$1 : ").replace(/(\w\d\d)=/, "$1  : ").replace(/(\w\d)=/, "$1   : ") + "\n";
   });
   console.log(varString.slice(0, -1));
   console.groupEnd();//close the Misc section
@@ -107,7 +107,7 @@ function printProducts(productString) {
   if (!productString || productString.length === 0) {
     return false;
   }
-  console.log("@@@ Debugging product string:", productString);
+  //console.log("@@@ Debugging product string:", productString);
   const products = productString.split(",");
   console.group("Products: " + products.length);
   products.forEach((product) => {
@@ -162,7 +162,7 @@ function parseServerCall(fullURL) {
 function getComponent(allParams, paramName) {
   const regexp = new RegExp("^" + paramName + "=");
   const foundElement = allParams.find(param => regexp.test(param));
-  if(typeof foundElement === "undefined"){
+  if (typeof foundElement === "undefined") {
     return false;
   }
   return decodeURIComponent(foundElement)?.split(/=(.+)?/, 2)[1];
