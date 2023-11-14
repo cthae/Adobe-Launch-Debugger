@@ -45,23 +45,24 @@ async function mainListener() {
       requests.set(info.requestId, {
         info: info,
         postPayload: postedString,
-        eventTriggered: "onBeforeRequest",
-        _satelliteInfo: JSON.parse(await getSatelliteInfo())
+        eventTriggered: "onBeforeRequest"
       });
     }
   }, filter, ['requestBody']);
 
   chrome.webRequest.onHeadersReceived.addListener(async info => {
     if (info.statusCode === 200 && /\/b\/ss\//.test(info.url)) {
-      const postRequest = requests.get(info.requestId);
-      if (postRequest) {
+      let _satelliteInfo = JSON.parse(await getSatelliteInfo())
+      if (info.method === "POST"){
+        const postRequest = requests.get(info.requestId);
+        postRequest._satelliteInfo = _satelliteInfo;
         sendToTab(postRequest);
         requests.delete(info.requestId);
       } else {
         sendToTab({
           info: info,
           eventTriggered: "onHeadersReceived",
-          _satelliteInfo: JSON.parse(await getSatelliteInfo())
+          _satelliteInfo: _satelliteInfo
         });
       }
     }
