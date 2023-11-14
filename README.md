@@ -33,7 +33,7 @@ The dev plan:
 * [x] Finish the Hierarchies parsing and logging
 * [x] Finish the Product string parsing and reporting
 * [x] Adjust colors in the console logging to work well in the light console
-* [ ] Add a settings and info tabs to the popup
+* [x] Add a settings and info tabs to the popup
 * [ ] Add settings to change the default behavior of the main console log to be collapsed
 * [ ] Get some help from designers on the favicon, popup ui and logging
 * [ ] Release to the Chrome web store - first release
