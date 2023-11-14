@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  settingsSetter()
+  settingsSetter();
+  clicks();
   const client = {};
   client.timing = JSON.parse(await getTiming());
   client._satellite = JSON.parse(await getPageVar('_satellite'));
@@ -14,6 +15,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   updatePage(await statusCheck(client._satellite, client.pageLoadTime, client.pvs.length, client.links.length));
 });
+
+function clicks(){
+  document.querySelectorAll("button.tablinks").forEach((button) => {
+    button.addEventListener("click", switchTab);
+  });
+}
+
+function switchTab(event){
+  const tabId = event.target.id;
+  document.querySelectorAll("div.tab").forEach((tab) => {
+    if (tab.id === tabId){
+      tab.style.display = "block";
+    } else {
+      tab.style.display = "none";
+    }
+  });
+}
 
 async function updatePage(launchDebugInfo){
   settingsLoad();

@@ -1,15 +1,28 @@
 <!doctype html>
 <html data-bs-theme="dark" lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/water_dark.css">
-    <link rel="stylesheet" href="css/custom.css">
-    <script src="js/extension-script.js" type="text/javascript"></script>
-    <title>Adobe Launch Debugger</title>
-  </head>
-  <body style="width:500px" data-bs-theme="dark">
-    <table>
+
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="css/water_dark.css">
+   <link rel="stylesheet" href="css/custom.css">
+   <script src="js/extension-script.js" type="text/javascript"></script>
+   <title>Adobe Launch Debugger</title>
+   <style>
+   p{
+      font-size: 24px;
+    }
+    </style>
+</head>
+
+<body style="width:500px" data-bs-theme="dark">
+   <div class="tabButtons">
+      <button class="tablinks" id="Main">Main</button>
+      <button class="tablinks" id="Settings">Settings</button>
+      <button class="tablinks" id="Info">Info</button>
+   </div>
+   <div class="tab" id="Main">
+   <table>
       <tbody>
          <tr>
             <td>Page Status:</td>
@@ -47,15 +60,25 @@
             <td>Last DL Event:</td>
             <td id="dlevent" class="warn">Not Updated</td>
          </tr>
-         <tr title = "Toggle the logging of server calls in the console.">
+         <tr title="Toggle the logging of server calls in the console.">
             <td>AA logging:</td>
             <td id="aalog" style="text-align: center"><input type="checkbox" checked id="aabox"></td>
          </tr>
-         <tr title = "Toggle the _satellite.setDebug(). Displaying or hiding the information about Launch rules firing">
+         <tr title="Toggle the _satellite.setDebug(). Displaying or hiding the information about Launch rules firing">
             <td>Launch SetDebug:</td>
             <td id="launchlog" style="text-align: center"><input type="checkbox" checked id="launchbox"></td>
          </tr>
       </tbody>
    </table>
-  </body>
+   </div>
+   <div class="tab" id="Settings" style="display: none;">
+
+   </div>
+   <div class="tab" id="Info" style="display: none;">
+      <p>Hi there!</p>
+      <p>This extension is an open source project. You can learn more about it on the <a href="https://github.com/cthae/Adobe-Launch-Debugger/tree/main">Repo page</a></p>
+      <p>If you think of an improvement you'd like to have implemented, feel free to submit an issue or contribute!</p>
+   </div>
+</body>
+
 </html>
