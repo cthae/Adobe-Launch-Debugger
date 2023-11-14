@@ -107,6 +107,7 @@ function printProducts(productString) {
   if (!productString || productString.length === 0) {
     return false;
   }
+  console.log("@@@ Debugging product string:", productString);
   const products = productString.split(",");
   console.group("Products: " + products.length);
   products.forEach((product) => {
@@ -164,5 +165,5 @@ function getComponent(allParams, paramName) {
   if(typeof foundElement === "undefined"){
     return false;
   }
-  return decodeURIComponent(foundElement)?.split(/=(.+)?/, 2);[1];
+  return decodeURIComponent(foundElement)?.split(/=(.+)?/, 2)[1];
 }
