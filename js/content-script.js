@@ -1,11 +1,11 @@
 chrome.runtime.onMessage.addListener(info => {
   chrome.storage.sync.get('aabox', function (data) {
     if (data?.aabox !== false) {
-      console.log("@@@ Debugging: The Info object is: ", info);
+      //console.log("@@@ Debugging: The Info object is: ", info);
       if (info.postPayload) {
-        logServerCall(info.info.url + info.postPayload, info?._satelliteInfo);
+        logServerCall(decodeURIComponent(info.info.url) + info.postPayload, info?._satelliteInfo);
       } else {
-        logServerCall(info.info.url, info?._satelliteInfo);
+        logServerCall(decodeURIComponent(info.info.url), info?._satelliteInfo);
       }
     }
   });
@@ -25,8 +25,8 @@ function talkToBG(message) {
 
 function logServerCall(fullURL, _satelliteInfo) {
   const parsingResult = parseServerCall(fullURL);
-  let cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: DarkSlateBlue; color: yellow`;
-  const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: DarkSlateBlue; color: #fc0`;
+  let cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Green; color: yellow`;
+  let cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Green; color: #fc0`;
   let sCallType = 'Page View';
   let sCallName = parsingResult.pageName;
   if (parsingResult.customLinkType) {
@@ -34,6 +34,7 @@ function logServerCall(fullURL, _satelliteInfo) {
     parsingResult.customLinkType === 'lnk_e' ? sCallType = "Exit Link" : "";
     parsingResult.customLinkType === 'lnk_d' ? sCallType = "Download Link" : "";
     cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: DarkSlateBlue; color: pink`;
+    cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: DarkSlateBlue; color: #fc0`;
     sCallName = parsingResult.customLinkName;
   }
   const pNameMessage = sCallType + " Name : %c" + sCallName;
@@ -74,7 +75,7 @@ function printVars(vars, name) {
   console.group(name + ": " + vars.length);
   var varString = "";
   vars.forEach((param) => {
-    varString += decodeURIComponent(param).replace(/^(\w\d\d\d)=/, "$1 : ").replace(/(\w\d\d)=/, "$1  : ").replace(/(\w\d)=/, "$1   : ") + "\n";
+    varString += param.replace(/^(\w\d\d\d)=/, "$1 : ").replace(/(\w\d\d)=/, "$1  : ").replace(/(\w\d)=/, "$1   : ") + "\n";
   });
   console.log(varString.slice(0, -1));
   console.groupEnd();//close the Misc section
@@ -95,7 +96,7 @@ function printMisc(pName, pType, campaign, currency, hierarchies) {
   if (hierarchies.length > 0) {
     let hierarchiesString = '';
     hierarchies.forEach((h) => {
-      hierarchiesString += decodeURIComponent(h).replace("=", "  : ").replace("h", "Hierarchy ") + "\n";
+      hierarchiesString += h.replace("=", "  : ").replace("h", "Hierarchy ") + "\n";
     })
     console.log(hierarchiesString.slice(0, -1));
   }
@@ -165,5 +166,5 @@ function getComponent(allParams, paramName) {
   if (typeof foundElement === "undefined") {
     return false;
   }
-  return decodeURIComponent(foundElement)?.split(/=(.+)?/, 2)[1];
+  return foundElement?.split(/=(.+)?/, 2)[1];
 }
