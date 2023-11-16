@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  settingsSetter();
+  settingsLoad().then(settingsSetter());
   clicks();
   const client = {};
   client.timing = JSON.parse(await getTiming());
@@ -16,16 +16,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   updatePage(await statusCheck(client._satellite, client.pageLoadTime, client.pvs.length, client.links.length));
 });
 
-function clicks(){
+function clicks() {
   document.querySelectorAll("button.tablinks").forEach((button) => {
     button.addEventListener("click", switchTab);
   });
 }
 
-function switchTab(event){
+function switchTab(event) {
   const tabId = event.target.id;
   document.querySelectorAll("div.tab").forEach((tab) => {
-    if (tab.id === tabId){
+    if (tab.id === tabId) {
       tab.style.display = "block";
     } else {
       tab.style.display = "none";
@@ -33,8 +33,7 @@ function switchTab(event){
   });
 }
 
-async function updatePage(launchDebugInfo){
-  settingsLoad();
+async function updatePage(launchDebugInfo) {
   Object.keys(launchDebugInfo).forEach((launchDebugItem) => {
     let reportElement = document.getElementById(launchDebugItem);
     reportElement.className = '';
@@ -45,11 +44,11 @@ async function updatePage(launchDebugInfo){
 }
 
 async function getContainer() {
-  const [{result}] = await chrome.scripting.executeScript({
+  const [{ result }] = await chrome.scripting.executeScript({
     func: () => JSON.stringify(_satellite._container),
     args: [],
     target: {
-      tabId: (await chrome.tabs.query({active: true, currentWindow: true}))[0].id
+      tabId: (await chrome.tabs.query({ active: true, currentWindow: true }))[0].id
     },
     world: 'MAIN',
   });
@@ -57,11 +56,11 @@ async function getContainer() {
 }
 
 async function getAACalls() {
-  const [{result}] = await chrome.scripting.executeScript({
-    func: () => JSON.stringify(performance.getEntriesByType("resource").filter((obj) => {return /b\/ss/i.test(obj.name)})),
+  const [{ result }] = await chrome.scripting.executeScript({
+    func: () => JSON.stringify(performance.getEntriesByType("resource").filter((obj) => { return /b\/ss/i.test(obj.name) })),
     args: [],
     target: {
-      tabId: (await chrome.tabs.query({active: true, currentWindow: true}))[0].id
+      tabId: (await chrome.tabs.query({ active: true, currentWindow: true }))[0].id
     },
     world: 'MAIN',
   });
@@ -69,11 +68,11 @@ async function getAACalls() {
 }
 
 async function getTiming() {
-  const [{result}] = await chrome.scripting.executeScript({
+  const [{ result }] = await chrome.scripting.executeScript({
     func: () => JSON.stringify(window["performance"]["timing"]),
     args: [],
     target: {
-      tabId: (await chrome.tabs.query({active: true, currentWindow: true}))[0].id
+      tabId: (await chrome.tabs.query({ active: true, currentWindow: true }))[0].id
     },
     world: 'MAIN',
   });
@@ -81,19 +80,19 @@ async function getTiming() {
 }
 
 async function getPageVar(name, tabId) {
-  const [{result}] = await chrome.scripting.executeScript({
+  const [{ result }] = await chrome.scripting.executeScript({
     func: name => JSON.stringify(window[name]),
     args: [name],
     target: {
       tabId: tabId ??
-        (await chrome.tabs.query({active: true, currentWindow: true}))[0].id
+        (await chrome.tabs.query({ active: true, currentWindow: true }))[0].id
     },
     world: 'MAIN',
   });
   return result;
 }
 
-async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber){
+async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber) {
   let dataLayer = [];
   let dlEvent = {};
   const details = {
@@ -107,9 +106,9 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber){
     dl: {},
     dlevent: {}
   };
-  if (pageLoadTime > 0){
+  if (pageLoadTime > 0) {
     details.pstatus = {
-      value: "Loaded in " + pageLoadTime/1000 + " sec.",
+      value: "Loaded in " + pageLoadTime / 1000 + " sec.",
       class: "success",
       info: "Loaded successfully"
     }
@@ -120,14 +119,14 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber){
       info: "The page is still loading. Seems like the window.performance.timing.domContentLoadedEventEnd hasn't fired yet."
     }
   }
-  if (typeof _satellite !== 'undefined' && _satellite && typeof _satellite === "object"){
+  if (typeof _satellite !== 'undefined' && _satellite && typeof _satellite === "object") {
     _satellite._container = JSON.parse(await getContainer());
     details.lstatus = {
       value: "Found",
       class: "success",
       info: "_satellite is defined and is an object."
     };
-    if (_satellite.property && typeof _satellite.property.name === "string"){
+    if (_satellite.property && typeof _satellite.property.name === "string") {
       details.pname = {
         value: _satellite.property.name,
         class: "success",
@@ -140,14 +139,14 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber){
         info: "_satellite.property has some issues."
       };
     }
-    if (typeof _satellite.environment === 'object'){
-      if (_satellite.environment.stage === 'production'){
+    if (typeof _satellite.environment === 'object') {
+      if (_satellite.environment.stage === 'production') {
         details.env = {
           value: "Production",
           class: "success",
           info: "Production library is currently loaded."
         };
-      } else if (_satellite.environment.stage !== 'production'){
+      } else if (_satellite.environment.stage !== 'production') {
         details.env = {
           value: "Development",
           class: "warn",
@@ -161,7 +160,7 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber){
         info: "Environment is not defined despite _satellite being loaded. Something must be interfering with the _satellite object."
       };
     }
-    if (_satellite.buildInfo && _satellite.buildInfo.buildDate){
+    if (_satellite.buildInfo && _satellite.buildInfo.buildDate) {
       details.bdate = {
         value: formattedTimeSinceLastBuild(_satellite) + " Ago",
         class: "success",
@@ -174,7 +173,7 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber){
         info: "Build info is not defined despite _satellite being loaded. Something must be interfering with the _satellite object."
       };
     }
-    if (pvsNumber > 0){
+    if (pvsNumber > 0) {
       details.pvsNumber = {
         value: pvsNumber,
         class: "success",
@@ -187,7 +186,7 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber){
         info: "No PageViews yet"
       }
     }
-    if (linksNumber > 0){
+    if (linksNumber > 0) {
       details.linksNumber = {
         value: linksNumber,
         class: "success",
@@ -200,22 +199,22 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber){
         info: "No Links yet"
       }
     }
-    if (_satellite._container && _satellite._container.extensions){
-      if (_satellite._container.extensions["data-layer-manager-search-discovery"]){
+    if (_satellite._container && _satellite._container.extensions) {
+      if (_satellite._container.extensions["data-layer-manager-search-discovery"]) {
         details.dl = {
           value: "DM's DL Found: " + _satellite._container.extensions["data-layer-manager-search-discovery"].settings.dataLayerObjectName,
           class: "success",
           info: "Data Layer Manager from Search Discovery was successfully detected!"
-        } 
+        }
         dataLayer = JSON.parse(await getPageVar(_satellite._container.extensions["data-layer-manager-search-discovery"].settings.dataLayerObjectName));
-      } else if(_satellite._container.extensions["gcoe-adobe-client-data-layer"]) {
+      } else if (_satellite._container.extensions["gcoe-adobe-client-data-layer"]) {
         details.dl = {
           value: "ACDL's DL Found: " + _satellite._container.extensions["gcoe-adobe-client-data-layer"].settings.dataLayerName,
           class: "success",
           info: "ACDL was successfully detected!"
-        } 
+        }
         dataLayer = JSON.parse(await getPageVar(_satellite._container.extensions["gcoe-adobe-client-data-layer"].settings.dataLayerName));
-      } else if(_satellite._container.extensions["adobegoogledatalayer"]) {
+      } else if (_satellite._container.extensions["adobegoogledatalayer"]) {
         details.dl = {
           value: "GTM's DL Found: " + _satellite._container.extensions["adobegoogledatalayer"].settings.dataLayer,
           class: "success",
@@ -234,10 +233,10 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber){
           info: "No DL has been detected."
         }
       }
-      dlEvent = dataLayer.filter((obj)=>{
+      dlEvent = dataLayer.filter((obj) => {
         return obj.event && !/gtm\./i.test(obj.event);
       }).slice(-1)[0];
-      if(dlEvent){
+      if (dlEvent) {
         details.dlevent = {
           value: dlEvent.event,
           class: "success",
@@ -261,14 +260,14 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber){
     details.lstatus.value = "Not Found";
     details.lstatus.class = "error";
     details.lstatus.info = "_satellite is not an object";
-    details.env.value = details.bdate.value = details.pname.value = 
-      details.linksNumber.value = details.pvsNumber.value = details.dl.value = 
+    details.env.value = details.bdate.value = details.pname.value =
+      details.linksNumber.value = details.pvsNumber.value = details.dl.value =
       details.dlevent.value = "N/A";
-    details.env.class = details.bdate.class = details.pname.class = 
-      details.linksNumber.class = details.pvsNumber.class = details.dl.class = 
+    details.env.class = details.bdate.class = details.pname.class =
+      details.linksNumber.class = details.pvsNumber.class = details.dl.class =
       details.dlevent.class = "warn";
-    details.env.info = details.bdate.info = details.pname.info = 
-      details.linksNumber.info = details.pvsNumber.info = details.dl.info = 
+    details.env.info = details.bdate.info = details.pname.info =
+      details.linksNumber.info = details.pvsNumber.info = details.dl.info =
       details.dlevent.info = "Since _satellite is not there, no wonder this is not there either, heh.";
   }
   return details;
@@ -287,39 +286,37 @@ function formattedTimeSinceLastBuild(_satellite) {
 }
 
 async function settingsLoad() {
-  chrome.storage.sync.get('aabox', function (data) {
-    if (data) {
-      if (data.aabox === true) {
-        document.getElementById("aabox").checked = true;
-      } else if (data.aabox === false) {
-        document.getElementById("aabox").checked = false;
-      }
-    }
-  }); 
-  chrome.storage.sync.get('launchbox', function (data) {
-    if (data) {
-      if (data.launchbox === true) {
-        document.getElementById("launchbox").checked = true;
-      } else if (data.launchbox === false) {
-        document.getElementById("launchbox").checked = false;
-      }
+  chrome.storage.sync.get('settings', function (data) {
+    if (data.settings) {
+      console.log("@@@ Settings obj is ", data.settings);
+      Object.keys(data.settings).forEach(setting => {
+        document.getElementById(setting).checked = data.settings[setting];
+      });
     }
   });
 }
 
-function settingsSetter(){
-  document.getElementById("aabox").addEventListener('change', function() {
-    if (this.checked) {
-      chrome.storage.sync.set({ "aabox": true });
-    } else {
-      chrome.storage.sync.set({ "aabox": false });
-    }
+function settingsSetter() {
+  let settings = {};
+  document.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
+    settings[checkbox.id] = checkbox.checked;
+    checkbox.addEventListener("change", (event) => {
+      settings = logSettings();
+      if (event.target.checked) {
+        settings[event.target.id] = checkbox.checked = true;
+      } else {
+        settings[event.target.id] = checkbox.checked = false;
+      }
+      chrome.storage.sync.set({ settings: settings });
+      logSettings()
+    })
   });
-  document.getElementById("launchbox").addEventListener('change', function() {
-    if (this.checked) {
-      chrome.storage.sync.set({ "launchbox": true });
-    } else {
-      chrome.storage.sync.set({ "launchbox": false });
-    }
+  chrome.storage.sync.set({ settings: settings });
+}
+
+function logSettings(){
+  chrome.storage.sync.get('settings', function (data) {
+    console.log("@@@ Debugging the Settings object is: " , data.settings);
+    return data.settings;
   });
 }

@@ -336,8 +336,8 @@ input[type='color'] {
 
 input[type='checkbox'],
 input[type='radio'] {
-  height: 1em;
-  width: 1em;
+  height: 25px;
+  width: 25px;
 }
 
 input[type='radio'] {

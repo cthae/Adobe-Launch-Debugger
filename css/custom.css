@@ -46,3 +46,6 @@ td{
   color: black;
 }
 
+p,label{
+  font-size: 1.5em;
+}
