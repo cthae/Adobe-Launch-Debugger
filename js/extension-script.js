@@ -297,16 +297,11 @@ async function settingsLoad() {
 }
 
 function settingsSetter() {
-  let settings = {};
+  const settings = {};
   document.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
     settings[checkbox.id] = checkbox.checked;
     checkbox.addEventListener("change", (event) => {
-      settings = logSettings();
-      if (event.target.checked) {
-        settings[event.target.id] = checkbox.checked = true;
-      } else {
-        settings[event.target.id] = checkbox.checked = false;
-      }
+      settings[event.target.id] = event.target.checked;
       chrome.storage.sync.set({ settings: settings });
       logSettings()
     })
@@ -317,6 +312,5 @@ function settingsSetter() {
 function logSettings(){
   chrome.storage.sync.get('settings', function (data) {
     console.log("@@@ Debugging the Settings object is: " , data.settings);
-    return data.settings;
   });
 }
