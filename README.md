@@ -19,11 +19,11 @@ The purpose can be divided in a few segments, sorted by importance desc:
 This extension essentially has three parts accomplishing different facets of AA/Launch debugging:
 * **Essential info Popup**. Make it easier and faster to get essential information about the Launch library and primitive highlighting of essential concerns:
   
-  ![alt no Launch Present Screenshot](https://i.imgur.com/pgTJsfR.jpg) ![alt Launch Present Screenshot](https://i.imgur.com/u1Ejxk3.jpg)
+  ![alt no Launch Present Screenshot](https://i.imgur.com/sN7RlGA.jpg) ![alt Launch Present Screenshot](https://i.imgur.com/DcaKQ4I.jpg)
   
 * **Console logging**. Completely reimplement and improve what the AA Debugger extension does, fixing its bugs and ui, adding more configuration options:
   
-  ![alt console logging suspended](https://i.imgur.com/DVaNQFA.jpg) ![alt console logging expanded](https://i.imgur.com/3bgZQf7.jpg)
+  ![alt console logging suspended](https://i.imgur.com/orqRiQS.jpg) ![alt console logging expanded](https://i.imgur.com/QatXYvT.jpg)
   
 * **Library Replacement**. Reimplement the Switch extension, essentially, but simpler and working. Simple logic to redirect the launch library fetch to a custom library. This is Planned only.
 
@@ -35,7 +35,7 @@ The dev plan:
 * [x] Adjust colors in the console logging to work well in the light console
 * [x] Add a settings and info tabs to the popup
 * [x] Add settings to change the default behavior of the main console log to be collapsed
-* [ ] Deploy a test launch property with AA tracking for advanced testing
+* [x] Deploy a test launch property with AA tracking for advanced testing
 * [ ] Get some help from designers on the favicon, popup ui and logging
 * [ ] Release to the Chrome web store - first release
 * [ ] Implement the library switching logic
