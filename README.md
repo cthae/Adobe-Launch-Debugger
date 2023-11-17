@@ -19,7 +19,7 @@ The purpose can be divided in a few segments, sorted by importance desc:
 This extension essentially has three parts accomplishing different facets of AA/Launch debugging:
 * **Essential info Popup**. Make it easier and faster to get essential information about the Launch library and primitive highlighting of essential concerns:
   
-  ![alt no Launch Present Screenshot](https://i.imgur.com/pgTJsfR.jpg) ![alt Launch Present Screenshot](https://i.imgur.com/DcaKQ4I.jpg)
+  ![alt no Launch Present Screenshot](https://i.imgur.com/sN7RlGA.jpg) ![alt Launch Present Screenshot](https://i.imgur.com/DcaKQ4I.jpg)
   
 * **Console logging**. Completely reimplement and improve what the AA Debugger extension does, fixing its bugs and ui, adding more configuration options:
   
