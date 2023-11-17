@@ -16,7 +16,7 @@ function setDebugLogicListener() {
 async function setDebug(flag) {
   if (flag) {
     chrome.scripting.executeScript({
-      func: () => _satellite.setDebug(1),
+      func: () => window._satellite ? _satellite.setDebug(1) : '',
       args: [],
       target: {
         tabId: (await chrome.tabs.query({ active: true, currentWindow: true }))[0].id

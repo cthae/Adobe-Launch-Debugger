@@ -97,14 +97,14 @@ function printMisc(pName, pType, campaign, currency, hierarchies) {
   console.group((`Misc: ${pName ? "PageName," : ""}${pType ? " PageType," : ""}` +
     `${campaign ? " Campaign," : ""}${currency ? " Currency," : ""}` +
     `${hierarchies && hierarchies.length > 0 ? " Hierarchy," : ""}`).slice(0, -1));
-  printOne("Page Name   ", pName);
-  printOne("Page Type   ", pType);
-  printOne("Campaign    ", campaign);
-  printOne("Currency    ", currency);
+  printOne("Page Name  ", pName);
+  printOne("Page Type  ", pType);
+  printOne("Campaign   ", campaign);
+  printOne("Currency   ", currency);
   if (hierarchies.length > 0) {
     let hierarchiesString = '';
     hierarchies.forEach((h) => {
-      hierarchiesString += h.replace("=", "  : ").replace("h", "Hierarchy ") + "\n";
+      hierarchiesString += h.replace("=", " : ").replace("h", "Hierarchy ") + "\n";
     })
     console.log(hierarchiesString.slice(0, -1));
   }
