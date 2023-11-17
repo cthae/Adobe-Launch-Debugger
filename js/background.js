@@ -39,7 +39,8 @@ async function mainListener() {
   const filter = { urls: ["<all_urls>"] }//   *://*/*/b/ss/*   --   <all_urls>
   const requests = new Map();
   chrome.webRequest.onBeforeRequest.addListener(async info => {
-    if (/\/b\/ss\//.test(info.url) && info.method === "POST") {
+    if (/\/b\/ss\//.test(info.url) && info.method === "POST" && 
+      info.requestBody.raw && info.requestBody.raw.length > 0) {
       let postedString = decodeURIComponent(String.fromCharCode.apply(null,
         new Uint8Array(info.requestBody.raw[0].bytes)));
       requests.set(info.requestId, {
@@ -53,8 +54,8 @@ async function mainListener() {
   chrome.webRequest.onHeadersReceived.addListener(async info => {
     if (info.statusCode === 200 && /\/b\/ss\//.test(info.url)) {
       let _satelliteInfo = JSON.parse(await getSatelliteInfo())
-      if (info.method === "POST"){
-        const postRequest = requests.get(info.requestId);
+      const postRequest = requests.get(info.requestId);
+      if (info.method === "POST" && postRequest){
         postRequest._satelliteInfo = _satelliteInfo;
         sendToTab(postRequest);
         requests.delete(info.requestId);

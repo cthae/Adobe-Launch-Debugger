@@ -1,11 +1,16 @@
 {
   "manifest_version": 3,
   "name": "Adobe Launch Debugger",
-  "description": "An updated debugger for Adobe Launch and Analytics",
-  "version": "0.85",
+  "description": "An open source updated debugger for Adobe Launch and Analytics for developers and analysts.",
+  "version": "0.87",
   "action": {
     "default_popup": "main.html",
-    "default_icon": "favicon.png"
+    "default_icon": "debuggerFavicon 16-3.png"
+  },
+  "icons": {
+    "16": "debuggerFavicon 16-3.png",
+    "32": "debuggerFavicon 32.png",
+    "48": "debuggerFavicon 48.png"
   },
   "background": {"service_worker": "js/background.js"},
   "content_scripts": [{
