@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  settingsLoad().then(settingsSetter());
+  settingsLoad();
   clicks();
   const client = {};
   client.timing = JSON.parse(await getTiming());
@@ -206,21 +206,21 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber) {
           class: "success",
           info: "Data Layer Manager from Search Discovery was successfully detected!"
         }
-        dataLayer = JSON.parse(await getPageVar(_satellite._container.extensions["data-layer-manager-search-discovery"].settings.dataLayerObjectName));
+        dataLayer = await JSON.parse(await getPageVar(_satellite._container.extensions["data-layer-manager-search-discovery"].settings.dataLayerObjectName));
       } else if (_satellite._container.extensions["gcoe-adobe-client-data-layer"]) {
         details.dl = {
           value: "ACDL's DL Found: " + _satellite._container.extensions["gcoe-adobe-client-data-layer"].settings.dataLayerName,
           class: "success",
           info: "ACDL was successfully detected!"
         }
-        dataLayer = JSON.parse(await getPageVar(_satellite._container.extensions["gcoe-adobe-client-data-layer"].settings.dataLayerName));
+        dataLayer = await JSON.parse(await getPageVar(_satellite._container.extensions["gcoe-adobe-client-data-layer"].settings.dataLayerName));
       } else if (_satellite._container.extensions["adobegoogledatalayer"]) {
         details.dl = {
           value: "GTM's DL Found: " + _satellite._container.extensions["adobegoogledatalayer"].settings.dataLayer,
           class: "success",
           info: "GTM DL's extension was successfully detected!"
         }
-        dataLayer = JSON.parse(await getPageVar(_satellite._container.extensions["adobegoogledatalayer"].settings.dataLayer));
+        dataLayer = await JSON.parse(await getPageVar(_satellite._container.extensions["adobegoogledatalayer"].settings.dataLayer));
       } else {
         details.dl = {
           value: "No DL Extension",
@@ -233,9 +233,11 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber) {
           info: "No DL has been detected."
         }
       }
-      dlEvent = dataLayer.filter((obj) => {
-        return obj.event && !/gtm\./i.test(obj.event);
-      }).slice(-1)[0];
+      if (Array.isArray(dataLayer)){
+        dlEvent = dataLayer.filter((obj) => {
+          return obj.event && !/gtm\./i.test(obj.event);
+        }).slice(-1)[0];
+      }
       if (dlEvent) {
         details.dlevent = {
           value: dlEvent.event,
@@ -286,27 +288,32 @@ function formattedTimeSinceLastBuild(_satellite) {
 }
 
 async function settingsLoad() {
+  const settings = {};
   chrome.storage.sync.get('settings', function (data) {
+    settingsSetter(data.settings);
     if (data.settings) {
-      console.log("@@@ Settings obj is ", data.settings);
+      console.log("@@@ Settings Exist, the obj is ", data.settings);
       Object.keys(data.settings).forEach(setting => {
         document.getElementById(setting).checked = data.settings[setting];
       });
+    } else {
+      console.log("@@@ Settings Don't exist. Populating them with default vals. the obj is ", data.settings);
+      document.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
+        settings[checkbox.id] = checkbox.checked;
+      });
+      chrome.storage.sync.set({ settings: settings });
     }
   });
 }
 
-function settingsSetter() {
-  const settings = {};
+async function settingsSetter(settings) {
   document.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
-    settings[checkbox.id] = checkbox.checked;
-    checkbox.addEventListener("change", (event) => {
+    checkbox.addEventListener("click", (event) => {
       settings[event.target.id] = event.target.checked;
       chrome.storage.sync.set({ settings: settings });
       logSettings()
     })
   });
-  chrome.storage.sync.set({ settings: settings });
 }
 
 function logSettings(){
