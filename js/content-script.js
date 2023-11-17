@@ -1,18 +1,18 @@
 chrome.runtime.onMessage.addListener(info => {
-  chrome.storage.sync.get('aabox', function (data) {
-    if (data?.aabox !== false) {
+  chrome.storage.sync.get('settings', function (data) {
+    if (data?.settings?.aabox !== false) {
       //console.log("@@@ Debugging: The Info object is: ", info);
       if (info.postPayload) {
-        logServerCall(decodeURIComponent(info.info.url) + info.postPayload, info?._satelliteInfo);
+        logServerCall(decodeURIComponent(info.info.url) + info.postPayload, info?._satelliteInfo, data.settings);
       } else {
-        logServerCall(decodeURIComponent(info.info.url), info?._satelliteInfo);
+        logServerCall(decodeURIComponent(info.info.url), info?._satelliteInfo, data.settings);
       }
     }
   });
 });
 
-chrome.storage.sync.get('launchbox', async function (data) {
-  if (data?.launchbox !== false) {
+chrome.storage.sync.get('settings', async function (data) {
+  if (data?.settings?.launchbox !== false) {
     talkToBG({ type: 'setDebug', value: 1 });
   } else {
     talkToBG({ type: 'setDebug', value: 0 });
@@ -23,7 +23,7 @@ function talkToBG(message) {
   chrome.runtime.sendMessage(message);
 }
 
-function logServerCall(fullURL, _satelliteInfo) {
+function logServerCall(fullURL, _satelliteInfo, settings) {
   const parsingResult = parseServerCall(fullURL);
   let cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Green; color: yellow`;
   let cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Green; color: #fc0`;
@@ -40,17 +40,21 @@ function logServerCall(fullURL, _satelliteInfo) {
   const pNameMessage = sCallType + " Name : %c" + sCallName;
   const eventsMessage = `%cEvents: %c${parsingResult.events ? parsingResult.events : "No Events"}`;
   const RSMessage = `%cReport Suite: %c${parsingResult.rSuite ? parsingResult.rSuite : "No RS Found"}`
-  console.groupCollapsed(`%cAA ${pNameMessage}\n` + eventsMessage + " " + RSMessage,
-    cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
+  if(settings?.mainExpand === true){
+    console.group(`%cAA ${pNameMessage}\n` + eventsMessage + " " + RSMessage,
+      cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
+  } else {
+    console.groupCollapsed(`%cAA ${pNameMessage}\n` + eventsMessage + " " + RSMessage,
+      cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
+  }
   printProducts(parsingResult.products);
   printMisc(parsingResult.pageName, parsingResult.pageType, parsingResult.campaign, parsingResult.currency, parsingResult.allHierarchy)
   printVars(parsingResult.allListVars, "ListVars");
-  printVars(parsingResult.alleVars, "eVars");
-  printVars(parsingResult.allProps, "props");
+  printVars(parsingResult.alleVars, "eVars", settings.varsExpand);
+  printVars(parsingResult.allProps, "props", settings.varsExpand);
   printOther(parsingResult.url2 ? parsingResult.url + parsingResult.url2 : parsingResult.url,
     parsingResult.server, _satelliteInfo.property, _satelliteInfo.environment, _satelliteInfo.buildtime);
-  console.groupEnd();//close the main group
-  // console.log( '1 %c 2 %c 3 %c 4', 'color:red', 'color:green', 'color:blue' );
+  console.groupEnd();
 }
 
 function printOther(url, server, property, environment, buildDate) {
@@ -64,15 +68,19 @@ function printOther(url, server, property, environment, buildDate) {
   printOne("Property   ", property);
   printOne("Environment", environment);
   printOne("Build Date ", buildDate);
-  console.groupEnd();//close the Misc section
+  console.groupEnd();
   return true;
 }
 
-function printVars(vars, name) {
+function printVars(vars, name, printExpanded = true) {
   if (vars.length === 0) {
     return false;
   }
-  console.group(name + ": " + vars.length);
+  if (printExpanded){
+    console.group(name + ": " + vars.length);
+  } else {
+    console.groupCollapsed(name + ": " + vars.length);
+  }
   var varString = "";
   vars.forEach((param) => {
     varString += param.replace(/^(\w\d\d\d)=/, "$1 : ").replace(/(\w\d\d)=/, "$1  : ").replace(/(\w\d)=/, "$1   : ") + "\n";

@@ -92,6 +92,18 @@ async function getPageVar(name, tabId) {
   return result;
 }
 
+async function getDLWithNoGTM(name) {
+  const [{ result }] = await chrome.scripting.executeScript({
+    func: name => JSON.stringify(dataLayer.filter((dl) => {return dl.event && dl.event.indexOf("gtm.") === -1})),
+    args: [name],
+    target: {
+      tabId: (await chrome.tabs.query({ active: true, currentWindow: true }))[0].id
+    },
+    world: 'MAIN',
+  });
+  return result;
+}
+
 async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber) {
   let dataLayer = [];
   let dlEvent = {};
@@ -206,21 +218,21 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber) {
           class: "success",
           info: "Data Layer Manager from Search Discovery was successfully detected!"
         }
-        dataLayer = await JSON.parse(await getPageVar(_satellite._container.extensions["data-layer-manager-search-discovery"].settings.dataLayerObjectName));
+        dataLayer = await JSON.parse(await getDLWithNoGTM(_satellite._container.extensions["data-layer-manager-search-discovery"].settings.dataLayerObjectName));
       } else if (_satellite._container.extensions["gcoe-adobe-client-data-layer"]) {
         details.dl = {
           value: "ACDL's DL Found: " + _satellite._container.extensions["gcoe-adobe-client-data-layer"].settings.dataLayerName,
           class: "success",
           info: "ACDL was successfully detected!"
         }
-        dataLayer = await JSON.parse(await getPageVar(_satellite._container.extensions["gcoe-adobe-client-data-layer"].settings.dataLayerName));
+        dataLayer = await JSON.parse(await getDLWithNoGTM(_satellite._container.extensions["gcoe-adobe-client-data-layer"].settings.dataLayerName));
       } else if (_satellite._container.extensions["adobegoogledatalayer"]) {
         details.dl = {
           value: "GTM's DL Found: " + _satellite._container.extensions["adobegoogledatalayer"].settings.dataLayer,
           class: "success",
           info: "GTM DL's extension was successfully detected!"
         }
-        dataLayer = await JSON.parse(await getPageVar(_satellite._container.extensions["adobegoogledatalayer"].settings.dataLayer));
+        dataLayer = await JSON.parse(await getDLWithNoGTM(_satellite._container.extensions["adobegoogledatalayer"].settings.dataLayer));
       } else {
         details.dl = {
           value: "No DL Extension",
@@ -234,9 +246,7 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber) {
         }
       }
       if (Array.isArray(dataLayer)){
-        dlEvent = dataLayer.filter((obj) => {
-          return obj.event && !/gtm\./i.test(obj.event);
-        }).slice(-1)[0];
+        dlEvent = dataLayer.slice(-1)[0];
       }
       if (dlEvent) {
         details.dlevent = {
