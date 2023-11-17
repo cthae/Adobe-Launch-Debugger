@@ -35,7 +35,7 @@ The dev plan:
 * [x] Adjust colors in the console logging to work well in the light console
 * [x] Add a settings and info tabs to the popup
 * [x] Add settings to change the default behavior of the main console log to be collapsed
-* [ ] Deploy a test launch property with AA tracking for advanced testing
+* [x] Deploy a test launch property with AA tracking for advanced testing
 * [ ] Get some help from designers on the favicon, popup ui and logging
 * [ ] Release to the Chrome web store - first release
 * [ ] Implement the library switching logic
