@@ -136,7 +136,7 @@ function printOne(name, val) {
 }
 
 function parseServerCall(fullURL) {
-  //This function is awful. Rewrite it completely after the MVP is done.
+  //This function is awful. Rewrite it completely. At some point.
   const parsingResult = {};
   const allParams = fullURL.split("&");
   parsingResult.allProps = allParams.filter(param => {

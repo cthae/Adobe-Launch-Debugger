@@ -26,7 +26,6 @@
     "storage",
     "webRequest",
     "activeTab",
-    "scripting",
-    "nativeMessaging"
+    "scripting"
   ]
 }
