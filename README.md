@@ -36,8 +36,8 @@ The dev plan:
 * [x] Add a settings and info tabs to the popup
 * [x] Add settings to change the default behavior of the main console log to be collapsed
 * [x] Deploy a test launch property with AA tracking for advanced testing
-* [ ] Get some help from designers on the favicon, popup ui and logging
-* [ ] Release to the Chrome web store - first release
+* [x] Get some help from designers on the favicon, popup ui and logging
+* [x] Release to the Chrome web store - first release
 * [ ] Implement the library switching logic
 
 ## Contributions
