@@ -39,6 +39,7 @@ The dev plan:
 * [x] Get some help from designers on the favicon, popup ui and logging
 * [x] Release to the Chrome web store - first release
 * [ ] Implement server call counting in logging
+* [ ] Implement logging for failed server calls
 * [ ] Implement the library switching logic
 * [ ] Check Adobe Analytics Debugger's changelog. Some things from there might be worth reimplementing.
 
