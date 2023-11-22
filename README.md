@@ -41,6 +41,7 @@ The dev plan:
 * [ ] Implement server call counting in logging
 * [ ] Implement logging for failed server calls
 * [ ] Implement the library switching logic
+* [ ] Once the library switching logic is done, implement a setting to remove the .min from the library. It's gonna utilize the same redirecting logic. Off by default.
 * [ ] Check Adobe Analytics Debugger's changelog. Some things from there might be worth reimplementing.
 
 ## Contributions
