@@ -37,7 +37,7 @@ The dev plan:
 * [x] Add settings to change the default behavior of the main console log to be collapsed
 * [x] Deploy a test launch property with AA tracking for advanced testing
 * [x] Get some help from designers on the favicon, popup ui and logging
-* [x] Release to the Chrome web store - first release
+* [x] Release to the Chrome web store - first release: https://chromewebstore.google.com/detail/adobe-launch-debugger/ehadnibhemgjphdjgkallndphbghlpkn
 * [ ] Wrong DL is checked sometimes for the last event info (GTM's DL instead of DM)
 * [ ] Implement server call counting in logging
 * [ ] Implement logging for failed server calls
