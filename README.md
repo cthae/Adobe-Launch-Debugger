@@ -41,7 +41,7 @@ The dev plan and event log:
 * [x] Wrong DL is checked sometimes for the last event info (GTM's DL instead of DM)
 * [x] Add logging for the Site Section near the PV info
 * [x] Implement server call counting in logging
-* [ ] Release the v0.88
+* [x] Release the v0.88
 * [ ] Implement logging for failed server calls
 * [ ] Implement the library switching logic
 * [ ] Once the library switching logic is done, implement a setting to remove the .min from the library. It's gonna utilize the same redirecting logic. Off by default.
