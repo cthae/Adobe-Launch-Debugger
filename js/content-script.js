@@ -24,6 +24,7 @@ function talkToBG(message) {
 }
 
 function logServerCall(fullURL, _satelliteInfo, settings) {
+  document.sCallCounter = document.sCallCounter ? document.sCallCounter + 1 : 1;
   const parsingResult = parseServerCall(fullURL);
   let cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Green; color: yellow`;
   let cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Green; color: #fc0`;
@@ -41,10 +42,10 @@ function logServerCall(fullURL, _satelliteInfo, settings) {
   const eventsMessage = `%cEvents: %c${parsingResult.events ? parsingResult.events : "No Events"}`;
   const RSMessage = `%cReport Suite: %c${parsingResult.rSuite ? parsingResult.rSuite : "No RS Found"}`
   if(settings?.mainExpand === true){
-    console.group(`%cAA ${pNameMessage}\n` + eventsMessage + " " + RSMessage,
+    console.group(`%cAA #${document.sCallCounter} ${pNameMessage}\n` + eventsMessage + " " + RSMessage,
       cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
   } else {
-    console.groupCollapsed(`%cAA ${pNameMessage}\n` + eventsMessage + " " + RSMessage,
+    console.groupCollapsed(`%cAA #${document.sCallCounter} ${pNameMessage}\n` + eventsMessage + " " + RSMessage,
       cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
   }
   printProducts(parsingResult.products);
