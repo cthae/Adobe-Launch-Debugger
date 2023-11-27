@@ -48,7 +48,7 @@ function logServerCall(fullURL, _satelliteInfo, settings) {
       cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
   }
   printProducts(parsingResult.products);
-  printMisc(parsingResult.pageName, parsingResult.pageType, parsingResult.campaign, parsingResult.currency, parsingResult.allHierarchy)
+  printMisc(parsingResult.pageName, parsingResult.pageType, parsingResult.campaign, parsingResult.currency, parsingResult.allHierarchy, parsingResult.siteSection)
   printVars(parsingResult.allListVars, "ListVars");
   printVars(parsingResult.alleVars, "eVars", settings.varsExpand);
   printVars(parsingResult.allProps, "props", settings.varsExpand);
@@ -90,21 +90,22 @@ function printVars(vars, name, printExpanded = true) {
   return true;
 }
 
-function printMisc(pName, pType, campaign, currency, hierarchies) {
+function printMisc(pName, pType, campaign, currency, hierarchies, siteSection) {
   if (!pName && !pType && !campaign && !currency && !hierarchies) {
     return false;
   }
-  console.group((`Misc: ${pName ? "PageName," : ""}${pType ? " PageType," : ""}` +
+  console.group((`Misc: ${pName ? "PageName," : ""}${pType ? " PageType," : ""}${siteSection ? " Site Section," : ""}` +
     `${campaign ? " Campaign," : ""}${currency ? " Currency," : ""}` +
     `${hierarchies && hierarchies.length > 0 ? " Hierarchy," : ""}`).slice(0, -1));
-  printOne("Page Name  ", pName);
-  printOne("Page Type  ", pType);
-  printOne("Campaign   ", campaign);
-  printOne("Currency   ", currency);
+  printOne("Page Name   ", pName);
+  printOne("Page Type   ", pType);
+  printOne("Site Section", siteSection);
+  printOne("Campaign    ", campaign);
+  printOne("Currency    ", currency);
   if (hierarchies.length > 0) {
     let hierarchiesString = '';
     hierarchies.forEach((h) => {
-      hierarchiesString += h.replace("=", " : ").replace("h", "Hierarchy ") + "\n";
+      hierarchiesString += h.replace("=", "  : ").replace("h", "Hierarchy ") + "\n";
     })
     console.log(hierarchiesString.slice(0, -1));
   }
@@ -165,6 +166,7 @@ function parseServerCall(fullURL) {
   parsingResult.customLinkType = getComponent(allParams, "pe");
   parsingResult.customLinkUrl = getComponent(allParams, "pev1");
   parsingResult.customLinkName = getComponent(allParams, "pev2");
+  parsingResult.siteSection = getComponent(allParams, "ch");
   return parsingResult;
 }
 
