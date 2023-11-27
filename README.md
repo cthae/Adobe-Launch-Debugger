@@ -42,6 +42,7 @@ The dev plan and event log:
 * [x] Add logging for the Site Section near the PV info
 * [x] Implement server call counting in logging
 * [x] Release the v0.88
+* [ ] A pageview is misfiring on adobe launch site. Need to check it.
 * [ ] Implement logging for failed server calls. Need to figure out a way to simulate a good error. Maybe an SSL error is a good one to simulate.
 * [ ] Implement the library switching logic
 * [ ] Once the library switching logic is done, implement a setting to remove the .min from the library. It's gonna utilize the same redirecting logic. Off by default.
