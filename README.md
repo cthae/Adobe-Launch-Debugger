@@ -28,7 +28,7 @@ This extension essentially has three parts accomplishing different facets of AA/
 * **Library Replacement**. Reimplement the Switch extension, essentially, but simpler and working. Simple logic to redirect the launch library fetch to a custom library. This is Planned only.
 
 ## Plan
-The dev plan:
+The dev plan and event log:
 * [x] Add logic to parse POST b/ss requests too
 * [x] Finish the Hierarchies parsing and logging
 * [x] Finish the Product string parsing and reporting
@@ -37,10 +37,11 @@ The dev plan:
 * [x] Add settings to change the default behavior of the main console log to be collapsed
 * [x] Deploy a test launch property with AA tracking for advanced testing
 * [x] Get some help from designers on the favicon, popup ui and logging
-* [x] Release to the Chrome web store - first release: https://chromewebstore.google.com/detail/adobe-launch-debugger/ehadnibhemgjphdjgkallndphbghlpkn
-* [ ] Wrong DL is checked sometimes for the last event info (GTM's DL instead of DM)
-* [ ] Add logging for the Site Section near the PV info
-* [ ] Implement server call counting in logging
+* [x] Initial release to the Chrome web store v0.87 - first release: https://chromewebstore.google.com/detail/adobe-launch-debugger/ehadnibhemgjphdjgkallndphbghlpkn
+* [x] Wrong DL is checked sometimes for the last event info (GTM's DL instead of DM)
+* [x] Add logging for the Site Section near the PV info
+* [x] Implement server call counting in logging
+* [ ] Release the v0.88
 * [ ] Implement logging for failed server calls
 * [ ] Implement the library switching logic
 * [ ] Once the library switching logic is done, implement a setting to remove the .min from the library. It's gonna utilize the same redirecting logic. Off by default.
