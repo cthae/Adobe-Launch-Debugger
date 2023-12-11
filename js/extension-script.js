@@ -50,7 +50,7 @@ function setStatusDependantListeners(){
     const dlName = dlCell.innerText.split(": ").slice(-1)[0]
     dlCell.addEventListener('click', (event) => {
       executeOnPage(dlName, function(dlName){console.log("Printing the dataLayer variable " + dlName + ":\n"); 
-      console.log("{", ...Object.entries(window[dlName]).flatMap(([k, v]) => ["\n  " + k + ":", v]), "\n}")});
+      console.log("{", ...Object.entries(window[dlName]).flatMap(([k, v]) => ["\n  " + k + ":", v]), "\n}")});//Thanks to Maxdamantus for this beauty.
     })
     if(!/no events/i.test(dlEvent.innerText)){
       dlEvent.addEventListener('click', (event) => {
