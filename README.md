@@ -42,6 +42,7 @@ The dev plan and event log:
 * [x] Add logging for the Site Section near the PV info
 * [x] Implement server call counting in logging
 * [x] Release the v0.88
+* [x] When DL found, clicking on the DL cell will neatly print it to the console.
 * [ ] Empty product fields are reported as Undefined when they're not defined. Replace it with a less generic message or just an empty string to avoid confusion for when "undefined" is the actual value of it
 * [ ] A pageview is misfiring on adobe launch site. Need to check it.
 * [ ] Implement logging for failed server calls. Need to figure out a way to simulate a good error. Maybe an SSL error is a good one to simulate.

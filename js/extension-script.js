@@ -38,9 +38,18 @@ async function updatePage(launchDebugInfo) {
     let reportElement = document.getElementById(launchDebugItem);
     reportElement.className = '';
     reportElement.classList.add(launchDebugInfo[launchDebugItem].class);
-    reportElement.innerText = launchDebugInfo[launchDebugItem].value;
+    reportElement.innerHTML = launchDebugInfo[launchDebugItem].value;
     reportElement.parentElement.setAttribute("title", launchDebugInfo[launchDebugItem].info)
   });
+  setStatusDependantListeners();
+}
+function setStatusDependantListeners(){
+  const dlCell = document.getElementById("dl");
+  if (/dl found: /i.test(dlCell.innerText)){
+    dlCell.addEventListener('click', (event) => {
+      executeOnPage(event.target.innerText.split(": ").slice(-1)[0], function(dlName){console.log("Printing the dataLayer variable " + dlName + ":\n", window[dlName])});
+    })
+  }
 }
 
 async function getContainer() {
@@ -71,6 +80,18 @@ async function getTiming() {
   const [{ result }] = await chrome.scripting.executeScript({
     func: () => JSON.stringify(window["performance"]["timing"]),
     args: [],
+    target: {
+      tabId: (await chrome.tabs.query({ active: true, currentWindow: true }))[0].id
+    },
+    world: 'MAIN',
+  });
+  return result;
+}
+
+async function executeOnPage(funcVar, funcToExecute) {
+  const [{ result }] = await chrome.scripting.executeScript({
+    func: funcToExecute,
+    args: [funcVar],
     target: {
       tabId: (await chrome.tabs.query({ active: true, currentWindow: true }))[0].id
     },
