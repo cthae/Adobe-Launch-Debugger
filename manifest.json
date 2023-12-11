@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Adobe Launch Debugger",
   "description": "An open source updated debugger for Adobe Launch and Analytics for developers and analysts.",
-  "version": "0.88",
+  "version": "0.89",
   "action": {
     "default_popup": "main.html",
     "default_icon": "debuggerFavicon 16-3.png"
@@ -14,17 +14,17 @@
   },
   "background": {"service_worker": "js/background.js"},
   "content_scripts": [{
-      "matches": ["<all_urls>"],
+      "matches": ["<all_urls>", "http://*/*", "https://*/*"],
       "js": ["js/content-script.js"]
     }],
   "web_accessible_resources": [{
-      "matches": ["<all_urls>"],
+      "matches": ["<all_urls>", "http://*/*", "https://*/*"],
       "resources": [ "js/page-script.js" ]
     }],
-  "host_permissions": ["<all_urls>"],
+  "host_permissions": ["<all_urls>", "http://*/*", "https://*/*"],
   "externally_connectable": {
     "ids": ["*"],
-    "matches": ["<all_urls>"],
+    "matches": ["<all_urls>", "http://*/*", "https://*/*"],
     "accepts_tls_channel_id": false
   },
   "permissions": [
