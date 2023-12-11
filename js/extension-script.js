@@ -45,10 +45,22 @@ async function updatePage(launchDebugInfo) {
 }
 function setStatusDependantListeners(){
   const dlCell = document.getElementById("dl");
+  const dlEvent = document.getElementById("dlevent");
   if (/dl found: /i.test(dlCell.innerText)){
+    const dlName = dlCell.innerText.split(": ").slice(-1)[0]
     dlCell.addEventListener('click', (event) => {
-      executeOnPage(event.target.innerText.split(": ").slice(-1)[0], function(dlName){console.log("Printing the dataLayer variable " + dlName + ":\n", window[dlName])});
+      executeOnPage(dlName, function(dlName){console.log("Printing the dataLayer variable " + dlName + ":\n", window[dlName])});
     })
+    if(!/no events/i.test(dlEvent.innerText)){
+      dlEvent.addEventListener('click', (event) => {
+        executeOnPage({dlEvent: dlEvent.innerText, dlName: dlName}, 
+          function(dlData){
+            console.log("Printing the last non-GTM DL variable " + dlData.dlEvent +":\n", 
+              window[dlData.dlName].findLast((dlElement => {
+                return dlElement.event === dlData.dlEvent;
+              })))});
+      })
+    }
   }
 }
 
