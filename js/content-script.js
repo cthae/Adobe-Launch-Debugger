@@ -3,9 +3,9 @@ chrome.runtime.onMessage.addListener(info => {
     if (data?.settings?.aabox !== false) {
       console.log("@@@ Debugging: The Info object is: ", info);
       if (info.postPayload) {
-        logServerCall(decodeURIComponent(info.info.url) + info.postPayload, info?._satelliteInfo, data.settings);
+        logServerCall(decodeURIComponent(info.info.url) + info.postPayload, info?._satelliteInfo, data.settings, info.info?.error);
       } else {
-        logServerCall(decodeURIComponent(info.info.url), info?._satelliteInfo, data.settings);
+        logServerCall(decodeURIComponent(info.info.url), info?._satelliteInfo, data.settings, info.info?.error);
       }
     }
   });
@@ -23,7 +23,7 @@ function talkToBG(message) {
   chrome.runtime.sendMessage(message);
 }
 
-function logServerCall(fullURL, _satelliteInfo, settings) {
+function logServerCall(fullURL, _satelliteInfo, settings, networkError) {
   document.sCallCounter = document.sCallCounter ? document.sCallCounter + 1 : 1;
   const parsingResult = parseServerCall(fullURL);
   let cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Green; color: yellow`;
@@ -38,11 +38,17 @@ function logServerCall(fullURL, _satelliteInfo, settings) {
     cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: DarkSlateBlue; color: #fc0`;
     sCallName = parsingResult.customLinkName ? parsingResult.customLinkName : "[No Link Name]";
   }
+  if(networkError){
+    cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Red; color: black`;
+    cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Red; color: black`;
+  }
   const pNameMessage = sCallType + " Name : %c" + sCallName;
   const eventsMessage = `%cEvents: %c${parsingResult.events ? parsingResult.events : "No Events"}`;
   const RSMessage = `%cReport Suite: %c${parsingResult.rSuite ? parsingResult.rSuite : "No RS Found"}`
   if(settings?.mainExpand === true){
-    console.group(`%cAA #${document.sCallCounter} ${pNameMessage}\n` + eventsMessage + " " + RSMessage,
+    console.group(`${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` + 
+      `AA #${document.sCallCounter} ${pNameMessage}\n` + 
+      eventsMessage + " " + RSMessage,
       cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
   } else {
     console.groupCollapsed(`%cAA #${document.sCallCounter} ${pNameMessage}\n` + eventsMessage + " " + RSMessage,

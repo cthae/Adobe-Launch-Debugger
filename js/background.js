@@ -68,6 +68,19 @@ async function mainListener() {
       }
     }
   }, filter);
+
+  chrome.webRequest.onErrorOccurred.addListener(async info => {
+    if (/\/b\/ss\//.test(info.url)) {
+      let _satelliteInfo = JSON.parse(await getSatelliteInfo())
+
+        sendToTab({
+          info: info,
+          eventTriggered: "onErrorOccurred",
+          _satelliteInfo: _satelliteInfo
+        });
+      
+    }
+  }, filter);
 }
 
 async function getSatelliteInfo() {
