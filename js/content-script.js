@@ -1,7 +1,7 @@
 chrome.runtime.onMessage.addListener(info => {
   chrome.storage.sync.get('settings', function (data) {
     if (data?.settings?.aabox !== false) {
-      console.log("@@@ Debugging: The Info object is: ", info);
+      //console.log("@@@ Debugging: The Info object is: ", info);
       if (info.postPayload) {
         logServerCall(decodeURIComponent(info.info.url) + info.postPayload, info?._satelliteInfo, data.settings, info.info?.error);
       } else {
