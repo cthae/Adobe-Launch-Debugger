@@ -43,8 +43,8 @@ function logServerCall(fullURL, _satelliteInfo, settings, networkError) {
     cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Red; color: black`;
   }
   const pNameMessage = sCallType + " Name : %c" + sCallName;
-  const eventsMessage = `%cEvents: %c${parsingResult.events ? parsingResult.events : "No Events"}`;
-  const RSMessage = `%cReport Suite: %c${parsingResult.rSuite ? parsingResult.rSuite : "No RS Found"}`
+  const eventsMessage = `%cEvents: %c${parsingResult.events ? parsingResult.events : "[No Events]"}`;
+  const RSMessage = `%cReport Suite: %c${parsingResult.rSuite ? parsingResult.rSuite : "[No RS Found]"}`
   if(settings?.mainExpand === true){
     console.group(`${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` + 
       `AA #${document.sCallCounter} ${pNameMessage}\n` + 
