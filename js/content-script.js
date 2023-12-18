@@ -122,7 +122,12 @@ function printProducts(productString) {
   const products = productString.split(",");
   console.group("Products: " + products.length);
   products.forEach((product) => {
-    console.log(`Category   : ${product.split(";")[0]}\nName       : ${product.split(";")[1]}\nQuantity   : ${product.split(";")[2]}\nPrice      : ${product.split(";")[3]}\nEvents     : ${product.split(";")[4]}\nMerch.Vars : ${product.split(";")[5]}\n`);
+    console.log(`Category   : ${product.split(";")[0] ? product.split(";")[0] : '[Not Set]'}\n` + 
+                `Name       : ${product.split(";")[1] ? product.split(";")[1] : '[Not Set]'}\n` + 
+                `Quantity   : ${product.split(";")[2] ? product.split(";")[2] : '[Not Set]'}\n` + 
+                `Price      : ${product.split(";")[3] ? product.split(";")[3] : '[Not Set]'}\n` + 
+                `Events     : ${product.split(";")[4] ? product.split(";")[4] : '[Not Set]'}\n` + 
+                `Merch.Vars : ${product.split(";")[5] ? product.split(";")[5] : '[Not Set]'}\n`);
   });
   console.groupEnd();//close the Products section
   return true;
