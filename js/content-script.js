@@ -29,14 +29,14 @@ function logServerCall(fullURL, _satelliteInfo, settings) {
   let cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Green; color: yellow`;
   let cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Green; color: #fc0`;
   let sCallType = 'Page View';
-  let sCallName = parsingResult.pageName;
+  let sCallName = parsingResult.pageName ? parsingResult.pageName : "[No Page Name]";
   if (parsingResult.customLinkType) {
     parsingResult.customLinkType === 'lnk_o' ? sCallType = "Custom Link" : "";
     parsingResult.customLinkType === 'lnk_e' ? sCallType = "Exit Link" : "";
     parsingResult.customLinkType === 'lnk_d' ? sCallType = "Download Link" : "";
     cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: DarkSlateBlue; color: pink`;
     cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: DarkSlateBlue; color: #fc0`;
-    sCallName = parsingResult.customLinkName;
+    sCallName = parsingResult.customLinkName ? parsingResult.customLinkName : "[No Link Name]";
   }
   const pNameMessage = sCallType + " Name : %c" + sCallName;
   const eventsMessage = `%cEvents: %c${parsingResult.events ? parsingResult.events : "No Events"}`;

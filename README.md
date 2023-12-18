@@ -45,7 +45,7 @@ The dev plan and event log:
 * [x] When DL found, clicking on the DL cell will neatly print it to the console.
 * [x] When last event in DL found, clicking on the its cell will neatly print it to the console.
 * [x] Empty product fields are reported as Undefined when they're not defined. Replace it with a less generic message or just an empty string to avoid confusion for when "undefined" is the actual value of it
-* [ ] A pageview is misfiring on adobe launch site. Need to check it.
+* [x] A pageview is misfiring on adobe launch site. When there's no page/link name in a call, make it clear. 
 * [ ] Implement logging for failed server calls. Need to figure out a way to simulate a good error. Maybe an SSL error is a good one to simulate.
 * [ ] Web SDK/AEP logging implementation.
 * [ ] Release.
