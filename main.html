@@ -17,7 +17,7 @@
       <button class="tablinks" id="Info">Info</button>
    </div>
    <div class="tab" id="Main">
-   <table>
+   <table  class="main">
       <tbody>
          <tr>
             <td>Page Status:</td>
@@ -60,16 +60,26 @@
    </div>
    <div class="tab" id="Settings" style="display: none;">
       <div>
-         <label>Main AA logging:&nbsp;&nbsp;&nbsp;</label><input type="checkbox" checked id="aabox">
-         <br/>
-         <label>Launch SetDebug:&nbsp;&nbsp;&nbsp;</label><input type="checkbox" checked id="launchbox">
-         <br/>
-         <label>Keep the main AA console logs container expanded?&nbsp;&nbsp;&nbsp;</label>
-         <input type="checkbox" id="mainExpand">
-         <br/>
-         <label>Keep the evars and props sections expanded?&nbsp;&nbsp;&nbsp;</label>
-         <input type="checkbox" checked id="varsExpand">
-         <br/>
+         <table class="settings">
+            <tbody>
+               <tr>
+                  <td>Main AA request logging:</td>
+                  <td><input type="checkbox" checked id="aabox"></td>
+               </tr>
+               <tr>
+                  <td>Launch logging via setDebug(1):</td>
+                  <td><input type="checkbox" checked id="launchbox"></td>
+               </tr>
+               <tr>
+                  <td>Main AA console logs expanded?</td>
+                  <td><input type="checkbox" id="mainExpand"></td>
+               </tr>
+               <tr>
+                  <td>Evars and Props sections expanded?</td>
+                  <td><input type="checkbox" checked id="varsExpand"></td>
+               </tr>
+            </tbody>
+         </table>
       </div>
    </div>
    <div class="tab" id="Info" style="display: none;">

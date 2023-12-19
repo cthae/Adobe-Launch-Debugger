@@ -48,6 +48,7 @@ The dev plan and event log:
 * [x] A pageview is misfiring on adobe launch site. When there's no page/link name in a call, make it clear. 
 * [X] Implement logging for failed server calls. Maybe an SSL error is a good one to simulate.
 * [x] Release the v0.90
+* [x] Formatting improvements in Settings
 * [ ] Web SDK/AEP logging implementation.
 * [ ] Release.
 * [ ] Implement the library switching logic
