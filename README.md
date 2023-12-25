@@ -51,10 +51,11 @@ The dev plan and event log:
 * [x] Formatting improvements in Settings.
 * [x] Simplest Launch library detection logic (from DOM only, whatever has \/launch-.*8\.js) (MVP)
 * [x] Redirections settings/error reporting logic.
-* [x] Redirections management tab.
+* [x] Redirections management tab and logic.
 * [x] SetDebug's default state is not taken into account.
-* [x] Less bold.
-* [ ] Implement the library switching logic
+* [x] Less bold text in ui.
+* [ ] Add an option to quickly kill current page's redirection from the Settings tab.
+* [ ] Implement the actual library switching logic (redirects)
 * [ ] Deal properly with empty dataLayers found. (the extension throws)
 * [ ] Deploy a polling logic for _satellite for when doing the setDebug()
 * [ ] Web SDK/AEP logging implementation.
