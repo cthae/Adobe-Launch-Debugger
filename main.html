@@ -10,57 +10,70 @@
    <title>Adobe Launch Debugger</title>
 </head>
 
-<body style="width:500px" data-bs-theme="dark">
+<body style="width:600px" data-bs-theme="dark">
    <div class="tabButtons">
-      <button class="tablinks" id="Main">Main</button>
-      <button class="tablinks" id="Settings">Settings</button>
-      <button class="tablinks" id="Info">Info</button>
+      <button class="tablinks" name="Main">Main</button>
+      <button class="tablinks" name="Settings">Settings</button>
+      <button class="tablinks" name="Info">Info</button>
+      <button class="tablinks" name="Redirections">Redirects</button>
    </div>
    <div class="tab" id="Main">
-   <table  class="main">
-      <tbody>
-         <tr>
-            <td>Page Status:</td>
-            <td id="pstatus" class="warn">Not Updated</td>
-         </tr>
-         <tr>
-            <td>Launch Library:</td>
-            <td id="lstatus" class="warn">Found</td>
-         </tr>
-         <tr>
-            <td>Property Name:</td>
-            <td id="pname" class="warn">Not Updated</td>
-         </tr>
-         <tr>
-            <td>Environment:</td>
-            <td id="env" class="warn">Not Updated</td>
-         </tr>
-         <tr>
-            <td>Last Build:</td>
-            <td id="bdate" class="warn">Not Updated</td>
-         </tr>
-         <tr>
-            <td>Page Views so far:</td>
-            <td id="pvsNumber" class="warn">Not Updated</td>
-         </tr>
-         <tr>
-            <td>Links so far:</td>
-            <td id="linksNumber" class="warn">Not Updated</td>
-         </tr>
-         <tr>
-            <td>DataLayer:</td>
-            <td id="dl" class="warn">Not Updated</td>
-         </tr>
-         <tr>
-            <td>Last DL Event:</td>
-            <td id="dlevent" class="warn">Not Updated</td>
-         </tr>
-      </tbody>
-   </table>
+      <table class="mainTable">
+         <tbody>
+            <tr>
+               <td>Page Status:</td>
+               <td id="pstatus" class="warn">Not Updated</td>
+            </tr>
+            <tr>
+               <td>Launch Library:</td>
+               <td id="lstatus" class="warn">Found</td>
+            </tr>
+            <tr>
+               <td>Property Name:</td>
+               <td id="pname" class="warn">Not Updated</td>
+            </tr>
+            <tr>
+               <td>Environment:</td>
+               <td id="env" class="warn">Not Updated</td>
+            </tr>
+            <tr>
+               <td>Last Build:</td>
+               <td id="bdate" class="warn">Not Updated</td>
+            </tr>
+            <tr>
+               <td>Page Views so far:</td>
+               <td id="pvsNumber" class="warn">Not Updated</td>
+            </tr>
+            <tr>
+               <td>Links so far:</td>
+               <td id="linksNumber" class="warn">Not Updated</td>
+            </tr>
+            <tr>
+               <td>DataLayer:</td>
+               <td id="dl" class="warn">Not Updated</td>
+            </tr>
+            <tr>
+               <td>Last DL Event:</td>
+               <td id="dlevent" class="warn">Not Updated</td>
+            </tr>
+            <tr
+               title="This is the original library detected on the page. Be careful when using other extensions replacing the lib.">
+               <td>Library Detected:</td>
+               <td><textarea rows="4" cols="45" id="currentlib"></textarea></td>
+            </tr>
+            <tr>
+               <td id="redirectionCTATD">
+                  New Library:<br />
+                  <button id="setRedirection">Set Redirection</button>
+               </td>
+               <td><textarea rows="4" cols="45" id="newlib"></textarea></td>
+            </tr>
+         </tbody>
+      </table>
    </div>
    <div class="tab" id="Settings" style="display: none;">
       <div>
-         <table class="settings">
+         <table class="settingsTable">
             <tbody>
                <tr>
                   <td>Main AA request logging:</td>
@@ -68,7 +81,7 @@
                </tr>
                <tr>
                   <td>Launch logging via setDebug(1):</td>
-                  <td><input type="checkbox" checked id="launchbox"></td>
+                  <td><input type="checkbox" id="launchbox"></td>
                </tr>
                <tr>
                   <td>Main AA console logs expanded?</td>
@@ -84,9 +97,23 @@
    </div>
    <div class="tab" id="Info" style="display: none;">
       <p>Hi there!</p>
-      <p>This extension is an open source project. You can learn more about it on the <a href="https://github.com/cthae/Adobe-Launch-Debugger/tree/main" target="_blank">Repo page</a></p>
+      <p>This extension is an open source project. You can learn more about it on the <a
+            href="https://github.com/cthae/Adobe-Launch-Debugger/tree/main" target="_blank">Repo page</a></p>
       <p>If you think of an improvement you'd like to have implemented, feel free to submit an issue or contribute!</p>
-      <p>Wanna reach out? Sure, feel free to message me on <a href="https://www.linkedin.com/in/nazaruk/" target="_blank">linkedin</a>. Or let's chat on <a href="https://www.measure.chat/">Measure Slack</a></p>
+      <p>Wanna reach out? Sure, feel free to message me on <a href="https://www.linkedin.com/in/nazaruk/"
+            target="_blank">linkedin</a>. Or let's chat on <a href="https://www.measure.chat/">Measure Slack</a></p>
+   </div>
+   <div class="tab" id="Redirections" style="display: none;">
+      <table class="redirectionsTable">
+         <tbody>
+            <tr>
+               <th style = "text-align: center; vertical-align: middle;">Date</th>
+               <th>From</th>
+               <th>To</th>
+               <th style = "text-align: center; vertical-align: middle;">Delete</th>
+            </tr>
+         </tbody>
+      </table>
    </div>
 </body>
 

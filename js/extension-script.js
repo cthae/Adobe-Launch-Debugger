@@ -20,16 +20,135 @@ function clicks() {
   document.querySelectorAll("button.tablinks").forEach((button) => {
     button.addEventListener("click", switchTab);
   });
+  document.getElementById("setRedirection").addEventListener("click", setRedirection);
+}
+
+function getFirstValidUrl(text) {
+  const urlRegex = /\bhttps?:\/\/[\w\.\/\-\#\?\&\:\=\@]+/gi;
+  const matches = text.match(urlRegex);
+  if (matches && matches.length > 0) {
+    return matches[0];
+  }
+  return "[No Valid URL!]";
+}
+
+function setRedirection(){
+  const date = new Date().toISOString();
+  const redirectFrom = document.getElementById("currentlib");
+  const redirectTo = document.getElementById("newlib");
+  const CTA = document.getElementById("setRedirection");
+  redirectFrom.value = getFirstValidUrl(redirectFrom.value);
+  redirectTo.value = getFirstValidUrl(redirectTo.value);
+  if(!/http/i.test(redirectFrom.value) || !/http/i.test(redirectTo.value)) {
+    CTA.innerText = "ERROR"; 
+    CTA.className = "error";
+    return false;
+  } else if (redirectFrom.value === redirectTo.value){
+    CTA.innerText = "The URL is the same!"; 
+    CTA.className = "error";
+    return false;
+  }
+  chrome.storage.sync.get('redirections', function (data) {
+    console.log("@@@ Redirections are ", data.redirections);
+    redirections = data.redirections || [];
+    if(!updateRedirectionIfExists(redirections, redirectFrom.value, redirectTo.value, date, CTA)){
+      redirections.push({date: date, from: redirectFrom.value, to: redirectTo.value});
+      CTA.innerText = "Rule Added!"; 
+      CTA.className = "success";
+    }
+    chrome.storage.sync.set({redirections: redirections});//to catch the update happened in the for loop.
+  })
+}
+
+function updateRedirectionIfExists(redirections, redirectFrom, redirectTo, date, CTA){
+  for (var i = 0; i < redirections.length; i++){
+    if(redirections[i].from === redirectFrom){
+      if(redirections[i].to === redirectTo){
+        CTA.innerText = "Rule Exists!"; 
+        CTA.className = "error";
+        return true;
+      } else{
+        CTA.innerText = "Rule Updated!"; 
+        CTA.className = "success";
+        redirections[i].to = redirectTo;
+        redirections[i].date = date;
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 function switchTab(event) {
-  const tabId = event.target.id;
+  const tabName = event.target.name;
   document.querySelectorAll("div.tab").forEach((tab) => {
-    if (tab.id === tabId) {
+    if (tab.id === tabName) {
       tab.style.display = "block";
     } else {
       tab.style.display = "none";
     }
+  });
+  if (tabName === "Redirections"){
+    renderRedirections();
+  }
+}
+
+function renderRedirections(){
+  const table = document.getElementsByClassName("redirectionsTable")[0];
+  table.innerHTML = `<tbody>
+  <tr>
+     <th style = "text-align: center; vertical-align: middle;">Date</th>
+     <th>From</th>
+     <th>To</th>
+     <th style = "text-align: center; vertical-align: middle;">Delete</th>
+  </tr>
+</tbody>`;
+  chrome.storage.sync.get('redirections', function (data) {
+    if (data.redirections){
+      console.log("@@@ Redirections Exist, the obj is ", data.redirections);
+      data.redirections.forEach(redirection => {
+        const row = table.insertRow(-1);
+        const td0 = row.insertCell(0);
+        const td1 = row.insertCell(1);
+        const td2 = row.insertCell(2);
+        const td3 = row.insertCell(3);
+        td0.innerText = redirection.date;
+        td0.style = "text-align: center; vertical-align: middle;";
+        td0.setAttribute("name", "date");
+        td1.innerText = redirection.from;
+        td1.setAttribute("name", "from");
+        td2.innerText = redirection.to;
+        td2.setAttribute("name", "to");
+        td3.innerHTML = "<button name = 'deleteRedirection' class = 'error'>X</button>";
+        td3.style = "text-align: center; vertical-align: middle;";
+        td3.setAttribute("name", "delete");
+      });
+      deleteRedirectionButtonListener()
+    } else {
+      const row = table.insertRow;
+      row.innerText = "No saved redirection rules found, sorry.";
+      row.classList = "error";
+    }
+  });
+}
+
+function deleteRedirectionButtonListener(){
+  buttons = document.getElementsByName("deleteRedirection");
+  buttons.forEach(button => {
+    button.addEventListener("click", clickEvent => {
+      const row = clickEvent.target.parentElement.parentElement;
+      const from = row.querySelector("[name='from']").innerText;
+      deleteRedirection(from);
+      row.remove();
+    })
+  })
+}
+
+function deleteRedirection(from){
+  chrome.storage.sync.get('redirections', function (data) {
+    const redirections = data.redirections.filter(redirection => redirection.from !== from);
+    chrome.storage.sync.set({redirections:redirections});
+    console.log("@@@ Redirection " + from + " deleted! New redirections: ", redirections);
   });
 }
 
@@ -355,9 +474,23 @@ async function settingsSetter(settings) {
     checkbox.addEventListener("click", (event) => {
       settings[event.target.id] = event.target.checked;
       chrome.storage.sync.set({ settings: settings });
-      logSettings()
     })
   });
+  /*
+  const launchLib = await executeOnPage("", function(a){
+    return window.performance.getEntriesByType("resource").filter(obj=>{
+      return (obj.initiatorType === "script" && /\/launch-.+\.js$/.test(obj.name));
+    })[0].name;
+  });
+  */
+  //this gets the launch lib from the window.performance. 
+  //You can also get  it from _satellite._container.extensions.core.hostedLibFilesBaseUrl which would probably be even better
+  //But the MVP here is to just see what launch-* script is loaded in DOM. And it should be good enough for 95% of cases.
+  //So document.querySelector("script[src*='/launch-']").src for now.
+  const originalLaunchLib = await executeOnPage("", function(a){
+    return document.querySelector("script[src*='/launch-']").src;
+  });
+  document.getElementById("currentlib").innerText = originalLaunchLib || "[No Launch Lib Detected]";
 }
 
 function logSettings(){

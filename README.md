@@ -48,10 +48,17 @@ The dev plan and event log:
 * [x] A pageview is misfiring on adobe launch site. When there's no page/link name in a call, make it clear. 
 * [X] Implement logging for failed server calls. Maybe an SSL error is a good one to simulate.
 * [x] Release the v0.90
-* [x] Formatting improvements in Settings
+* [x] Formatting improvements in Settings.
+* [x] Simplest Launch library detection logic (from DOM only, whatever has \/launch-.*8\.js) (MVP)
+* [x] Redirections settings/error reporting logic.
+* [x] Redirections management tab.
+* [x] SetDebug's default state is not taken into account.
+* [x] Less bold.
+* [ ] Implement the library switching logic
+* [ ] Deal properly with empty dataLayers found. (the extension throws)
+* [ ] Deploy a polling logic for _satellite for when doing the setDebug()
 * [ ] Web SDK/AEP logging implementation.
 * [ ] Release.
-* [ ] Implement the library switching logic
 * [ ] Once the library switching logic is done, implement a setting to remove the .min from the library. It's gonna utilize the same redirecting logic. Off by default.
 * [ ] Check Adobe Analytics Debugger's changelog. Some things from there might be worth reimplementing.
 
