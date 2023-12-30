@@ -13,10 +13,32 @@ function setDebugLogicListener() {
   });
 }
 
+function setDebugPolling(){
+  if (window._satellite){
+    _satellite.setDebug(1);
+    //console.log("@@@ Debugger Found setDebug!");
+  } else {
+    const handler = setTimeout(poller, 100);
+    var counter = 0;
+    function poller(){
+      if (window._satellite){
+        _satellite.setDebug(1);
+        clearInterval(handler);
+        //console.log("@@@ Debugger Found setDebug! counter: " + counter);
+      } else if(counter > 30) {
+        //console.log("@@@ Debugger trying to poll setDebug, counter: " + counter);
+        clearInterval(handler);
+      } else {
+        counter++;
+      }
+    }
+  }
+}
+
 async function setDebug(flag) {
   if (flag) {
     chrome.scripting.executeScript({
-      func: () => window._satellite ? _satellite.setDebug(1) : '',
+      func: setDebugPolling,
       args: [],
       target: {
         tabId: (await chrome.tabs.query({ active: true, currentWindow: true }))[0].id
