@@ -60,10 +60,9 @@ The dev plan and event log:
 * [x] Make sure redirects logic is synced and enabled automatically when user uses a different browser with the same account and extension sync is on.
 * [x] Add an option for redirects to be session-based. By default.
 * [x] Instead of reporting into an active tab, report into the one the listeners are deployed to.
-* [ ] Deal properly with empty dataLayers found. (the extension throws)
-* [ ] Deploy a polling logic for _satellite for when doing the setDebug()
+* [x] Deal properly with empty dataLayers found. (the extension throws)
+* [x] Release v0.95.
 * [ ] Web SDK/AEP logging implementation.
-* [ ] Release.
 * [ ] Once the library switching logic is done, implement a setting to remove the .min from the library. It's gonna utilize the same redirecting logic. Off by default.
 * [ ] Check Adobe Analytics Debugger's changelog. Some things from there might be worth reimplementing.
 

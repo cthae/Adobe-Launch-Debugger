@@ -452,17 +452,17 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber) {
         }
       }
       if (Array.isArray(dataLayer)){
-        dlEvent = dataLayer.slice(-1)[0];
+        dlEvent = dataLayer.slice(-1)[0] || {event:"No events yet :)"};
       }
       if (dlEvent) {
         details.dlevent = {
           value: dlEvent.event,
-          class: "success",
+          class: dlEvent === "No events yet :)" ? "warn" : "success",
           info: "Last event that is not a 'gtm.' event :)"
         }
       } else {
         details.dlevent = {
-          value: "No events",
+          value: "No events yet :)",
           class: "warn",
           info: "DL is found, but it doesn't contain non-gtm events."
         }
