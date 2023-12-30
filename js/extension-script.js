@@ -204,17 +204,11 @@ async function updateRedirections(redirections) {
       return rule;
     });
     if(data?.settings?.sessionRedirections !== false){
-      //const oldRules = await chrome.declarativeNetRequest.getDynamicRules();
-      //let oldRuleIds = (await chrome.declarativeNetRequest.getSessionRules()).map(rule => rule.id);
-
       chrome.declarativeNetRequest.updateSessionRules({
         removeRuleIds: (await chrome.declarativeNetRequest.getSessionRules()).map(rule => rule.id),
         addRules: newRules
       });
     } else {
-      //const oldRules = await chrome.declarativeNetRequest.getDynamicRules();
-      //const oldRuleIds = (await chrome.declarativeNetRequest.getDynamicRules()).map(rule => rule.id);
-
       chrome.declarativeNetRequest.updateDynamicRules({
         removeRuleIds: (await chrome.declarativeNetRequest.getDynamicRules()).map(rule => rule.id),
         addRules: newRules
@@ -545,17 +539,7 @@ async function settingsSetter(settings) {
       chrome.storage.sync.set({ settings: settings });
     })
   });
-  /*
-  const launchLib = await executeOnPage("", function(a){
-    return window.performance.getEntriesByType("resource").filter(obj=>{
-      return (obj.initiatorType === "script" && /\/launch-.+\.js$/.test(obj.name));
-    })[0].name;
-  });
-  */
-  //this gets the launch lib from the window.performance. 
-  //You can also get  it from _satellite._container.extensions.core.hostedLibFilesBaseUrl which would probably be even better
-  //But the MVP here is to just see what launch-* script is loaded in DOM. And it should be good enough for 95% of cases.
-  //So document.querySelector("script[src*='/launch-']").src for now.
+
   const originalLaunchLib = await executeOnPage("", function(a){
     const launchLib = document.querySelector("script[src*='/launch-']");
     return launchLib ? launchLib.src : false;
