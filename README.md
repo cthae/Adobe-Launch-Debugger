@@ -62,6 +62,9 @@ The dev plan and event log:
 * [x] Instead of reporting into an active tab, report into the one the listeners are deployed to.
 * [x] Deal properly with empty dataLayers found. (the extension throws)
 * [x] Release v0.95.
+* [ ] Make the UI more compact. Maybe.
+* [ ] Add useful snippets to the extension. Basically window.onbeforeunload = ()=>false and such.
+* [ ] Add One Trust debug snippets.
 * [ ] Web SDK/AEP logging implementation.
 * [ ] Once the library switching logic is done, implement a setting to remove the .min from the library. It's gonna utilize the same redirecting logic. Off by default.
 * [ ] Check Adobe Analytics Debugger's changelog. Some things from there might be worth reimplementing.

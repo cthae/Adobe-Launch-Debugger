@@ -546,7 +546,8 @@ async function settingsSetter(settings) {
   //But the MVP here is to just see what launch-* script is loaded in DOM. And it should be good enough for 95% of cases.
   //So document.querySelector("script[src*='/launch-']").src for now.
   const originalLaunchLib = await executeOnPage("", function(a){
-    return document.querySelector("script[src*='/launch-']").src;
+    const launchLib = document.querySelector("script[src*='/launch-']");
+    return launchLib ? launchLib.src : false;
   });
   document.getElementById("currentlib").innerText = originalLaunchLib || "[No Launch Lib Detected]";
 }
