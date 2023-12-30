@@ -14,8 +14,8 @@
    <div class="tabButtons">
       <button class="tablinks" name="Main">Main</button>
       <button class="tablinks" name="Settings">Settings</button>
-      <button class="tablinks" name="Info">Info</button>
       <button class="tablinks" name="Redirections">Redirects</button>
+      <button class="tablinks" name="Info">Info</button>
    </div>
    <div class="tab" id="Main">
       <table class="mainTable">
@@ -66,7 +66,9 @@
                   New Library:<br />
                   <button id="setRedirection">Set Redirection</button>
                </td>
-               <td><textarea rows="4" cols="45" id="newlib"></textarea></td>
+               <td><textarea rows="4" cols="45" id="newlib">
+Please note that the redirection feature is in beta. Feel free to send issues, concerns and wishes my way. The details are in the Info tab.
+               </textarea></td>
             </tr>
          </tbody>
       </table>
@@ -91,20 +93,24 @@
                   <td>Evars and Props sections expanded?</td>
                   <td><input type="checkbox" checked id="varsExpand"></td>
                </tr>
+               <tr>
+                  <td colspan="2" style = "text-align: center; vertical-align: middle;"><b>Redirection Settings:</b></td>
+               </tr>
+               <tr>
+                  <td>Clear redirections after browsing session expired?</td>
+                  <td><input type="checkbox" checked id="sessionRedirections"></td>
+               </tr>
             </tbody>
          </table>
       </div>
    </div>
-   <div class="tab" id="Info" style="display: none;">
-      <p>Hi there!</p>
-      <p>This extension is an open source project. You can learn more about it on the <a
-            href="https://github.com/cthae/Adobe-Launch-Debugger/tree/main" target="_blank">Repo page</a></p>
-      <p>If you think of an improvement you'd like to have implemented, feel free to submit an issue or contribute!</p>
-      <p>Wanna reach out? Sure, feel free to message me on <a href="https://www.linkedin.com/in/nazaruk/"
-            target="_blank">linkedin</a>. Or let's chat on <a href="https://www.measure.chat/">Measure Slack</a></p>
-   </div>
    <div class="tab" id="Redirections" style="display: none;">
+      <div style = "text-align: right;">
+         <button id="delAllRedirections" class="error">Delete All Rules</button>
+      </div>
+      
       <table class="redirectionsTable">
+
          <tbody>
             <tr>
                <th style = "text-align: center; vertical-align: middle;">Date</th>
@@ -114,6 +120,14 @@
             </tr>
          </tbody>
       </table>
+   </div>
+   <div class="tab" id="Info" style="display: none;">
+      <p>Hi there!</p>
+      <p>This extension is an open source project. You can learn more about it on the <a
+            href="https://github.com/cthae/Adobe-Launch-Debugger/tree/main" target="_blank">Repo page</a></p>
+      <p>If you think of an improvement you'd like to have implemented, feel free to submit an issue or contribute!</p>
+      <p>Wanna reach out? Sure, feel free to message me on <a href="https://www.linkedin.com/in/nazaruk/"
+            target="_blank">linkedin</a>. Or let's chat on <a href="https://www.measure.chat/">Measure Slack</a></p>
    </div>
 </body>
 

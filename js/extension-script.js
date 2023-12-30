@@ -21,6 +21,20 @@ function clicks() {
     button.addEventListener("click", switchTab);
   });
   document.getElementById("setRedirection").addEventListener("click", setRedirection);
+  document.getElementById("delAllRedirections").addEventListener("click", removeAllRedirections);
+  document.getElementById("newlib").addEventListener("click", evnt => {event.target.innerText=""});
+}
+
+function removeAllRedirections(){
+  //kill all redirections from settings
+  chrome.storage.sync.set({redirections:[]});
+  //kill all redirections from the declarativeNetRequest
+  updateRedirections([]);
+  //finally, clear the table...
+  const table = document.getElementsByClassName("redirectionsTable")[0];
+  while (table.rows.length > 1) {
+    table.deleteRow(1);
+  }
 }
 
 function getFirstValidUrl(text) {
@@ -44,10 +58,11 @@ function setRedirection(){
     CTA.className = "error";
     return false;
   } else if (redirectFrom.value === redirectTo.value){
-    CTA.innerText = "The URL is the same!"; 
+    CTA.innerText = "The URL is the same!";
     CTA.className = "error";
     return false;
   }
+  
   chrome.storage.sync.get('redirections', function (data) {
     console.log("@@@ Redirections are ", data.redirections);
     redirections = data.redirections || [];
@@ -56,7 +71,9 @@ function setRedirection(){
       CTA.innerText = "Rule Added!"; 
       CTA.className = "success";
     }
-    chrome.storage.sync.set({redirections: redirections});//to catch the update happened in the for loop.
+    //to catch the update happened in the for loop:
+    chrome.storage.sync.set({redirections: redirections});
+    updateRedirections(redirections);
   })
 }
 
@@ -65,7 +82,7 @@ function updateRedirectionIfExists(redirections, redirectFrom, redirectTo, date,
     if(redirections[i].from === redirectFrom){
       if(redirections[i].to === redirectTo){
         CTA.innerText = "Rule Exists!"; 
-        CTA.className = "error";
+        CTA.className = "warn";
         return true;
       } else{
         CTA.innerText = "Rule Updated!"; 
@@ -148,7 +165,50 @@ function deleteRedirection(from){
   chrome.storage.sync.get('redirections', function (data) {
     const redirections = data.redirections.filter(redirection => redirection.from !== from);
     chrome.storage.sync.set({redirections:redirections});
+    updateRedirections(redirections);
     console.log("@@@ Redirection " + from + " deleted! New redirections: ", redirections);
+  });
+}
+
+async function updateRedirections(redirections) {
+  chrome.storage.sync.get('settings', async function (data) {
+    const newRules = redirections.map((redirect, index) => {
+      let rule = {
+        'id': index + 1,
+        'priority': index + 1,
+        'action': {
+          'type': 'redirect',
+          'redirect': {
+            url: redirect.to
+          }
+        },
+        'condition': {
+          'urlFilter': redirect.from,
+          'resourceTypes': [
+            'script'
+          ]
+        }
+      };
+      console.log("The redirect rule is: ", rule);
+      return rule;
+    });
+    if(data?.settings?.sessionRedirections !== false){
+      //const oldRules = await chrome.declarativeNetRequest.getDynamicRules();
+      //let oldRuleIds = (await chrome.declarativeNetRequest.getSessionRules()).map(rule => rule.id);
+
+      chrome.declarativeNetRequest.updateSessionRules({
+        removeRuleIds: (await chrome.declarativeNetRequest.getSessionRules()).map(rule => rule.id),
+        addRules: newRules
+    });
+    } else {
+      //const oldRules = await chrome.declarativeNetRequest.getDynamicRules();
+      //const oldRuleIds = (await chrome.declarativeNetRequest.getDynamicRules()).map(rule => rule.id);
+
+      chrome.declarativeNetRequest.updateDynamicRules({
+        removeRuleIds: (await chrome.declarativeNetRequest.getDynamicRules()).map(rule => rule.id),
+        addRules: newRules
+      });
+    }
   });
 }
 
@@ -305,19 +365,12 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber) {
       };
     }
     if (typeof _satellite.environment === 'object') {
-      if (_satellite.environment.stage === 'production') {
-        details.env = {
-          value: "Production",
-          class: "success",
-          info: "Production library is currently loaded."
-        };
-      } else if (_satellite.environment.stage !== 'production') {
-        details.env = {
-          value: "Development",
-          class: "warn",
-          info: "Lower env library is currently loaded."
-        };
-      }
+      const env =  _satellite.environment.stage;
+      details.env = {
+        value: env.charAt(0).toUpperCase() + env.slice(1),
+        class: env === 'production' ? "success" : "warn",
+        info: "Production library is currently loaded."
+      };
     } else {
       details.env = {
         value: "ERROR",
@@ -451,6 +504,11 @@ function formattedTimeSinceLastBuild(_satellite) {
 }
 
 async function settingsLoad() {
+  chrome.storage.sync.get('redirections', function (data) {
+    const redirections = data?.redirections || [];
+    updateRedirections(redirections);
+  });
+
   const settings = {};
   chrome.storage.sync.get('settings', function (data) {
     settingsSetter(data.settings);

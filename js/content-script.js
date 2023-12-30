@@ -1,3 +1,11 @@
+chrome.storage.sync.get('settings', function (data) {
+  if (data?.settings?.launchbox !== false) {
+    talkToBG({ type: 'setDebug', value: 1 });
+  } else {
+    talkToBG({ type: 'setDebug', value: 0 });
+  }
+});
+
 chrome.runtime.onMessage.addListener(info => {
   chrome.storage.sync.get('settings', function (data) {
     if (data?.settings?.aabox !== false) {
@@ -9,14 +17,6 @@ chrome.runtime.onMessage.addListener(info => {
       }
     }
   });
-});
-
-chrome.storage.sync.get('settings', async function (data) {
-  if (data?.settings?.launchbox !== false) {
-    talkToBG({ type: 'setDebug', value: 1 });
-  } else {
-    talkToBG({ type: 'setDebug', value: 0 });
-  }
 });
 
 function talkToBG(message) {
