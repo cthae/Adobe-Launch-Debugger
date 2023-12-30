@@ -59,7 +59,7 @@ The dev plan and event log:
 * [x] Add a button to delete all redirects.
 * [x] Make sure redirects logic is synced and enabled automatically when user uses a different browser with the same account and extension sync is on.
 * [x] Add an option for redirects to be session-based. By default.
-* [ ] Instead of reporting into an active tab, report into the one the listeners are deployed to.
+* [x] Instead of reporting into an active tab, report into the one the listeners are deployed to.
 * [ ] Deal properly with empty dataLayers found. (the extension throws)
 * [ ] Deploy a polling logic for _satellite for when doing the setDebug()
 * [ ] Web SDK/AEP logging implementation.

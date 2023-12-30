@@ -57,14 +57,14 @@ async function mainListener() {
       const postRequest = requests.get(info.requestId);
       if (info.method === "POST" && postRequest){
         postRequest._satelliteInfo = _satelliteInfo;
-        sendToTab(postRequest);
+        sendToTab(postRequest, info.tabId);
         requests.delete(info.requestId);
       } else {
         sendToTab({
           info: info,
           eventTriggered: "onHeadersReceived",
           _satelliteInfo: _satelliteInfo
-        });
+        }, info.tabId);
       }
     }
   }, filter);
@@ -77,7 +77,7 @@ async function mainListener() {
           info: info,
           eventTriggered: "onErrorOccurred",
           _satelliteInfo: _satelliteInfo
-        });
+        }, info.tabId);
       
     }
   }, filter);
@@ -99,9 +99,9 @@ async function getSatelliteInfo() {
   return result;
 }
 
-async function sendToTab(msg) {
+async function sendToTab(msg, tabIdFromOutside) {
   const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
-  const tabId = tab.id;
+  const tabId = tabIdFromOutside || tab.id;
   for (let retry = 0; retry < 20; retry++) {
     try {
       return await chrome.tabs.sendMessage(tabId, msg, { frameId: 0 });
