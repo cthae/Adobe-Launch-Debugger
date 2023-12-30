@@ -63,7 +63,7 @@ The dev plan and event log:
 * [x] Deal properly with empty dataLayers found. (the extension throws)
 * [x] Release v0.95.
 * [x] Implement _satellite.setDebug() polling logic for when the lib is not loaded when the extension tries to set it.
-* [ ] Deletion of redirection rules must delete both dynamic and sync rules.
+* [x] Deletion of all redirection rules must delete both dynamic and sync rules.
 * [ ] Make the UI more compact. Maybe.
 * [ ] Add useful snippets to the extension. Basically window.onbeforeunload = ()=>false and such.
 * [ ] Add One Trust debug snippets.

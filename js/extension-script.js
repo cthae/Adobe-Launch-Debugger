@@ -29,12 +29,23 @@ function removeAllRedirections(){
   //kill all redirections from settings
   chrome.storage.sync.set({redirections:[]});
   //kill all redirections from the declarativeNetRequest
-  updateRedirections([]);
+  deleteAllDeclarativeNetRequestRules();
   //finally, clear the table...
   const table = document.getElementsByClassName("redirectionsTable")[0];
   while (table.rows.length > 1) {
     table.deleteRow(1);
   }
+}
+
+async function deleteAllDeclarativeNetRequestRules(){
+  chrome.declarativeNetRequest.updateSessionRules({
+    removeRuleIds: (await chrome.declarativeNetRequest.getSessionRules()).map(rule => rule.id),
+    addRules: []
+  });
+  chrome.declarativeNetRequest.updateDynamicRules({
+    removeRuleIds: (await chrome.declarativeNetRequest.getDynamicRules()).map(rule => rule.id),
+    addRules: []
+  });
 }
 
 function getFirstValidUrl(text) {
@@ -199,7 +210,7 @@ async function updateRedirections(redirections) {
       chrome.declarativeNetRequest.updateSessionRules({
         removeRuleIds: (await chrome.declarativeNetRequest.getSessionRules()).map(rule => rule.id),
         addRules: newRules
-    });
+      });
     } else {
       //const oldRules = await chrome.declarativeNetRequest.getDynamicRules();
       //const oldRuleIds = (await chrome.declarativeNetRequest.getDynamicRules()).map(rule => rule.id);
