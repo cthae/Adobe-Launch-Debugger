@@ -65,6 +65,7 @@ The dev plan and event log:
 * [ ] Web SDK/AEP logging implementation.
 * [ ] Once the library switching logic is done, implement a setting to remove the .min from the library. It's gonna utilize the same redirecting logic. Off by default.
 * [ ] Check Adobe Analytics Debugger's changelog. Some things from there might be worth reimplementing.
+* [ ] Update extension store screenshots. Maybe make a big fun logo too.
 
 ## Contributions
 Contributions are welcome! Whether it's code, ux/ui solutions or just advice. If you're inspired to do so, please contribute!
