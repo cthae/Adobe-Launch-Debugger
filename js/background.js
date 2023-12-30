@@ -36,7 +36,7 @@ async function setDebug(flag) {
 }
 
 async function mainListener() {
-  const filter = { urls: ["<all_urls>"] }//   *://*/*/b/ss/*   --   <all_urls>
+  const filter = { urls: ["<all_urls>", "http://*/*", "https://*/*"] }//   *://*/*/b/ss/*   --   <all_urls>
   const requests = new Map();
   chrome.webRequest.onBeforeRequest.addListener(async info => {
     if (/\/b\/ss\//.test(info.url) && info.method === "POST" && 
@@ -53,7 +53,7 @@ async function mainListener() {
 
   chrome.webRequest.onHeadersReceived.addListener(async info => {
     if (info.statusCode === 200 && /\/b\/ss\//.test(info.url)) {
-      let _satelliteInfo = JSON.parse(await getSatelliteInfo())
+      let _satelliteInfo = JSON.parse(await getSatelliteInfo(info.tabId))
       const postRequest = requests.get(info.requestId);
       if (info.method === "POST" && postRequest){
         postRequest._satelliteInfo = _satelliteInfo;
@@ -71,7 +71,7 @@ async function mainListener() {
 
   chrome.webRequest.onErrorOccurred.addListener(async info => {
     if (/\/b\/ss\//.test(info.url)) {
-      let _satelliteInfo = JSON.parse(await getSatelliteInfo())
+      let _satelliteInfo = JSON.parse(await getSatelliteInfo(info.tabId))
 
         sendToTab({
           info: info,
@@ -83,7 +83,7 @@ async function mainListener() {
   }, filter);
 }
 
-async function getSatelliteInfo() {
+async function getSatelliteInfo(tabId) {
   const [{ result }] = await chrome.scripting.executeScript({
     func: () => JSON.stringify({
       property: _satellite.property.name,
@@ -92,7 +92,7 @@ async function getSatelliteInfo() {
     }),
     args: [],
     target: {
-      tabId: (await chrome.tabs.query({ active: true, currentWindow: true }))[0].id
+      tabId: tabId || (await chrome.tabs.query({ active: true, currentWindow: true }))[0].id
     },
     world: 'MAIN',
   });
