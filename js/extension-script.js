@@ -312,7 +312,7 @@ async function getPageVar(name, tabId) {
 
 async function getDLWithNoGTM(name) {
   const [{ result }] = await chrome.scripting.executeScript({
-    func: name => JSON.stringify(window[name].filter((dl) => {return dl.event && dl.event.indexOf("gtm.") === -1})),
+    func: name => JSON.stringify((window[name] || []).filter((dl) => {return dl.event && dl.event.indexOf("gtm.") === -1})),
     args: [name],
     target: {
       tabId: (await chrome.tabs.query({ active: true, currentWindow: true }))[0].id
