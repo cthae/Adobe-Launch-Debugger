@@ -2,11 +2,11 @@
 Debugger tool for Adobe Launch and Adobe Analytics.
 
 ### Table of Contents
-* [Purpose](https://github.com/hillaryfraley/jobbriefings#purpose)
-* [Scope](https://github.com/hillaryfraley/jobbriefings#scope)
-* [Plan](https://github.com/hillaryfraley/jobbriefings#plan)
-* [Contributions](https://github.com/hillaryfraley/jobbriefings#contributions)
-* [License](https://github.com/hillaryfraley/jobbriefings#license)
+* [Purpose](https://github.com/cthae/Adobe-Launch-Debugger/blob/main/README.md#purpose)
+* [Scope](https://github.com/cthae/Adobe-Launch-Debugger/blob/main/README.md#scope)
+* [Plan](https://github.com/cthae/Adobe-Launch-Debugger/blob/main/README.md#plan)
+* [Contributions](https://github.com/cthae/Adobe-Launch-Debugger/blob/main/README.md#contributions)
+* [License](https://github.com/cthae/Adobe-Launch-Debugger/blob/main/README.md#license)
 
 ## Purpose
 The purpose can be divided in a few segments, sorted by importance desc:
@@ -68,7 +68,6 @@ The dev plan and event log:
 * [x] Add useful snippets to the extension. Basically window.onbeforeunload = ()=>false and one trust stuff maybe.
 * [x] Release v0.96.
 * [ ] Make the UI more compact. Maybe.
-* [ ] Add One Trust debug snippets.
 * [ ] Web SDK/AEP logging implementation.
 * [ ] Once the library switching logic is done, implement a setting to remove the .min from the library. It's gonna utilize the same redirecting logic. Off by default.
 * [ ] Check Adobe Analytics Debugger's changelog. Some things from there might be worth reimplementing.
