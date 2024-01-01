@@ -64,8 +64,9 @@ The dev plan and event log:
 * [x] Release v0.95.
 * [x] Implement _satellite.setDebug() polling logic for when the lib is not loaded when the extension tries to set it.
 * [x] Deletion of all redirection rules must delete both dynamic and sync rules.
+* [x] Better date formatting.
+* [ ] Add useful snippets to the extension. Basically window.onbeforeunload = ()=>false and one trust stuff maybe.
 * [ ] Make the UI more compact. Maybe.
-* [ ] Add useful snippets to the extension. Basically window.onbeforeunload = ()=>false and such.
 * [ ] Add One Trust debug snippets.
 * [ ] Web SDK/AEP logging implementation.
 * [ ] Once the library switching logic is done, implement a setting to remove the .min from the library. It's gonna utilize the same redirecting logic. Off by default.
@@ -74,6 +75,19 @@ The dev plan and event log:
 
 ## Contributions
 Contributions are welcome! Whether it's code, ux/ui solutions or just advice. If you're inspired to do so, please contribute!
+
+### To install the extension in the unpacked state:
+* Clone the repo
+* Open your Chrome -> open chrome://extensions/ -> in the top right of the page, there's a Developer mode slider. Enable it
+* In the extensions page, select the Load unpacked option. Load this repo's folder.
+* Done, you've installed it
+
+### To test changes:
+If it's a UI change in the extension-script.js, css files or main.html, just click the extension icon in the browser to reload its popup window and you'll see your changes
+
+If it's a deeper change of the content-script.js or background.js or manifest, you'll have to reload the extension:
+* Open the extensions page chrome://extensions/
+* Click the reload CTA in the extension card near the enable/disable slider.
 
 ## License
 Mozilla Public License Version 2.0

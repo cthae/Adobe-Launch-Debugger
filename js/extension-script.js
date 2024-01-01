@@ -58,7 +58,7 @@ function getFirstValidUrl(text) {
 }
 
 function setRedirection(){
-  const date = new Date().toISOString();
+  const date = new Date().toISOString().replace("T","\n").replace(/:\d\d\..+/,"");
   const redirectFrom = document.getElementById("currentlib");
   const redirectTo = document.getElementById("newlib");
   const CTA = document.getElementById("setRedirection");
@@ -140,7 +140,7 @@ function renderRedirections(){
         const td1 = row.insertCell(1);
         const td2 = row.insertCell(2);
         const td3 = row.insertCell(3);
-        td0.innerText = redirection.date;
+        td0.innerText = redirection.date.replace("t","<br/>");
         td0.style = "text-align: center; vertical-align: middle;";
         td0.setAttribute("name", "date");
         td1.innerText = redirection.from;
@@ -227,6 +227,7 @@ async function updatePage(launchDebugInfo) {
   });
   setStatusDependantListeners();
 }
+
 function setStatusDependantListeners(){
   const dlCell = document.getElementById("dl");
   const dlEvent = document.getElementById("dlevent");

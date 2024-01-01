@@ -676,7 +676,7 @@ tbody tr:nth-child(even) {
   background-color: var(--background);
 }
 
-tbody tr:nth-child(even) button {
+tbody tr:nth-child(even) button:not(.error) {
   background-color: #1a242f;
   background-color: var(--background-alt);
 }
