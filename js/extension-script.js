@@ -23,6 +23,75 @@ function clicks() {
   document.getElementById("setRedirection").addEventListener("click", setRedirection);
   document.getElementById("delAllRedirections").addEventListener("click", removeAllRedirections);
   document.getElementById("newlib").addEventListener("click", evnt => {event.target.innerText=""});
+  document.getElementById("blockPageUnload").addEventListener("click", blockPageUnload);
+  document.getElementById("OTCheckConsent").addEventListener("click", OTCheckConsent);
+  document.getElementById("OTOpenManager").addEventListener("click", OTOpenManager);
+}
+
+async function OTOpenManager(evnt){
+  const result = await executeOnPage("", () => {
+    if (typeof Optanon === "undefined"){
+      return false;
+    } else {
+      Optanon.ToggleInfoDisplay();
+      return true;
+    }
+  });
+  console.log("@@@ Debugging OtOpenManager result is", result);
+  if (result.result){
+    evnt.target.classList = "success";
+    evnt.target.innerText = "Done!"
+  } else {
+    evnt.target.classList = "error";
+    evnt.target.innerText = "No Optanon!"
+  }
+}
+
+function OTCheckConsent(evnt){
+  evnt.target.classList = "success";
+  evnt.target.innerText = "In the Console!";
+  const result = executeOnPage("", () => {
+    var color = {
+      good: 'lime',
+      bad: 'red',
+      info: 'white',
+      info2: 'yellow',
+      data: 'lightgrey'
+    }
+    window.getCookie = function (name) {
+      var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      if (match) return match[2];
+    }
+    const fullCookie = window.getCookie("OptanonConsent");
+    console.group("%c Consent check script initiated. \n", css(color.info));
+    console.log("%c Total Cookies on this page: " + document.cookie.split(";").length, css(color.info2));
+    console.log("%c The length of the OptanonConsent is " + (!fullCookie ? "0" : fullCookie.length), css(color.info2));
+    console.log("%c The raw OptanonConsent is:", css(color.info2));
+    console.log("%c " + fullCookie, css(color.data));
+  
+    if (!/groups/i.test(fullCookie)) {
+      console.log("%c Consent is not recorded", css("red"));
+      return;
+    }
+    console.log("%c \nThe Groups Breakdown:", css(color.info));
+    console.log("%c NOTE! The default groups are: C0001 - Necessary; C0002 - Performance; C0003 - Functional; C0004 - Targeting. But they can be tweaked.", css("white"));
+    decodeURIComponent(fullCookie.split("groups=")[1].split("&")[0]).split(",").forEach((groupPair) => {
+      let c = groupPair.split(":")[1] === "1" ? color.good : color.bad;
+      console.log("%c Group " + groupPair.split(":")[0] + " = " + groupPair.split(":")[1], css(c));
+    });
+    console.groupEnd()
+    function css(c) {
+      return `text-shadow: 1px 1px 1px ${c}, 0 0 1em ${c}, 0 0 0.2em ${c};color: ${c};font-weight: 500;font-size: 1.3em; background-color: dimgray`;
+    }
+  });
+}
+
+function blockPageUnload(evnt){
+  evnt.target.classList = "success";
+  evnt.target.innerText = "Done!"
+  executeOnPage("", () => {
+    window.onbeforeunload = () => false;
+  });
 }
 
 function removeAllRedirections(){
@@ -287,7 +356,7 @@ async function getTiming() {
 }
 
 async function executeOnPage(funcVar, funcToExecute) {
-  const [{ result }] = await chrome.scripting.executeScript({
+  const [result] = await chrome.scripting.executeScript({
     func: funcToExecute,
     args: [funcVar],
     target: {

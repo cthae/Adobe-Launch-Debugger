@@ -65,7 +65,7 @@ The dev plan and event log:
 * [x] Implement _satellite.setDebug() polling logic for when the lib is not loaded when the extension tries to set it.
 * [x] Deletion of all redirection rules must delete both dynamic and sync rules.
 * [x] Better date formatting.
-* [ ] Add useful snippets to the extension. Basically window.onbeforeunload = ()=>false and one trust stuff maybe.
+* [x] Add useful snippets to the extension. Basically window.onbeforeunload = ()=>false and one trust stuff maybe.
 * [ ] Make the UI more compact. Maybe.
 * [ ] Add One Trust debug snippets.
 * [ ] Web SDK/AEP logging implementation.

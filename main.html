@@ -14,6 +14,7 @@
    <div class="tabButtons">
       <button class="tablinks" name="Main">Main</button>
       <button class="tablinks" name="Settings">Settings</button>
+      <button class="tablinks" name="Snippets">Snippets</button>
       <button class="tablinks" name="Redirections">Redirects</button>
       <button class="tablinks" name="Info">Info</button>
    </div>
@@ -74,35 +75,50 @@ Please note that the redirection feature is in beta. Feel free to send issues, c
       </table>
    </div>
    <div class="tab" id="Settings" style="display: none;">
-      <div>
-         <table class="settingsTable">
-            <tbody>
-               <tr>
-                  <td>Main AA request logging:</td>
-                  <td><input type="checkbox" checked id="aabox"></td>
-               </tr>
-               <tr>
-                  <td>Launch logging via setDebug(1):</td>
-                  <td><input type="checkbox" id="launchbox"></td>
-               </tr>
-               <tr>
-                  <td>Main AA console logs expanded?</td>
-                  <td><input type="checkbox" id="mainExpand"></td>
-               </tr>
-               <tr>
-                  <td>Evars and Props sections expanded?</td>
-                  <td><input type="checkbox" checked id="varsExpand"></td>
-               </tr>
-               <tr>
-                  <td colspan="2" style = "text-align: center; vertical-align: middle;"><b>Redirection Settings:</b></td>
-               </tr>
-               <tr>
-                  <td>Clear redirections after browsing session expired?</td>
-                  <td><input type="checkbox" checked id="sessionRedirections"></td>
-               </tr>
-            </tbody>
-         </table>
-      </div>
+      <table class="settingsTable">
+         <tbody>
+            <tr>
+               <td>Main AA request logging:</td>
+               <td><input type="checkbox" checked id="aabox"></td>
+            </tr>
+            <tr>
+               <td>Launch logging via setDebug(1):</td>
+               <td><input type="checkbox" id="launchbox"></td>
+            </tr>
+            <tr>
+               <td>Main AA console logs expanded?</td>
+               <td><input type="checkbox" id="mainExpand"></td>
+            </tr>
+            <tr>
+               <td>Evars and Props sections expanded?</td>
+               <td><input type="checkbox" checked id="varsExpand"></td>
+            </tr>
+            <tr>
+               <td colspan="2" style = "text-align: center; vertical-align: middle;"><b>Redirection Settings:</b></td>
+            </tr>
+            <tr>
+               <td>Clear redirections after browsing session expired?</td>
+               <td><input type="checkbox" checked id="sessionRedirections"></td>
+            </tr>
+         </tbody>
+      </table>
+   </div>
+   <div class="tab" id="Snippets" style="display: none;">
+      <table class="snippetsTable">
+         <tbody>
+            <tr>
+               <td><button id="blockPageUnload">Block Page Unload</button></td>
+               <td></td>
+            </tr>
+            <tr>
+               <td colspan="2">One Trust:</td>
+            </tr>
+            <tr>
+               <td><button id="OTCheckConsent">OT: Check Consent</button></td>
+               <td><button id="OTOpenManager">OT: Open Manager</button></td>
+            </tr>
+         </tbody>
+      </table>
    </div>
    <div class="tab" id="Redirections" style="display: none;">
       <div style = "text-align: right;">
