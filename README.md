@@ -67,6 +67,9 @@ The dev plan and event log:
 * [x] Better date formatting.
 * [x] Add useful snippets to the extension. Basically window.onbeforeunload = ()=>false and one trust stuff maybe.
 * [x] Release v0.96.
+* [x] setDebug reimplementation. Now it works better.
+* [x] Release v0.97.
+* [ ] Find an elegant way to inject a library. Should probably be one/domain. To avoid doing it globally.
 * [ ] Make the UI more compact. Maybe.
 * [ ] Web SDK/AEP logging implementation.
 * [ ] Once the library switching logic is done, implement a setting to remove the .min from the library. It's gonna utilize the same redirecting logic. Off by default.

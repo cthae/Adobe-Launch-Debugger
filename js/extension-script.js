@@ -38,7 +38,7 @@ async function OTOpenManager(evnt){
     }
   });
   console.log("@@@ Debugging OtOpenManager result is", result);
-  if (result.result){
+  if (result){
     evnt.target.classList = "success";
     evnt.target.innerText = "Done!"
   } else {
@@ -356,7 +356,7 @@ async function getTiming() {
 }
 
 async function executeOnPage(funcVar, funcToExecute) {
-  const [result] = await chrome.scripting.executeScript({
+  const [{result}] = await chrome.scripting.executeScript({
     func: funcToExecute,
     args: [funcVar],
     target: {
