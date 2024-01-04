@@ -69,6 +69,7 @@ The dev plan and event log:
 * [x] Release v0.96.
 * [x] setDebug reimplementation. Now it works better.
 * [x] Release v0.97.
+* [x] Also detect /satelliteLib- libraries besides /launch-
 * [ ] Find an elegant way to inject a library. Should probably be one/domain. To avoid doing it globally.
 * [ ] Make the UI more compact. Maybe.
 * [ ] Web SDK/AEP logging implementation.
