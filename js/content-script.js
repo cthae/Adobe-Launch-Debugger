@@ -59,8 +59,25 @@ function logServerCall(fullURL, _satelliteInfo, settings, networkError) {
   printVars(parsingResult.allListVars, "ListVars");
   printVars(parsingResult.alleVars, "eVars", settings.varsExpand);
   printVars(parsingResult.allProps, "props", settings.varsExpand);
+  printContext(parsingResult.contextVars, settings);
   printOther(parsingResult.url2 ? parsingResult.url + parsingResult.url2 : parsingResult.url,
     parsingResult.server, _satelliteInfo.property, _satelliteInfo.environment, _satelliteInfo.buildtime);
+  console.groupEnd();
+}
+
+function printContext(contextVars, settings){
+  if (contextVars.length === 0){
+    console.groupCollapsed(`Context Vars: No context variables were found.`);
+  } else{
+    if (settings?.contextVarsExpand){
+      console.group(`Context Vars: ${contextVars.length} variables found`);
+    } else {
+      console.groupCollapsed(`Context Vars: ${contextVars.length} variables found`);
+    }
+    contextVars.forEach((contextVar => {
+      console.log (contextVar.replace("=", " = "));
+    }));
+  }
   console.groupEnd();
 }
 
@@ -151,6 +168,7 @@ function printOne(name, val) {
 function parseServerCall(fullURL) {
   //This function is awful. Rewrite it completely. At some point.
   const parsingResult = {};
+  parsingResult.contextVars = getContextVars(fullURL);
   const allParams = fullURL.split("&");
   parsingResult.allProps = allParams.filter(param => {
     return /^c\d?\d?\d=/.test(param);
@@ -180,6 +198,18 @@ function parseServerCall(fullURL) {
   parsingResult.customLinkName = getComponent(allParams, "pev2");
   parsingResult.siteSection = getComponent(allParams, "ch");
   return parsingResult;
+}
+
+function getContextVars(fullURL){
+  if (fullURL.indexOf("&c.&") > 0 && fullURL.indexOf("&.c&") > 0){
+    try{
+      return fullURL.split("&c.&")[1].split("&.c&")[0].split("&");
+    } catch {
+      return [];  
+    }
+  } else {
+    return [];
+  }
 }
 
 function getComponent(allParams, paramName) {

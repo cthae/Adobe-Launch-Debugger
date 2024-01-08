@@ -70,7 +70,8 @@ The dev plan and event log:
 * [x] setDebug reimplementation. Now it works better.
 * [x] Release v0.97.
 * [x] Also detect /satelliteLib- libraries besides /launch-
-* [ ] Context data logging: https://experienceleague.adobe.com/docs/analytics/implementation/vars/page-vars/contextdata.html?lang=en
+* [x] Context data logging: https://experienceleague.adobe.com/docs/analytics/implementation/vars/page-vars/contextdata.html?lang=en Thanks to chip for suggesting it!
+* [x] Release v0.98.
 * [ ] Find an elegant way to inject a library. Should probably be one/domain. To avoid doing it globally.
 * [ ] Make the UI more compact. Maybe.
 * [ ] Web SDK/AEP logging implementation.
