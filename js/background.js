@@ -75,9 +75,9 @@ async function mainListener() {
 async function getSatelliteInfo(tabId) {
   const [{ result }] = await chrome.scripting.executeScript({
     func: () => JSON.stringify({
-      property: _satellite.property.name,
-      environment: _satellite.environment.stage,
-      buildtime: _satellite.buildInfo.buildDate
+      property: window?._satellite?.property?.name || "",
+      environment: window?._satellite?.environment?.stage || "",
+      buildtime: window?._satellite?.buildInfo?.buildDate || ""
     }),
     args: [],
     target: {
