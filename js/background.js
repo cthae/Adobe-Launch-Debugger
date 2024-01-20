@@ -28,20 +28,23 @@ async function mainListener() {
   const filter = { urls: ["<all_urls>", "http://*/*", "https://*/*"] }//   *://*/*/b/ss/*   --   <all_urls>
   const requests = new Map();
   chrome.webRequest.onBeforeRequest.addListener(async info => {
-    if (/\/b\/ss\//.test(info.url) && info.method === "POST" && 
+    if ((/\/b\/ss\//.test(info.url) || /edge\.adobedc\.net\/ee\//.test(info.url)) && 
+      info.method === "POST" && 
       info.requestBody.raw && info.requestBody.raw.length > 0) {
       let postedString = decodeURIComponent(String.fromCharCode.apply(null,
         new Uint8Array(info.requestBody.raw[0].bytes)));
       requests.set(info.requestId, {
         info: info,
         postPayload: postedString,
-        eventTriggered: "onBeforeRequest"
+        eventTriggered: "onBeforeRequest",
+        type: /edge\.adobedc\.net\/ee\//.test(info.url) ? "webSDK" : "AA"
       });
     }
   }, filter, ['requestBody']);
 
   chrome.webRequest.onHeadersReceived.addListener(async info => {
-    if (info.statusCode === 200 && /\/b\/ss\//.test(info.url)) {
+    if (info.statusCode === 200 && 
+      (/\/b\/ss\//.test(info.url) || /edge\.adobedc\.net\/ee\//.test(info.url))) {
       let _satelliteInfo = JSON.parse(await getSatelliteInfo(info.tabId))
       const postRequest = requests.get(info.requestId);
       if (info.method === "POST" && postRequest){
@@ -52,20 +55,22 @@ async function mainListener() {
         sendToTab({
           info: info,
           eventTriggered: "onHeadersReceived",
-          _satelliteInfo: _satelliteInfo
+          _satelliteInfo: _satelliteInfo,
+          type: /edge\.adobedc\.net\/ee\//.test(info.url) ? "webSDK" : "AA"
         }, info.tabId);
       }
     }
   }, filter);
 
   chrome.webRequest.onErrorOccurred.addListener(async info => {
-    if (/\/b\/ss\//.test(info.url)) {
+    if ((/\/b\/ss\//.test(info.url) || /edge\.adobedc\.net\/ee\//.test(info.url))) {
       let _satelliteInfo = JSON.parse(await getSatelliteInfo(info.tabId))
 
         sendToTab({
           info: info,
           eventTriggered: "onErrorOccurred",
-          _satelliteInfo: _satelliteInfo
+          _satelliteInfo: _satelliteInfo,
+          type: /edge\.adobedc\.net\/ee\//.test(info.url) ? "webSDK" : "AA"
         }, info.tabId);
       
     }

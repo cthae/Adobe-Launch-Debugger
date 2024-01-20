@@ -26,6 +26,44 @@ function clicks() {
   document.getElementById("blockPageUnload").addEventListener("click", blockPageUnload);
   document.getElementById("OTCheckConsent").addEventListener("click", OTCheckConsent);
   document.getElementById("OTOpenManager").addEventListener("click", OTOpenManager);
+  document.getElementById("OTRejectAll").addEventListener("click", OTRejectAll);
+  document.getElementById("OTAllowAll").addEventListener("click", OTAllowAll);
+}
+
+async function OTAllowAll(evnt){
+  const result = await executeOnPage("", () => {
+    if (typeof Optanon === "undefined"){
+      return false;
+    } else {
+      Optanon.AllowAll();
+      return true;
+    }
+  });
+  if (result){
+    evnt.target.classList = "success";
+    evnt.target.innerText = "Done!"
+  } else {
+    evnt.target.classList = "error";
+    evnt.target.innerText = "No Optanon!"
+  }
+}
+
+async function OTRejectAll(evnt){
+  const result = await executeOnPage("", () => {
+    if (typeof Optanon === "undefined"){
+      return false;
+    } else {
+      Optanon.RejectAll();
+      return true;
+    }
+  });
+  if (result){
+    evnt.target.classList = "success";
+    evnt.target.innerText = "Done!"
+  } else {
+    evnt.target.classList = "error";
+    evnt.target.innerText = "No Optanon!"
+  }
 }
 
 async function OTOpenManager(evnt){
@@ -37,7 +75,6 @@ async function OTOpenManager(evnt){
       return true;
     }
   });
-  console.log("@@@ Debugging OtOpenManager result is", result);
   if (result){
     evnt.target.classList = "success";
     evnt.target.innerText = "Done!"

@@ -72,9 +72,10 @@ The dev plan and event log:
 * [x] Also detect /satelliteLib- libraries besides /launch-
 * [x] Context data logging: https://experienceleague.adobe.com/docs/analytics/implementation/vars/page-vars/contextdata.html?lang=en Thanks to chip for suggesting it!
 * [x] Release v0.98.
+* [x] OT - Allow All and Deny All buttons.
+* [ ] Web SDK/AEP logging implementation.
 * [ ] Find an elegant way to inject a library. Should probably be one/domain. To avoid doing it globally.
 * [ ] Make the UI more compact. Maybe.
-* [ ] Web SDK/AEP logging implementation.
 * [ ] Once the library switching logic is done, implement a setting to remove the .min from the library. It's gonna utilize the same redirecting logic. Off by default.
 * [ ] Check Adobe Analytics Debugger's changelog. Some things from there might be worth reimplementing.
 * [ ] Update extension store screenshots. Maybe make a big fun logo too.

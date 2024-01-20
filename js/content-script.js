@@ -6,14 +6,19 @@ chrome.storage.sync.get('settings', function (data) {
   }
 });
 
-chrome.runtime.onMessage.addListener(info => {
+chrome.runtime.onMessage.addListener(request => {
   chrome.storage.sync.get('settings', function (data) {
     if (data?.settings?.aabox !== false) {
-      //console.log("@@@ Debugging: The Info object is: ", info);
-      if (info.postPayload) {
-        logServerCall(decodeURIComponent(info.info.url) + info.postPayload, info?._satelliteInfo, data.settings, info.info?.error);
-      } else {
-        logServerCall(decodeURIComponent(info.info.url), info?._satelliteInfo, data.settings, info.info?.error);
+      //console.log("@@@ Debugging: The Info object is: ", request);
+      if(request.type === "AA"){
+        if(request.postPayload) {
+          logAAServerCall(decodeURIComponent(request.info.url) + request.postPayload, request?._satelliteInfo, data.settings, request.info?.error);
+        } else {
+          logAAServerCall(decodeURIComponent(request.info.url), request?._satelliteInfo, data.settings, request.info?.error);
+        }
+      } else if(request.type === "webSDK"){
+        console.log("@@@ Debugging: webSDK Detected! The Info object is: ", request);
+        logWebSDKServerCall(JSON.parse(request.postPayload), data.settings);
       }
     }
   });
@@ -23,9 +28,9 @@ function talkToBG(message) {
   chrome.runtime.sendMessage(message);
 }
 
-function logServerCall(fullURL, _satelliteInfo, settings, networkError) {
+function logAAServerCall(fullURL, _satelliteInfo, settings, networkError) {
   document.sCallCounter = document.sCallCounter ? document.sCallCounter + 1 : 1;
-  const parsingResult = parseServerCall(fullURL);
+  const parsingResult = parseAAServerCall(fullURL);
   let cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Green; color: yellow`;
   let cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Green; color: #fc0`;
   let sCallType = 'Page View';
@@ -44,14 +49,16 @@ function logServerCall(fullURL, _satelliteInfo, settings, networkError) {
   }
   const pNameMessage = sCallType + " Name : %c" + sCallName;
   const eventsMessage = `%cEvents: %c${parsingResult.events ? parsingResult.events : "[No Events]"}`;
-  const RSMessage = `%cReport Suite: %c${parsingResult.rSuite ? parsingResult.rSuite : "[No RS Found]"}`
+  const RSMessage = `%cReport Suite: %c${parsingResult.rSuite ? parsingResult.rSuite : "[No RS Found]"}`;
   if(settings?.mainExpand === true){
     console.group(`${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` + 
       `AA #${document.sCallCounter} ${pNameMessage}\n` + 
       eventsMessage + " " + RSMessage,
       cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
   } else {
-    console.groupCollapsed(`%cAA #${document.sCallCounter} ${pNameMessage}\n` + eventsMessage + " " + RSMessage,
+    console.groupCollapsed(`${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` + 
+      `AA #${document.sCallCounter} ${pNameMessage}\n` + 
+      eventsMessage + " " + RSMessage,
       cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
   }
   printProducts(parsingResult.products);
@@ -165,7 +172,7 @@ function printOne(name, val) {
   }
 }
 
-function parseServerCall(fullURL) {
+function parseAAServerCall(fullURL) {
   //This function is awful. Rewrite it completely. At some point.
   const parsingResult = {};
   parsingResult.contextVars = getContextVars(fullURL);
@@ -219,4 +226,51 @@ function getComponent(allParams, paramName) {
     return false;
   }
   return foundElement?.split(/=(.+)?/, 2)[1];
+}
+
+function logWebSDKServerCall(postPayload, settings, networkError) {
+  postPayload.events.forEach((WSEvent) => {
+    const parsingResult = {};
+    document.wSDKCounter = document.wSDKCounter ? document.wSDKCounter + 1 : 1;
+    let cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: DarkCyan; color: yellow`;
+    let cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: DarkCyan; color: #fc0`;
+    const sCallName = WSEvent.xdm.web.webPageDetails ? WSEvent.xdm.web.webPageDetails : "[No Page Name]";
+    const scType = WSEvent.xdm?.eventType || "[No Web SDK Type]";
+    if (networkError) {
+      cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Red; color: black`;
+      cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Red; color: black`;
+    }
+    const pNameMessage = scType + " Name : %c" + sCallName;
+    const eventsMessage = `%cEvents: %c${parsingResult.events ? parsingResult.events : "[No Events]"}`;
+    const RSMessage = `%cReport Suite: %c${parsingResult.rSuite ? parsingResult.rSuite : "[No RS Found]"}`;
+    if (settings?.mainExpand === true) {
+      console.group(`${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` +
+        `Web SDK #${document.wSDKCounter} ${pNameMessage}\n` +
+        eventsMessage + " " + RSMessage,
+        cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
+    } else {
+      console.groupCollapsed(`${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` +
+        `Web SDK #${document.wSDKCounter} ${pNameMessage}\n` +
+        eventsMessage + " " + RSMessage,
+        cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
+    }
+    try {
+      /*
+      console.log(WSEvent.xdm.endUserIDs);
+      console.log(WSEvent.xdm.marketing);
+      console.log(WSEvent.xdm.webPageDetails);
+      console.log(WSEvent.xdm._experience);
+      console.log(WSEvent.xdm._uhc);
+      */
+      Object.keys(WSEvent.xdm).forEach((field) => {
+        let cssInnerStyle = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Yellow; color: black`;
+        console.group("%c" + field, cssInnerStyle);
+        console.log(WSEvent.xdm[field]);
+        console.groupEnd();
+      });
+    } catch (e){
+      console.error(e);
+    }
+    console.groupEnd();
+  });
 }
