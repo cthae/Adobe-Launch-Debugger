@@ -234,25 +234,21 @@ function logWebSDKServerCall(postPayload, settings, networkError) {
     document.wSDKCounter = document.wSDKCounter ? document.wSDKCounter + 1 : 1;
     let cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: DarkCyan; color: yellow`;
     let cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: DarkCyan; color: #fc0`;
-    const sCallName = WSEvent.xdm.web.webPageDetails ? WSEvent.xdm.web.webPageDetails : "[No Page Name]";
+    const sCallName = WSEvent.xdm?.web?.webPageDetails?.name ? WSEvent.xdm.web.webPageDetails.name : "[No Page Name]";
     const scType = WSEvent.xdm?.eventType || "[No Web SDK Type]";
     if (networkError) {
       cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Red; color: black`;
       cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Red; color: black`;
     }
     const pNameMessage = scType + " Name : %c" + sCallName;
-    const eventsMessage = `%cEvents: %c${parsingResult.events ? parsingResult.events : "[No Events]"}`;
-    const RSMessage = `%cReport Suite: %c${parsingResult.rSuite ? parsingResult.rSuite : "[No RS Found]"}`;
     if (settings?.mainExpand === true) {
       console.group(`${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` +
-        `Web SDK #${document.wSDKCounter} ${pNameMessage}\n` +
-        eventsMessage + " " + RSMessage,
-        cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
+        `Web SDK #${document.wSDKCounter} ${pNameMessage}\n`,
+        cssHeadField, cssHeadValue);
     } else {
       console.groupCollapsed(`${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` +
-        `Web SDK #${document.wSDKCounter} ${pNameMessage}\n` +
-        eventsMessage + " " + RSMessage,
-        cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
+        `Web SDK #${document.wSDKCounter} ${pNameMessage}\n`,
+        cssHeadField, cssHeadValue);
     }
     try {
       /*

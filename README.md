@@ -73,7 +73,8 @@ The dev plan and event log:
 * [x] Context data logging: https://experienceleague.adobe.com/docs/analytics/implementation/vars/page-vars/contextdata.html?lang=en Thanks to chip for suggesting it!
 * [x] Release v0.98.
 * [x] OT - Allow All and Deny All buttons.
-* [ ] Web SDK/AEP logging implementation.
+* [x] Web SDK/AEP MVP logging implementation.
+* [x] Release v0.99.
 * [ ] Find an elegant way to inject a library. Should probably be one/domain. To avoid doing it globally.
 * [ ] Make the UI more compact. Maybe.
 * [ ] Once the library switching logic is done, implement a setting to remove the .min from the library. It's gonna utilize the same redirecting logic. Off by default.

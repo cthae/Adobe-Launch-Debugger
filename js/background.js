@@ -28,23 +28,29 @@ async function mainListener() {
   const filter = { urls: ["<all_urls>", "http://*/*", "https://*/*"] }//   *://*/*/b/ss/*   --   <all_urls>
   const requests = new Map();
   chrome.webRequest.onBeforeRequest.addListener(async info => {
-    if ((/\/b\/ss\//.test(info.url) || /edge\.adobedc\.net\/ee\//.test(info.url)) && 
-      info.method === "POST" && 
-      info.requestBody.raw && info.requestBody.raw.length > 0) {
-      let postedString = decodeURIComponent(String.fromCharCode.apply(null,
-        new Uint8Array(info.requestBody.raw[0].bytes)));
+    let urlType = getUrlType(info.url);
+    if (urlType !== "Not Adobe" && info.method === "POST" && 
+        info.requestBody.raw && info.requestBody.raw.length > 0) {
+      let postedString = "";
+      if(urlType === "AA"){
+        postedString = decodeURIComponent(String.fromCharCode.apply(null,
+          new Uint8Array(info.requestBody.raw[0].bytes)));
+      } else if (urlType === "webSDK"){
+        postedString = String.fromCharCode.apply(null,
+          new Uint8Array(info.requestBody.raw[0].bytes));
+      }
       requests.set(info.requestId, {
         info: info,
         postPayload: postedString,
         eventTriggered: "onBeforeRequest",
-        type: /edge\.adobedc\.net\/ee\//.test(info.url) ? "webSDK" : "AA"
+        type: urlType
       });
     }
   }, filter, ['requestBody']);
 
   chrome.webRequest.onHeadersReceived.addListener(async info => {
-    if (info.statusCode === 200 && 
-      (/\/b\/ss\//.test(info.url) || /edge\.adobedc\.net\/ee\//.test(info.url))) {
+    let urlType = getUrlType(info.url);
+    if (urlType !== "Not Adobe" && info.statusCode === 200) {
       let _satelliteInfo = JSON.parse(await getSatelliteInfo(info.tabId))
       const postRequest = requests.get(info.requestId);
       if (info.method === "POST" && postRequest){
@@ -56,25 +62,34 @@ async function mainListener() {
           info: info,
           eventTriggered: "onHeadersReceived",
           _satelliteInfo: _satelliteInfo,
-          type: /edge\.adobedc\.net\/ee\//.test(info.url) ? "webSDK" : "AA"
+          type: urlType
         }, info.tabId);
       }
     }
   }, filter);
 
   chrome.webRequest.onErrorOccurred.addListener(async info => {
-    if ((/\/b\/ss\//.test(info.url) || /edge\.adobedc\.net\/ee\//.test(info.url))) {
+    let urlType = getUrlType(info.url);
+    if (urlType !== "Not Adobe") {
       let _satelliteInfo = JSON.parse(await getSatelliteInfo(info.tabId))
-
         sendToTab({
           info: info,
           eventTriggered: "onErrorOccurred",
           _satelliteInfo: _satelliteInfo,
-          type: /edge\.adobedc\.net\/ee\//.test(info.url) ? "webSDK" : "AA"
+          type: urlType
         }, info.tabId);
-      
     }
   }, filter);
+}
+
+function getUrlType(url){
+  if(/\/b\/ss\//.test(url)){
+    return "AA";
+  } else if(/\/ee\/.*interact\?configId=/.test(url)){
+    return "webSDK";
+  } else {
+    return "Not Adobe";
+  }
 }
 
 async function getSatelliteInfo(tabId) {
