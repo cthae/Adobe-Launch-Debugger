@@ -80,6 +80,7 @@ The dev plan and event log:
 * [x] Slight UI adjustments.
 * [x] Update extension store/repo screenshots.
 * [x] Release v0.99.
+* [x] Raccooning!
 * [ ] Get feedback from a larger audience.
 * [ ] Find an elegant way to inject a library. Should probably be one/domain. To avoid doing it globally.
 * [ ] Make the UI more compact. Maybe.

@@ -28,6 +28,12 @@ function clicks() {
   document.getElementById("OTOpenManager").addEventListener("click", OTOpenManager);
   document.getElementById("OTRejectAll").addEventListener("click", OTRejectAll);
   document.getElementById("OTAllowAll").addEventListener("click", OTAllowAll);
+  document.getElementById("raccoon").addEventListener("click", raccoonLove);
+}
+
+function raccoonLove(event){
+  event.target.innerText = "😻";
+  setTimeout(() => event.target.innerText = "🦝", 2000);
 }
 
 async function OTAllowAll(evnt){

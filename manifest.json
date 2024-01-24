@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "Adobe Launch Debugger",
-  "description": "An open source updated debugger for Adobe Launch and Analytics for developers and analysts.",
+  "name": "Universal Adobe Debugger",
+  "description": "A universal debugger for Adobe Analytics/AEP products for analysts and developers alike. A spiritual successor of AAD, Switch, AEPD.",
   "version": "0.99",
   "action": {
     "default_popup": "main.html",
