@@ -75,6 +75,7 @@ The dev plan and event log:
 * [x] OT - Allow All and Deny All buttons.
 * [x] Web SDK/AEP MVP logging implementation.
 * [x] setDebug made more reliable.
+* [x] Slight UI adjustments.
 * [x] Update extension store/repo screenshots.
 * [x] Release v0.99.
 * [ ] Get feedback from a larger audience.

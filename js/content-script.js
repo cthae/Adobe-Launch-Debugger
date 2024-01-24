@@ -17,7 +17,7 @@ chrome.runtime.onMessage.addListener(request => {
           logAAServerCall(decodeURIComponent(request.info.url), request?._satelliteInfo, data.settings, request.info?.error);
         }
       } else if(request.type === "webSDK"){
-        console.log("@@@ Debugging: webSDK Detected! The Info object is: ", request);
+        //console.log("@@@ Debugging: webSDK Detected! The Info object is: ", request);
         logWebSDKServerCall(JSON.parse(request.postPayload), data.settings);
       }
     }
