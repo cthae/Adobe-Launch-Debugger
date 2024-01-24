@@ -74,7 +74,10 @@ The dev plan and event log:
 * [x] Release v0.98.
 * [x] OT - Allow All and Deny All buttons.
 * [x] Web SDK/AEP MVP logging implementation.
+* [x] setDebug made more reliable.
+* [x] Update extension store/repo screenshots.
 * [x] Release v0.99.
+* [ ] Get feedback from a larger audience.
 * [ ] Find an elegant way to inject a library. Should probably be one/domain. To avoid doing it globally.
 * [ ] Make the UI more compact. Maybe.
 * [ ] Once the library switching logic is done, implement a setting to remove the .min from the library. It's gonna utilize the same redirecting logic. Off by default.

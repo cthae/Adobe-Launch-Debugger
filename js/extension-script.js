@@ -6,10 +6,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   client._satellite = JSON.parse(await getPageVar('_satellite'));
   client.serverCalls = JSON.parse(await getAACalls());
   client.pvs = client.serverCalls.filter((url) => {
-    return !/pe=lnk/i.test(url.name)
+    return !/pe=lnk/i.test(url.name);
   });
   client.links = client.serverCalls.filter((url) => {
-    return /pe=lnk/i.test(url.name)
+    return /pe=lnk/i.test(url.name);
   });
   client.pageLoadTime = client.timing.domContentLoadedEventEnd - client.timing.navigationStart;
 
@@ -41,10 +41,10 @@ async function OTAllowAll(evnt){
   });
   if (result){
     evnt.target.classList = "success";
-    evnt.target.innerText = "Done!"
+    evnt.target.innerText = "Done!";
   } else {
     evnt.target.classList = "error";
-    evnt.target.innerText = "No Optanon!"
+    evnt.target.innerText = "No Optanon!";
   }
 }
 
@@ -59,10 +59,10 @@ async function OTRejectAll(evnt){
   });
   if (result){
     evnt.target.classList = "success";
-    evnt.target.innerText = "Done!"
+    evnt.target.innerText = "Done!";
   } else {
     evnt.target.classList = "error";
-    evnt.target.innerText = "No Optanon!"
+    evnt.target.innerText = "No Optanon!";
   }
 }
 
@@ -77,10 +77,10 @@ async function OTOpenManager(evnt){
   });
   if (result){
     evnt.target.classList = "success";
-    evnt.target.innerText = "Done!"
+    evnt.target.innerText = "Done!";
   } else {
     evnt.target.classList = "error";
-    evnt.target.innerText = "No Optanon!"
+    evnt.target.innerText = "No Optanon!";
   }
 }
 
@@ -125,7 +125,7 @@ function OTCheckConsent(evnt){
 
 function blockPageUnload(evnt){
   evnt.target.classList = "success";
-  evnt.target.innerText = "Done!"
+  evnt.target.innerText = "Done!";
   executeOnPage("", () => {
     window.onbeforeunload = () => false;
   });
@@ -329,7 +329,7 @@ async function updatePage(launchDebugInfo) {
     reportElement.className = '';
     reportElement.classList.add(launchDebugInfo[launchDebugItem].class);
     reportElement.innerHTML = launchDebugInfo[launchDebugItem].value;
-    reportElement.parentElement.setAttribute("title", launchDebugInfo[launchDebugItem].info)
+    reportElement.parentElement.setAttribute("title", launchDebugInfo[launchDebugItem].info);
   });
   setStatusDependantListeners();
 }
@@ -338,7 +338,7 @@ function setStatusDependantListeners(){
   const dlCell = document.getElementById("dl");
   const dlEvent = document.getElementById("dlevent");
   if (/dl found: /i.test(dlCell.innerText)){
-    const dlName = dlCell.innerText.split(": ").slice(-1)[0]
+    const dlName = dlCell.innerText.split(": ").slice(-1)[0];
     dlCell.addEventListener('click', (event) => {
       executeOnPage(dlName, function(dlName){console.log("Printing the Data Layer variable: " + dlName + " Last 20 events\n"); 
       console.log("{", ...Object.entries(window[dlName]).slice(-20).flatMap(([k, v]) => ["\n  " + k + ":", v]), "\n}")});//Thanks to Maxdamantus for this beauty.
@@ -370,7 +370,7 @@ async function getContainer() {
 
 async function getAACalls() {
   const [{ result }] = await chrome.scripting.executeScript({
-    func: () => JSON.stringify(performance.getEntriesByType("resource").filter((obj) => { return /b\/ss/i.test(obj.name) })),
+    func: () => JSON.stringify(performance.getEntriesByType("resource").filter((obj) => { return /b\/ss/i.test(obj.name); })),
     args: [],
     target: {
       tabId: (await chrome.tabs.query({ active: true, currentWindow: true }))[0].id
@@ -448,13 +448,13 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber) {
       value: "Loaded in " + pageLoadTime / 1000 + " sec.",
       class: "success",
       info: "Loaded successfully"
-    }
+    };
   } else {
     details.pstatus = {
       value: "Not Loaded Yet",
       class: "warn",
       info: "The page is still loading. Seems like the window.performance.timing.domContentLoadedEventEnd hasn't fired yet."
-    }
+    };
   }
   if (typeof _satellite !== 'undefined' && _satellite && typeof _satellite === "object") {
     _satellite._container = JSON.parse(await getContainer());
@@ -508,26 +508,26 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber) {
         value: pvsNumber,
         class: "success",
         info: "Number of PageViews detected by now"
-      }
+      };
     } else {
       details.pvsNumber = {
         value: pvsNumber,
         class: "warn",
         info: "No PageViews yet"
-      }
+      };
     }
     if (linksNumber > 0) {
       details.linksNumber = {
         value: linksNumber,
         class: "success",
         info: "Number of Links detected by now"
-      }
+      };
     } else {
       details.linksNumber = {
         value: linksNumber,
         class: "warn",
         info: "No Links yet"
-      }
+      };
     }
     if (_satellite._container && _satellite._container.extensions) {
       if (_satellite._container.extensions["data-layer-manager-search-discovery"]) {
@@ -535,33 +535,33 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber) {
           value: "DM's DL Found: " + _satellite._container.extensions["data-layer-manager-search-discovery"].settings.dataLayerObjectName,
           class: "success",
           info: "Data Layer Manager from Search Discovery was successfully detected!"
-        }
+        };
         dataLayer = await JSON.parse(await getDLWithNoGTM(_satellite._container.extensions["data-layer-manager-search-discovery"].settings.dataLayerObjectName));
       } else if (_satellite._container.extensions["gcoe-adobe-client-data-layer"]) {
         details.dl = {
           value: "ACDL's DL Found: " + _satellite._container.extensions["gcoe-adobe-client-data-layer"].settings.dataLayerName,
           class: "success",
           info: "ACDL was successfully detected!"
-        }
+        };
         dataLayer = await JSON.parse(await getDLWithNoGTM(_satellite._container.extensions["gcoe-adobe-client-data-layer"].settings.dataLayerName));
       } else if (_satellite._container.extensions["adobegoogledatalayer"]) {
         details.dl = {
           value: "GTM's DL Found: " + _satellite._container.extensions["adobegoogledatalayer"].settings.dataLayer,
           class: "success",
           info: "GTM DL's extension was successfully detected!"
-        }
+        };
         dataLayer = await JSON.parse(await getDLWithNoGTM(_satellite._container.extensions["adobegoogledatalayer"].settings.dataLayer));
       } else {
         details.dl = {
           value: "No DL Extension",
           class: "warn",
           info: "No DL has been detected."
-        }
+        };
         details.dlevent = {
           value: "No DL Extension",
           class: "warn",
           info: "No DL has been detected."
-        }
+        };
       }
       if (Array.isArray(dataLayer)){
         dlEvent = dataLayer.slice(-1)[0] || {event:"No events yet :)"};
@@ -571,20 +571,20 @@ async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber) {
           value: dlEvent.event,
           class: dlEvent === "No events yet :)" ? "warn" : "success",
           info: "Last event that is not a 'gtm.' event :)"
-        }
+        };
       } else {
         details.dlevent = {
           value: "No events yet :)",
           class: "warn",
           info: "DL is found, but it doesn't contain non-gtm events."
-        }
+        };
       }
     } else {
       details.dl = details.dlevent = {
         value: "No Container",
         class: "error",
         info: "No _satellite._container has been found."
-      }
+      };
     }
   } else {
     details.lstatus.value = "Not Found";
@@ -644,6 +644,12 @@ async function settingsSetter(settings) {
     checkbox.addEventListener("click", (event) => {
       settings[event.target.id] = event.target.checked;
       chrome.storage.sync.set({ settings: settings });
+      if(event.target.id === "launchbox"){
+        executeOnPage(event.target.checked, (flag) => {
+          localStorage.setItem("com.adobe.reactor.debug",!!flag); 
+          typeof _satellite !== 'undefined' ? _satellite?.setDebug(!!flag) : '';
+        });
+      }
     })
   });
 

@@ -15,7 +15,10 @@ function setDebugLogicListener() {
 
 async function setDebug(flag) {
   chrome.scripting.executeScript({
-    func: (flag) => {localStorage.setItem("com.adobe.reactor.debug",!!flag); typeof _satellite !== 'undefined' ? _satellite?.setDebug(flag) : '' },
+    func: (flag) => {
+      localStorage.setItem("com.adobe.reactor.debug",!!flag); 
+      typeof _satellite !== 'undefined' ? _satellite?.setDebug(!!flag) : '';
+    },
     args: [flag],
     target: {
       tabId: (await chrome.tabs.query({ active: true, currentWindow: true }))[0].id
