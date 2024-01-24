@@ -13,19 +13,21 @@ The purpose can be divided in a few segments, sorted by importance desc:
 * Make it faster for Adobe Analytics implementation engineers and analysts to debug the front-end part of Adobe Analytics and Adobe Launch.
 * Make it more comfortable to consume the debugging data.
 * Make it possible for a larger analytics community to contribute to open source debugging tools not associated with any commercial corp.
-* Make it easier for associated third parties like front-end developers and QAs to use the analytics debugging data.
+* Make it easier for associated third parties like front-end developers and QAs to see the live analytics data.
 
 ## Scope
-This extension essentially has three parts accomplishing different facets of AA/Launch debugging:
+This extension essentially has four parts accomplishing different facets of AA/Launch debugging:
 * **Essential info Popup**. Make it easier and faster to get essential information about the Launch library and primitive highlighting of essential concerns:
   
-  ![alt no Launch Present Screenshot](https://i.imgur.com/sN7RlGA.jpg) ![alt Launch Present Screenshot](https://i.imgur.com/DcaKQ4I.jpg)
+  ![alt no Launch Present Screenshot](https://i.imgur.com/BoKaWwG.jpg) ![alt Launch Present Screenshot](https://i.imgur.com/ICeZjLw.jpg)
   
 * **Console logging**. Completely reimplement and improve what the AA Debugger extension does, fixing its bugs and ui, adding more configuration options:
-  
-  ![alt console logging suspended](https://i.imgur.com/orqRiQS.jpg) ![alt console logging expanded](https://i.imgur.com/QatXYvT.jpg)
-  
-* **Library Replacement**. Reimplement the Switch extension, essentially, but simpler and working. Simple logic to redirect the launch library fetch to a custom library. This is Planned only.
+
+  ![alt console logging](https://github.com/cthae/Adobe-Launch-Debugger/assets/55302327/cfcc48e0-81c0-4346-bb66-1372bd9f0bb6)
+
+* **Library Replacement**. Reimplement the Switch extension, essentially, but simpler and working properly. Simple logic to redirect the launch library fetch to a custom library.
+
+* * **AEP Debugging**. The Web SDK debugging is just an MVP for now, essentially pretty-printing the xdm object sent.
 
 ## Plan
 The dev plan and event log:
