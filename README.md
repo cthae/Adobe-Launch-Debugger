@@ -82,9 +82,9 @@ The dev plan and event log:
 * [x] Release v0.99.
 * [x] Raccooning!
 * [x] Release v1.00.
+* [ ] Add a feature to highlight merch events that aren't present in s.events. Why would Adobe do this? Feels like a bug.
 * [ ] Get feedback from a larger audience.
 * [ ] Find an elegant way to inject a library. Should probably be one/domain. To avoid doing it globally.
-* [ ] Make the UI more compact. Maybe.
 * [ ] Once the library switching logic is done, implement a setting to remove the .min from the library. It's gonna utilize the same redirecting logic. Off by default.
 * [ ] Check Adobe Analytics Debugger's changelog. Some things from there might be worth reimplementing.
 * [ ] Update extension store screenshots. Maybe make a big fun logo too.
