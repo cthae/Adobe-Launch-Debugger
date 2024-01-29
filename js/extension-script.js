@@ -98,7 +98,7 @@ function OTCheckConsent(evnt){
   evnt.target.classList = "success";
   evnt.target.innerText = "In the Console!";
   const result = executeOnPage("", () => {
-    var color = {
+    const color = {
       good: 'lime',
       bad: 'red',
       info: 'white',
@@ -106,7 +106,7 @@ function OTCheckConsent(evnt){
       data: 'lightgrey'
     }
     window.getCookie = function (name) {
-      var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+      const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
       if (match) return match[2];
     }
     const fullCookie = window.getCookie("OptanonConsent");
@@ -614,11 +614,11 @@ async function checkStatus(_satellite, pageLoadTime, pvsNumber, linksNumber) {
 }
 
 function formattedTimeSinceLastBuild(_satellite) {
-  var ms = new Date() - new Date(_satellite.buildInfo.buildDate);
-  let seconds = (ms / 1000).toFixed(1);
-  let minutes = (ms / (1000 * 60)).toFixed(1);
-  let hours = (ms / (1000 * 60 * 60)).toFixed(1);
-  let days = (ms / (1000 * 60 * 60 * 24)).toFixed(1);
+  const ms = new Date() - new Date(_satellite.buildInfo.buildDate);
+  const seconds = (ms / 1000).toFixed(1);
+  const minutes = (ms / (1000 * 60)).toFixed(1);
+  const hours = (ms / (1000 * 60 * 60)).toFixed(1);
+  const days = (ms / (1000 * 60 * 60 * 24)).toFixed(1);
   if (seconds < 60) return seconds + " Sec";
   else if (minutes < 60) return minutes + " Min";
   else if (hours < 24) return hours + " Hrs";
