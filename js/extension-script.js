@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', async () => {
-  settingsLoad();
-  clicks();
+  loadSettings();
+  deployClickListeners();
   const client = await getValuesFromClient();
-  updatePage(await statusCheck(client._satellite, client.pageLoadTime, client.pvs.length, client.links.length));
+  updatePage(await checkStatus(client._satellite, client.pageLoadTime, client.pvs.length, client.links.length));
 });
 
 async function getValuesFromClient(){
@@ -20,7 +20,7 @@ async function getValuesFromClient(){
   return client;
 }
 
-function clicks() {
+function deployClickListeners() {
   document.querySelectorAll("button.tablinks").forEach((button) => {
     button.addEventListener("click", switchTab);
   });
@@ -32,10 +32,10 @@ function clicks() {
   document.getElementById("OTOpenManager").addEventListener("click", OTOpenManager);
   document.getElementById("OTRejectAll").addEventListener("click", OTRejectAll);
   document.getElementById("OTAllowAll").addEventListener("click", OTAllowAll);
-  document.getElementById("raccoon").addEventListener("click", raccoonLove);
+  document.getElementById("raccoon").addEventListener("click", loveTheRaccoon);
 }
 
-function raccoonLove(event){
+function loveTheRaccoon(event){
   event.target.innerText = "😻";
   setTimeout(() => event.target.innerText = "🦝", 2000);
 }
@@ -439,7 +439,7 @@ async function getDLWithNoGTM(name) {
   return result;
 }
 
-async function statusCheck(_satellite, pageLoadTime, pvsNumber, linksNumber) {
+async function checkStatus(_satellite, pageLoadTime, pvsNumber, linksNumber) {
   let dataLayer = [];
   let dlEvent = {};
   const details = {
@@ -625,7 +625,7 @@ function formattedTimeSinceLastBuild(_satellite) {
   else return days + " Days";
 }
 
-async function settingsLoad() {
+async function loadSettings() {
   chrome.storage.sync.get('redirections', function (data) {
     const redirections = data?.redirections || [];
     updateRedirections(redirections);
