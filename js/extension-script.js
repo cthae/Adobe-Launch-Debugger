@@ -1,6 +1,11 @@
 document.addEventListener('DOMContentLoaded', async () => {
   settingsLoad();
   clicks();
+  const client = await getValuesFromClient();
+  updatePage(await statusCheck(client._satellite, client.pageLoadTime, client.pvs.length, client.links.length));
+});
+
+async function getValuesFromClient(){
   const client = {};
   client.timing = JSON.parse(await getTiming());
   client._satellite = JSON.parse(await getPageVar('_satellite'));
@@ -12,9 +17,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     return /pe=lnk/i.test(url.name);
   });
   client.pageLoadTime = client.timing.domContentLoadedEventEnd - client.timing.navigationStart;
-
-  updatePage(await statusCheck(client._satellite, client.pageLoadTime, client.pvs.length, client.links.length));
-});
+  return client;
+}
 
 function clicks() {
   document.querySelectorAll("button.tablinks").forEach((button) => {
