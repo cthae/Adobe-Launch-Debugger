@@ -82,6 +82,7 @@ The dev plan and event log:
 * [x] Release v0.99.
 * [x] Raccooning!
 * [x] Release v1.00.
+* [x] Code refactory in the popup scripts.
 * [ ] Add a feature to highlight merch events that aren't present in s.events. Why would Adobe do this? Feels like a bug.
 * [ ] Get feedback from a larger audience.
 * [ ] Find an elegant way to inject a library. Should probably be one/domain. To avoid doing it globally.
