@@ -61,7 +61,7 @@ function logAAServerCall(fullURL, _satelliteInfo, settings, networkError) {
       eventsMessage + " " + RSMessage,
       cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
   }
-  printProducts(parsingResult.products);
+  printProducts(parsingResult.products, parsingResult.events);
   printMisc(parsingResult.pageName, parsingResult.pageType, parsingResult.campaign, parsingResult.currency, parsingResult.allHierarchy, parsingResult.siteSection)
   printVars(parsingResult.allListVars, "ListVars");
   printVars(parsingResult.alleVars, "eVars", settings.varsExpand);
@@ -144,23 +144,63 @@ function printMisc(pName, pType, campaign, currency, hierarchies, siteSection) {
   return true;
 }
 
-function printProducts(productString) {
+function printProducts(productString, globalEvents) {
+  //console.log("@@@ DEBUGGING: ", productString);
   if (!productString || productString.length === 0) {
     return false;
   }
+  cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Red; color: black`;
   //console.log("@@@ Debugging product string:", productString);
   const products = productString.split(",");
   console.group("Products: " + products.length);
   products.forEach((product) => {
-    console.log(`Category   : ${product.split(";")[0] ? product.split(";")[0] : '[Not Set]'}\n` + 
-                `Name       : ${product.split(";")[1] ? product.split(";")[1] : '[Not Set]'}\n` + 
-                `Quantity   : ${product.split(";")[2] ? product.split(";")[2] : '[Not Set]'}\n` + 
-                `Price      : ${product.split(";")[3] ? product.split(";")[3] : '[Not Set]'}\n` + 
-                `Events     : ${product.split(";")[4] ? product.split(";")[4] : '[Not Set]'}\n` + 
-                `Merch.Vars : ${product.split(";")[5] ? product.split(";")[5] : '[Not Set]'}\n`);
+    const prodEventsContainer = product.split(";")[4] ? getProductEvents(product.split(";")[4], globalEvents) : {};
+    if(prodEventsContainer?.areRogueEventsPresent){
+      console.log(`Category   : ${product.split(";")[0] ? product.split(";")[0] : '[Not Set]'}\n` + 
+        `Name       : ${product.split(";")[1] ? product.split(";")[1] : '[Not Set]'}\n` + 
+        `Quantity   : ${product.split(";")[2] ? product.split(";")[2] : '[Not Set]'}\n` + 
+        `Price      : ${product.split(";")[3] ? product.split(";")[3] : '[Not Set]'}\n` + 
+        `Events     : ${prodEventsContainer?.events ? prodEventsContainer?.events : '[Not Set]'}\n` + 
+        `Merch.Vars : ${product.split(";")[5] ? product.split(";")[5] : '[Not Set]'}\n` +
+        `%cSome events won't pop in AA cuz Adobe is weird and requires merch events to also be in s.events%c`
+        ,"background-color: Red; color: black", "", "background-color: Red; color: black", ""
+      );
+    } else {
+      console.log(`Category   : ${product.split(";")[0] ? product.split(";")[0] : '[Not Set]'}\n` + 
+        `Name       : ${product.split(";")[1] ? product.split(";")[1] : '[Not Set]'}\n` + 
+        `Quantity   : ${product.split(";")[2] ? product.split(";")[2] : '[Not Set]'}\n` + 
+        `Price      : ${product.split(";")[3] ? product.split(";")[3] : '[Not Set]'}\n` + 
+        `Events     : ${prodEventsContainer?.events ? prodEventsContainer?.events : '[Not Set]'}\n` + 
+        `Merch.Vars : ${product.split(";")[5] ? product.split(";")[5] : '[Not Set]'}\n`
+      );
+    }
   });
-  console.groupEnd();//close the Products section
+  console.groupEnd(); //close the Products section
   return true;
+}
+
+function getProductEvents(prodEvents, globalEvents){
+  const result = {};
+  if(prodEvents.length < 7){
+    return {
+      events: prodEvents,
+      wrongEvents: false
+    }
+  }
+  const rogueEvents = prodEvents.split("|").filter(prodEvent => {
+    return globalEvents.indexOf(prodEvent.split("=")[0].split(":")[0]) === -1;
+  });
+  if(rogueEvents.length > 0){
+    const presentEvents = prodEvents.split("|").filter(prodEvent => {
+      return globalEvents.indexOf(prodEvent.split("=")[0].split(":")[0]) !== -1;
+    });
+    result.events =  ["%c" + rogueEvents.join("|") + "%c", presentEvents.join("|")].join("|");
+    result.areRogueEventsPresent = true;
+  } else {
+    result.events = prodEvents;
+    result.areRogueEventsPresent = false;
+  }
+  return result;
 }
 
 function printOne(name, val) {
