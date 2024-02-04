@@ -6,7 +6,7 @@ Debugger tool for Adobe Launch and Adobe Analytics.
 * [Scope](https://github.com/cthae/Adobe-Launch-Debugger/blob/main/README.md#scope)
 * [Plan](https://github.com/cthae/Adobe-Launch-Debugger/blob/main/README.md#plan)
 * [Contributions](https://github.com/cthae/Adobe-Launch-Debugger/blob/main/README.md#contributions)
-* [Special Thanks](https://github.com/cthae/Adobe-Launch-Debugger/blob/main/README.md#special_thanks)
+* [Special Thanks](https://github.com/cthae/Adobe-Launch-Debugger/blob/main/README.md#special-thanks)
 * [License](https://github.com/cthae/Adobe-Launch-Debugger/blob/main/README.md#license)
 
 ## Purpose
@@ -107,8 +107,8 @@ If it's a deeper change of the content-script.js or background.js or manifest, y
 * Click the reload CTA in the extension card near the enable/disable slider.
 
 ## Special thanks
-* To the #adobe-launch and #adobe-analytics channels of [Measure Slack](https://www.measure.chat/) community for early testing and precious feedback from staff enterprise analytics experts.
-* To the #javascript channel of [Libera Chat](https://libera.chat/) community and especially to LJharb in there.
+* To the **#adobe-launch** and **#adobe-analytics** channels of [Measure Slack](https://www.measure.chat/) community for early testing and precious feedback from staff enterprise analytics experts.
+* To the **#javascript** channel of [Libera Chat](https://libera.chat/) community and especially to LJharb in there.
 * To the [Chromium Extensions](https://groups.google.com/a/chromium.org/g/chromium-extensions) Google group and especially to [wOxxOm](https://stackoverflow.com/users/3959875/woxxom) there and on Stack Overflow.
 
 ## License
