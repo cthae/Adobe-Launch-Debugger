@@ -108,7 +108,7 @@ If it's a deeper change of the content-script.js or background.js or manifest, y
 
 ## Special thanks
 * To the **#adobe-launch** and **#adobe-analytics** channels of [Measure Slack](https://www.measure.chat/) community for early testing and precious feedback from staff enterprise analytics experts.
-* To the **#javascript** channel of [Libera Chat](https://libera.chat/) community and especially to LJharb in there.
+* To the **#javascript** channel of [Libera Chat](https://libera.chat/) community and especially to ljharb in there.
 * To the [Chromium Extensions](https://groups.google.com/a/chromium.org/g/chromium-extensions) Google group and especially to [wOxxOm](https://stackoverflow.com/users/3959875/woxxom) there and on Stack Overflow.
 
 ## License
