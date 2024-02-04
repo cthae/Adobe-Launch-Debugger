@@ -160,8 +160,8 @@ function printProducts(productString, globalEvents) {
         `Name       : ${product.split(";")[1] ? product.split(";")[1] : '[Not Set]'}\n` + 
         `Quantity   : ${product.split(";")[2] ? product.split(";")[2] : '[Not Set]'}\n` + 
         `Price      : ${product.split(";")[3] ? product.split(";")[3] : '[Not Set]'}\n` + 
-        `Events     : ${prodEventsContainer?.events ? prodEventsContainer?.events : '[Not Set]'}\n` + 
-        `Merch.Vars : ${product.split(";")[5] ? product.split(";")[5] : '[Not Set]'}\n` +
+        `Events     : ${prodEventsContainer?.events ? prodEventsContainer.events : '[Not Set]'}\n` + 
+        `Merch.Vars : ${product.split(";")[5] ? product.split(";")[5].split("|").join(", ") : '[Not Set]'}\n` + 
         `%cSome events won't pop in AA cuz Adobe is weird and requires merch events to also be in s.events%c`
         ,"background-color: Red; color: black", "", "background-color: Red; color: black", ""
       );
@@ -171,7 +171,7 @@ function printProducts(productString, globalEvents) {
         `Quantity   : ${product.split(";")[2] ? product.split(";")[2] : '[Not Set]'}\n` + 
         `Price      : ${product.split(";")[3] ? product.split(";")[3] : '[Not Set]'}\n` + 
         `Events     : ${prodEventsContainer?.events ? prodEventsContainer?.events : '[Not Set]'}\n` + 
-        `Merch.Vars : ${product.split(";")[5] ? product.split(";")[5] : '[Not Set]'}\n`
+        `Merch.Vars : ${product.split(";")[5] ? product.split(";")[5].split("|").join(", ") : '[Not Set]'}`
       );
     }
   });
@@ -194,7 +194,8 @@ function getProductEvents(prodEvents, globalEvents){
     const presentEvents = prodEvents.split("|").filter(prodEvent => {
       return globalEvents.indexOf(prodEvent.split("=")[0].split(":")[0]) !== -1;
     });
-    result.events =  ["%c" + rogueEvents.join("|") + "%c", presentEvents.join("|")].join("|");
+    result.events = "%c" + rogueEvents.join(", ") + "%c" + 
+      (presentEvents.length > 0 ? ", " + presentEvents.join(", ") : "");
     result.areRogueEventsPresent = true;
   } else {
     result.events = prodEvents;

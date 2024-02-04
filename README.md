@@ -85,6 +85,8 @@ The dev plan and event log:
 * [x] Release v1.00.
 * [x] Code refactory in the popup scripts.
 * [x] Add a feature to highlight merch events that aren't present in s.events. Why would Adobe do this? Feels like a bug.
+* [x] Merchandising variables logging improvements (", " delimiter instead of the pipe "|")
+* [ ] Release v1.01.
 * [ ] Get feedback from a larger audience.
 * [ ] Find an elegant way to inject a library. Should probably be one/domain. To avoid doing it globally.
 * [ ] Once the library switching logic is done, implement a setting to remove the .min from the library. It's gonna utilize the same redirecting logic. Off by default.
