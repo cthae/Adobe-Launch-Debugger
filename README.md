@@ -6,6 +6,7 @@ Debugger tool for Adobe Launch and Adobe Analytics.
 * [Scope](https://github.com/cthae/Adobe-Launch-Debugger/blob/main/README.md#scope)
 * [Plan](https://github.com/cthae/Adobe-Launch-Debugger/blob/main/README.md#plan)
 * [Contributions](https://github.com/cthae/Adobe-Launch-Debugger/blob/main/README.md#contributions)
+* [Special Thanks](https://github.com/cthae/Adobe-Launch-Debugger/blob/main/README.md#special-thanks)
 * [License](https://github.com/cthae/Adobe-Launch-Debugger/blob/main/README.md#license)
 
 ## Purpose
@@ -105,6 +106,11 @@ If it's a UI change in the extension-script.js, css files or main.html, just cli
 If it's a deeper change of the content-script.js or background.js or manifest, you'll have to reload the extension:
 * Open the extensions page chrome://extensions/
 * Click the reload CTA in the extension card near the enable/disable slider.
+
+## Special thanks
+* To the **#adobe-launch** and **#adobe-analytics** channels of [Measure Slack](https://www.measure.chat/) community for early testing and precious feedback from staff enterprise analytics experts.
+* To the **#javascript** channel of [Libera Chat](https://libera.chat/) community and especially to [ljharb](https://github.com/ljharb) in there for always being able to answer even most complex JS questions with kindness and patience.
+* To the [Chromium Extensions](https://groups.google.com/a/chromium.org/g/chromium-extensions) Google group and especially to [wOxxOm](https://stackoverflow.com/users/3959875/woxxom) there and on Stack Overflow for guiding me through most critical stages of extension development.
 
 ## License
 Mozilla Public License Version 2.0
