@@ -11,9 +11,9 @@ Debugger tool for Adobe Launch and Adobe Analytics.
 
 ## Purpose
 The purpose can be divided in a few segments, sorted by importance desc:
-* Make it faster for Adobe Analytics implementation engineers and analysts to debug the front-end part of Adobe Analytics and Adobe Launch.
+* Make it faster for Adobe Analytics implementation engineers and analysts to debug the front-end part of Adobe Analytics, AEP or Adobe Launch. Ideally, as fast as possible while still keeping it universal.
 * Make it more comfortable to consume the debugging data.
-* Make it possible for a larger analytics community to contribute to open source debugging tools not associated with any commercial corp.
+* Make it possible for a larger analytics community to contribute to open source debugging tools not associated with any corp.
 * Make it easier for associated third parties like front-end developers and QAs to see the live analytics data.
 
 ## Scope
