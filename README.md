@@ -1,5 +1,5 @@
-# Adobe Launch Debugger
-Debugger tool for Adobe Launch and Adobe Analytics.
+# Universal Adobe Debugger
+Debugger tool for Adobe Launch, AEP and Adobe Analytics.
 
 ### Table of Contents
 * [Purpose](https://github.com/cthae/Adobe-Launch-Debugger/blob/main/README.md#purpose)
