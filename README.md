@@ -88,6 +88,7 @@ The dev plan and event log:
 * [x] Merchandising variables logging improvements (", " delimiter instead of the pipe "|").
 * [x] Add reporting for s.zip, currency code, org id (mcorgid) and visitor id (mid).
 * [x] The "Other" reporting section is now collapsed by default due to the number of not-so-useful new dimensions added there.
+* [x] A bit more ui improvements.
 * [x] Release v1.01.
 
 * [ ] Find an elegant way to inject a library. Should probably be one/domain. To avoid doing it globally. Maybe not...
