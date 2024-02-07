@@ -62,7 +62,7 @@ function logAAServerCall(fullURL, _satelliteInfo, settings, networkError) {
       cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
   }
   printProducts(parsingResult.products, parsingResult.events);
-  printMisc(parsingResult.pageName, parsingResult.pageType, parsingResult.campaign, parsingResult.currency, parsingResult.allHierarchy, parsingResult.siteSection)
+  printMisc(parsingResult.pageName, parsingResult.pageType, parsingResult.campaign, parsingResult.currency, parsingResult.allHierarchy, parsingResult.siteSection, parsingResult.zip)
   printVars(parsingResult.allListVars, "ListVars");
   printVars(parsingResult.alleVars, "eVars", settings.varsExpand);
   printVars(parsingResult.allProps, "props", settings.varsExpand);
@@ -121,18 +121,20 @@ function printVars(vars, name, printExpanded = true) {
   return true;
 }
 
-function printMisc(pName, pType, campaign, currency, hierarchies, siteSection) {
+function printMisc(pName, pType, campaign, currency, hierarchies, siteSection, zip) {
   if (!pName && !pType && !campaign && !currency && !hierarchies) {
     return false;
   }
   console.group((`Misc: ${pName ? "PageName," : ""}${pType ? " PageType," : ""}${siteSection ? " Site Section," : ""}` +
     `${campaign ? " Campaign," : ""}${currency ? " Currency," : ""}` +
+    `${zip ? " Zip," : ""}${currency ? " Currency," : ""}` +
     `${hierarchies && hierarchies.length > 0 ? " Hierarchy," : ""}`).slice(0, -1));
   printOne("Page Name   ", pName);
   printOne("Page Type   ", pType);
   printOne("Site Section", siteSection);
   printOne("Campaign    ", campaign);
   printOne("Currency    ", currency);
+  printOne("Zip         ", zip);
   if (hierarchies.length > 0) {
     let hierarchiesString = '';
     hierarchies.forEach((h) => {
@@ -234,6 +236,7 @@ function parseAAServerCall(fullURL) {
   parsingResult.events = getComponent(allParams, "events");
   parsingResult.campaign = getComponent(allParams, "v0");
   parsingResult.pageName = getComponent(allParams, "pageName");
+  parsingResult.zip = getComponent(allParams, "zip");
   parsingResult.pageType = getComponent(allParams, "pageType");
   parsingResult.server = getComponent(allParams, "server");
   parsingResult.url = getComponent(allParams, "g");
