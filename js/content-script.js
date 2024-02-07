@@ -62,13 +62,16 @@ function logAAServerCall(fullURL, _satelliteInfo, settings, networkError) {
       cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
   }
   printProducts(parsingResult.products, parsingResult.events);
-  printMisc(parsingResult.pageName, parsingResult.pageType, parsingResult.campaign, parsingResult.currency, parsingResult.allHierarchy, parsingResult.siteSection, parsingResult.zip)
+  printMisc(parsingResult.pageName, parsingResult.pageType, parsingResult.campaign, 
+    parsingResult.currencyCode, parsingResult.allHierarchy, parsingResult.siteSection, 
+    parsingResult.zip)
   printVars(parsingResult.allListVars, "ListVars");
   printVars(parsingResult.alleVars, "eVars", settings.varsExpand);
   printVars(parsingResult.allProps, "props", settings.varsExpand);
   printContext(parsingResult.contextVars, settings);
   printOther(parsingResult.url2 ? parsingResult.url + parsingResult.url2 : parsingResult.url,
-    parsingResult.server, _satelliteInfo.property, _satelliteInfo.environment, _satelliteInfo.buildtime);
+    parsingResult.server, _satelliteInfo.property, _satelliteInfo.environment, 
+    _satelliteInfo.buildtime, parsingResult.mcorgid, parsingResult.mid);
   console.groupEnd();
 }
 
@@ -88,16 +91,16 @@ function printContext(contextVars, settings){
   console.groupEnd();
 }
 
-function printOther(url, server, property, environment, buildDate) {
-  if (!url && !server && !property && !environment && !buildDate) {
-    return false;
-  }
-  console.group(`Other:${url ? ' URL,' : ""}${server ? ' Server,' : ""}` +
-    `${property ? ' Property,' : ""}${environment ? ' Environment,' : ""}${buildDate ? ' buildDate,' : ""}`);
+function printOther(url, server, property, environment, buildDate, mcorgid, mid) {
+  console.groupCollapsed(`Other:${url ? ' URL,' : ""}${server ? ' Server,' : ""}` +
+    `${property ? ' Property,' : ""}${environment ? ' Environment,' : ""}` +
+    `${mcorgid ? ' mcorgid,' : ""}${mid ? ' mid,' : ""}${buildDate ? ' buildDate,' : ""}`);
   printOne("URL        ", url);
   printOne("Server     ", server);
   printOne("Property   ", property);
   printOne("Environment", environment);
+  printOne("mcorgid    ", mcorgid);
+  printOne("MID        ", mid);
   printOne("Build Date ", buildDate);
   console.groupEnd();
   return true;
@@ -164,7 +167,7 @@ function printProducts(productString, globalEvents) {
         `Price      : ${product.split(";")[3] ? product.split(";")[3] : '[Not Set]'}\n` + 
         `Events     : ${prodEventsContainer?.events ? prodEventsContainer.events : '[Not Set]'}\n` + 
         `Merch.Vars : ${product.split(";")[5] ? product.split(";")[5].split("|").join(", ") : '[Not Set]'}\n` + 
-        `%cSome events won't pop in AA cuz Adobe is weird and requires merch events to also be in s.events%c`
+        `🦝%cMerchandising events should be in s.events too, otherwise AA won't display them%c🦝`
         ,"background-color: Red; color: black", "", "background-color: Red; color: black", ""
       );
     } else {
@@ -242,6 +245,8 @@ function parseAAServerCall(fullURL) {
   parsingResult.url = getComponent(allParams, "g");
   parsingResult.url2 = getComponent(allParams, "-g");
   parsingResult.currencyCode = getComponent(allParams, "cc");
+  parsingResult.mcorgid = getComponent(allParams, "mcorgid");
+  parsingResult.mid = getComponent(allParams, "mid");
   parsingResult.products = getComponent(allParams, "products");
   parsingResult.visitorId = getComponent(allParams, "aid");
   parsingResult.customLinkType = getComponent(allParams, "pe");
