@@ -90,7 +90,8 @@ The dev plan and event log:
 * [x] The "Other" reporting section is now collapsed by default due to the number of not-so-useful new dimensions added there.
 * [x] A bit more ui improvements.
 * [x] Release v1.01.
-
+* [ ] Improve _satellite.setDebug(0) to work immediately rather than after a page reload.
+* [ ] Add the logic similar to switch to parse the environments from the opened Launch page. This is a flimsy logic though. Will break often, just like it does in switch.
 * [ ] Find an elegant way to inject a library. Should probably be one/domain. To avoid doing it globally. Maybe not...
 
 
