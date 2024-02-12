@@ -91,6 +91,9 @@ The dev plan and event log:
 * [x] A bit more ui improvements.
 * [x] Release v1.01.
 * [ ] Improve _satellite.setDebug(0) to work immediately rather than after a page reload.
+* [ ] Allow the user to set their own variables to be included in the header of the logging.
+* [ ] ^^ Same for the web sdk, but maybe later.
+* [ ] Release v1.02.
 * [ ] Add the logic similar to switch to parse the environments from the opened Launch page. This is a flimsy logic though. Will break often, just like it does in switch.
 * [ ] Find an elegant way to inject a library. Should probably be one/domain. To avoid doing it globally. Maybe not...
 
