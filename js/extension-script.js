@@ -33,6 +33,26 @@ function deployClickListeners() {
   document.getElementById("OTRejectAll").addEventListener("click", OTRejectAll);
   document.getElementById("OTAllowAll").addEventListener("click", OTAllowAll);
   document.getElementById("raccoon").addEventListener("click", loveTheRaccoon);
+  document.getElementById("setLoggingHeadings").addEventListener("click", setLoggingHeadings);
+}
+
+function setLoggingHeadings(event){
+  const textArea = document.getElementById("loggingHeadings");
+  textArea.value = textArea.value.replace(/\s/g, "").replace(/[^a-zA-Z0-9\-,]/g, "");
+  let queryParams = []
+  if(textArea.value.length === 0){
+    event.target.classList = "error";
+    event.target.innerText = "Cleared!";
+  } else {
+    event.target.classList = "success";
+    event.target.innerText = "Set!";
+    queryParams = textArea.value.split(",");
+  }
+  chrome.storage.sync.get('settings', function (data) {
+    data.settings.loggingHeadings = queryParams;
+    chrome.storage.sync.set({settings:data.settings});
+  });  
+
 }
 
 function loveTheRaccoon(event){
@@ -40,7 +60,7 @@ function loveTheRaccoon(event){
   setTimeout(() => event.target.innerText = "🦝", 2000);
 }
 
-async function OTAllowAll(evnt){
+async function OTAllowAll(event){
   const result = await executeOnPage("", () => {
     if (typeof Optanon === "undefined"){
       return false;
@@ -50,15 +70,15 @@ async function OTAllowAll(evnt){
     }
   });
   if (result){
-    evnt.target.classList = "success";
-    evnt.target.innerText = "Done!";
+    event.target.classList = "success";
+    event.target.innerText = "Done!";
   } else {
-    evnt.target.classList = "error";
-    evnt.target.innerText = "No Optanon!";
+    event.target.classList = "error";
+    event.target.innerText = "No Optanon!";
   }
 }
 
-async function OTRejectAll(evnt){
+async function OTRejectAll(event){
   const result = await executeOnPage("", () => {
     if (typeof Optanon === "undefined"){
       return false;
@@ -68,15 +88,15 @@ async function OTRejectAll(evnt){
     }
   });
   if (result){
-    evnt.target.classList = "success";
-    evnt.target.innerText = "Done!";
+    event.target.classList = "success";
+    event.target.innerText = "Done!";
   } else {
-    evnt.target.classList = "error";
-    evnt.target.innerText = "No Optanon!";
+    event.target.classList = "error";
+    event.target.innerText = "No Optanon!";
   }
 }
 
-async function OTOpenManager(evnt){
+async function OTOpenManager(event){
   const result = await executeOnPage("", () => {
     if (typeof Optanon === "undefined"){
       return false;
@@ -86,17 +106,17 @@ async function OTOpenManager(evnt){
     }
   });
   if (result){
-    evnt.target.classList = "success";
-    evnt.target.innerText = "Done!";
+    event.target.classList = "success";
+    event.target.innerText = "Done!";
   } else {
-    evnt.target.classList = "error";
-    evnt.target.innerText = "No Optanon!";
+    event.target.classList = "error";
+    event.target.innerText = "No Optanon!";
   }
 }
 
-function OTCheckConsent(evnt){
-  evnt.target.classList = "success";
-  evnt.target.innerText = "In the Console!";
+function OTCheckConsent(event){
+  event.target.classList = "success";
+  event.target.innerText = "In the Console!";
   const result = executeOnPage("", () => {
     const color = {
       good: 'lime',
@@ -133,9 +153,9 @@ function OTCheckConsent(evnt){
   });
 }
 
-function blockPageUnload(evnt){
-  evnt.target.classList = "success";
-  evnt.target.innerText = "Done!";
+function blockPageUnload(event){
+  event.target.classList = "success";
+  event.target.innerText = "Done!";
   executeOnPage("", () => {
     window.onbeforeunload = () => false;
   });

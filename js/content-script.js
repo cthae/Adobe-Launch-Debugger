@@ -47,6 +47,7 @@ function logAAServerCall(fullURL, _satelliteInfo, settings, networkError) {
     cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Red; color: black`;
     cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Red; color: black`;
   }
+  
   const pNameMessage = sCallType + " Name : %c" + sCallName;
   const eventsMessage = `%cEvents: %c${parsingResult.events ? parsingResult.events : "[No Events]"}`;
   const RSMessage = `%cReport Suite: %c${parsingResult.rSuite ? parsingResult.rSuite : "[No RS Found]"}`;
@@ -73,6 +74,19 @@ function logAAServerCall(fullURL, _satelliteInfo, settings, networkError) {
     parsingResult.server, _satelliteInfo.property, _satelliteInfo.environment, 
     _satelliteInfo.buildtime, parsingResult.mcorgid, parsingResult.mid);
   console.groupEnd();
+  logCustomFields(settings.loggingHeadings, fullURL);
+}
+
+function logCustomFields(loggingHeadings, fullURL){
+  if(loggingHeadings.length > 0){
+    const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Orange; color: black`;
+    const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 800;font-size: 1.2em; background-color: Orange; color: black`;
+    console.group(`%cUser-customized additional logging:`, cssHeadField);
+    loggingHeadings.forEach(heading => {
+      console.log(`%c${heading} : %c${fullURL.split(heading + "=")[1]?.split("&")[0]}`, cssHeadValue, cssHeadField);
+    });
+    console.groupEnd();
+  }
 }
 
 function printContext(contextVars, settings){
