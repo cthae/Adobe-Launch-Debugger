@@ -90,7 +90,7 @@ The dev plan and event log:
 * [x] The "Other" reporting section is now collapsed by default due to the number of not-so-useful new dimensions added there.
 * [x] A bit more ui improvements.
 * [x] Release v1.01.
-* [x] Allow the user to set their own variables to be included in the header of the logging.
+* [x] Allow the user to set their own variables to be included in the header of the logging. Thanks Arun T for suggesting.
 * [x] Improve _satellite.setDebug(0) to work immediately rather than after a page reload.
 * [x] Small cosmetic improvements.
 * [x] Release v1.02.
