@@ -51,8 +51,7 @@ function setLoggingHeadings(event){
   chrome.storage.sync.get('settings', function (data) {
     data.settings.loggingHeadings = queryParams;
     chrome.storage.sync.set({settings:data.settings});
-  });  
-
+  });
 }
 
 function loveTheRaccoon(event){
@@ -657,8 +656,13 @@ async function loadSettings() {
     if (data.settings) {
       console.log("@@@ Settings Exist, the obj is ", data.settings);
       Object.keys(data.settings).forEach(setting => {
-        document.getElementById(setting).checked = data.settings[setting];
+        if (document.getElementById(setting)){
+          document.getElementById(setting).checked = data.settings[setting];
+        }
       });
+      if (Array.isArray(data.settings?.loggingHeadings)){
+        document.getElementById("loggingHeadings").value = data.settings.loggingHeadings.join(", ");
+      }
     } else {
       console.log("@@@ Settings Don't exist. Populating them with default vals. the obj is ", data.settings);
       document.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
@@ -677,7 +681,7 @@ async function settingsSetter(settings) {
       if(event.target.id === "launchbox"){
         executeOnPage(event.target.checked, (flag) => {
           localStorage.setItem("com.adobe.reactor.debug",!!flag); 
-          typeof _satellite !== 'undefined' ? _satellite?.setDebug(!!flag) : '';
+          typeof window._satellite !== 'undefined' ? window._satellite?.setDebug(flag ? 1 : 0) : '';
         });
       }
     })

@@ -17,7 +17,7 @@ async function setDebug(flag) {
   chrome.scripting.executeScript({
     func: (flag) => {
       localStorage.setItem("com.adobe.reactor.debug",!!flag); 
-      typeof _satellite !== 'undefined' ? _satellite?.setDebug(!!flag) : '';
+      typeof _satellite !== 'undefined' ? _satellite?.setDebug(flag ? 1 : 0) : '';
     },
     args: [flag],
     target: {
