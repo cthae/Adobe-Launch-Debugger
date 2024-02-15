@@ -1,181 +1,197 @@
-<!doctype html>
+<!DOCTYPE html>
 <html data-bs-theme="dark" lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="css/water_dark.css" />
+		<link rel="stylesheet" href="css/custom.css" />
+		<script src="js/extension-script.js" type="text/javascript"></script>
+		<title>Universal Adobe Debugger 🦝</title>
+	</head>
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="css/water_dark.css">
-  <link rel="stylesheet" href="css/custom.css">
-  <script src="js/extension-script.js" type="text/javascript"></script>
-  <title>Universal Adobe Debugger 🦝</title>
-</head>
+	<body style="width: 600px" data-bs-theme="dark">
+		<div class="tabButtons">
+			<button class="tablinks" name="Main">Main</button>
+			<button class="tablinks" name="Settings">Settings</button>
+			<button class="tablinks" name="Snippets">Snippets</button>
+			<button class="tablinks" name="Redirections">Redirects</button>
+			<button class="tablinks" name="Info">Info</button>
+			<span style="font-size: 32px; text-align: right; float: right; cursor: pointer" id="raccoon">🦝</span>
+		</div>
+		<div class="tab" id="Main">
+			<table class="mainTable">
+				<tbody>
+					<tr>
+						<td>Page Status:</td>
+						<td id="pstatus" class="warn">Not Updated</td>
+					</tr>
+					<tr>
+						<td>Launch Library:</td>
+						<td id="lstatus" class="warn">Found</td>
+					</tr>
+					<tr>
+						<td>Property Name:</td>
+						<td id="pname" class="warn">Not Updated</td>
+					</tr>
+					<tr>
+						<td>Environment:</td>
+						<td id="env" class="warn">Not Updated</td>
+					</tr>
+					<tr>
+						<td>Last Build:</td>
+						<td id="bdate" class="warn">Not Updated</td>
+					</tr>
+					<tr>
+						<td>Page Views so far:</td>
+						<td id="pvsNumber" class="warn">Not Updated</td>
+					</tr>
+					<tr>
+						<td>Links so far:</td>
+						<td id="linksNumber" class="warn">Not Updated</td>
+					</tr>
+					<tr>
+						<td>DataLayer:</td>
+						<td id="dl" class="warn">Not Updated</td>
+					</tr>
+					<tr>
+						<td>Last DL Event:</td>
+						<td id="dlevent" class="warn">Not Updated</td>
+					</tr>
+					<tr title="This is the original library detected on the page. Be careful when using other extensions replacing the lib.">
+						<td>Library Detected:</td>
+						<td><textarea rows="3" cols="45" id="currentlib"></textarea></td>
+					</tr>
+					<tr>
+						<td id="redirectionCTATD">
+							New Library:<br />
+							<button id="setRedirection">Set Redirection</button>
+						</td>
+						<td>
+							<textarea
+								rows="3"
+								cols="45"
+								id="newlib"
+								placeholder="Enter the script tag or a url to redirect the detected library to. And click the Set Redirection CTA."></textarea>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="tab" id="Settings" style="display: none">
+			<table class="settingsTable">
+				<tbody>
+					<tr>
+						<td>Main AA request logging:</td>
+						<td class="centralize"><input type="checkbox" checked id="aabox" /></td>
+					</tr>
+					<tr>
+						<td>Launch logging via setDebug(1):</td>
+						<td class="centralize"><input type="checkbox" id="launchbox" /></td>
+					</tr>
+					<tr>
+						<td>Main AA console logs expanded?</td>
+						<td class="centralize"><input type="checkbox" id="mainExpand" /></td>
+					</tr>
+					<tr>
+						<td>Evars and Props sections expanded?</td>
+						<td class="centralize"><input type="checkbox" checked id="varsExpand" /></td>
+					</tr>
+					<tr>
+						<td>Context variables section expanded?</td>
+						<td class="centralize"><input type="checkbox" id="contextVarsExpand" /></td>
+					</tr>
+					<tr>
+						<td>Your awesome useful setting could be here.</td>
+						<td>If you have a cool idea:)</td>
+					</tr>
+					<tr>
+						<td id="redirectionCTATD">
+							User-customized additional logging.
+							<a target="_blank" href="https://experienceleague.adobe.com/docs/analytics/implementation/validate/query-parameters.html?lang=en"
+								>List of applicable entries</a
+							>.<br />
+							<div class="centralize"><button id="setLoggingHeadings">Set/Clear Headings</button></div>
+						</td>
+						<td>
+							<textarea rows="3" cols="22" id="loggingHeadings" placeholder="Example: v122, v31, p24, p99, list2, events"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2" class="centralize"><b>Redirection Settings:</b></td>
+					</tr>
+					<tr>
+						<td>Clear redirections after browsing session expired?</td>
+						<td class="centralize"><input type="checkbox" checked id="sessionRedirections" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="tab" id="Snippets" style="display: none">
+			<table class="snippetsTable">
+				<tbody>
+					<tr>
+						<td><button id="blockPageUnload">Block Page Unload</button></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td colspan="4"><b>One Trust</b> Consent Manager Shortcuts:</td>
+					</tr>
+					<tr>
+						<td><button id="OTCheckConsent">Check Consent</button></td>
+						<td><button style="border-style: double; border-color: greenyellow" id="OTAllowAll">Allow All</button></td>
+						<td><button style="border-style: double; border-color: salmon" id="OTRejectAll">Reject All</button></td>
+						<td><button id="OTOpenManager">Open Manager</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="tab" id="Redirections" style="display: none">
+			<div style="text-align: right">
+				<button id="delAllRedirections" class="error">Delete All Rules</button>
+			</div>
 
-<body style="width:600px" data-bs-theme="dark">
-  <div class="tabButtons">
-    <button class="tablinks" name="Main">Main</button>
-    <button class="tablinks" name="Settings">Settings</button>
-    <button class="tablinks" name="Snippets">Snippets</button>
-    <button class="tablinks" name="Redirections">Redirects</button>
-    <button class="tablinks" name="Info">Info</button>
-    <span style="font-size:32px; text-align: right; float: right; cursor: pointer;" id="raccoon">🦝</span>
-  </div>
-  <div class="tab" id="Main">
-    <table class="mainTable">
-      <tbody>
-        <tr>
-          <td>Page Status:</td>
-          <td id="pstatus" class="warn">Not Updated</td>
-        </tr>
-        <tr>
-          <td>Launch Library:</td>
-          <td id="lstatus" class="warn">Found</td>
-        </tr>
-        <tr>
-          <td>Property Name:</td>
-          <td id="pname" class="warn">Not Updated</td>
-        </tr>
-        <tr>
-          <td>Environment:</td>
-          <td id="env" class="warn">Not Updated</td>
-        </tr>
-        <tr>
-          <td>Last Build:</td>
-          <td id="bdate" class="warn">Not Updated</td>
-        </tr>
-        <tr>
-          <td>Page Views so far:</td>
-          <td id="pvsNumber" class="warn">Not Updated</td>
-        </tr>
-        <tr>
-          <td>Links so far:</td>
-          <td id="linksNumber" class="warn">Not Updated</td>
-        </tr>
-        <tr>
-          <td>DataLayer:</td>
-          <td id="dl" class="warn">Not Updated</td>
-        </tr>
-        <tr>
-          <td>Last DL Event:</td>
-          <td id="dlevent" class="warn">Not Updated</td>
-        </tr>
-        <tr
-          title="This is the original library detected on the page. Be careful when using other extensions replacing the lib.">
-          <td>Library Detected:</td>
-          <td><textarea rows="3" cols="45" id="currentlib"></textarea></td>
-        </tr>
-        <tr>
-          <td id="redirectionCTATD">
-            New Library:<br />
-            <button id="setRedirection">Set Redirection</button>
-          </td>
-          <td>
-            <textarea rows="3" cols="45" id="newlib" placeholder="Enter the script tag or a url to redirect the detected library to. And click the Set Redirection CTA."></textarea>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="tab" id="Settings" style="display: none;">
-    <table class="settingsTable">
-      <tbody>
-        <tr>
-          <td>Main AA request logging:</td>
-          <td class="centralize"><input type="checkbox" checked id="aabox"></td>
-        </tr>
-        <tr>
-          <td>Launch logging via setDebug(1):</td>
-          <td class="centralize"><input type="checkbox" id="launchbox"></td>
-        </tr>
-        <tr>
-          <td>Main AA console logs expanded?</td>
-          <td class="centralize"><input type="checkbox" id="mainExpand"></td>
-        </tr>
-        <tr>
-          <td>Evars and Props sections expanded?</td>
-          <td class="centralize"><input type="checkbox" checked id="varsExpand"></td>
-        </tr>
-        <tr>
-          <td>Context variables section expanded?</td>
-          <td class="centralize"><input type="checkbox" id="contextVarsExpand"></td>
-        </tr>
-        <tr>
-          <td>Your awesome useful setting could be here.</td>
-          <td>If you have a cool idea:)</td>
-        </tr>
-        <tr>
-          <td id="redirectionCTATD">User-customized additional logging. <a target="_blank" href="https://experienceleague.adobe.com/docs/analytics/implementation/validate/query-parameters.html?lang=en">List of applicable entries</a>.<br />
-            <div class = "centralize"><button id="setLoggingHeadings">Set/Clear Headings</button></div>
-          </td>
-          <td>
-            <textarea rows="3" cols="22" id="loggingHeadings" placeholder="Example: v122, v31, p24, p99, list2, events"></textarea>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2" class="centralize"><b>Redirection Settings:</b></td>
-        </tr>
-        <tr>
-          <td>Clear redirections after browsing session expired?</td>
-          <td class="centralize"><input type="checkbox" checked id="sessionRedirections"></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="tab" id="Snippets" style="display: none;">
-    <table class="snippetsTable">
-      <tbody>
-        <tr>
-          <td><button id="blockPageUnload">Block Page Unload</button></td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr>
-          <td colspan="4"><b>One Trust</b> Consent Manager Shortcuts:</td>
-        </tr>
-        <tr>
-          <td><button id="OTCheckConsent">Check Consent</button></td>
-          <td><button style="border-style:double;border-color:greenyellow" id="OTAllowAll">Allow All</button></td>
-          <td><button style="border-style:double;border-color:salmon" id="OTRejectAll">Reject All</button></td>
-          <td><button id="OTOpenManager">Open Manager</button></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="tab" id="Redirections" style="display: none;">
-    <div style="text-align: right;">
-      <button id="delAllRedirections" class="error">Delete All Rules</button>
-    </div>
+			<table class="redirectionsTable">
+				<tbody>
+					<tr>
+						<th style="text-align: center; vertical-align: middle">Date</th>
+						<th>From</th>
+						<th>To</th>
+						<th style="text-align: center; vertical-align: middle">Delete</th>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="tab" id="Info" style="display: none">
+			<p>🔍 <strong>Welcome to Universal Adobe Debugger!</strong></p>
 
-    <table class="redirectionsTable">
+			<p>
+				🎯Designed by Adobe analysts, for Adobe analysts, this extension aims to streamline your debugging experience for Adobe Analytics and Launch.
+				Whether you're fine-tuning tracking or verifying implementations, we've got you covered.
+			</p>
 
-      <tbody>
-        <tr>
-          <th style="text-align: center; vertical-align: middle;">Date</th>
-          <th>From</th>
-          <th>To</th>
-          <th style="text-align: center; vertical-align: middle;">Delete</th>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="tab" id="Info" style="display: none;">
-    <p>🔍 <strong>Welcome to Universal Adobe Debugger!</strong></p>
+			<p>👩‍💻 <strong>Open Source & Community Driven</strong></p>
 
-    <p>🎯Designed by Adobe analysts, for Adobe analysts, this extension aims to streamline your debugging experience for Adobe Analytics and Launch. Whether you're fine-tuning tracking or verifying implementations, we've got you covered.</p>
+			<p>
+				Join our community on <a href="https://github.com/cthae/Adobe-Launch-Debugger">GitHub</a> to explore the codebase, suggest improvements, or
+				report bugs. Your contributions help us make analytics debugging smoother for everyone!
+			</p>
 
-    <p>👩‍💻 <strong>Open Source & Community Driven</strong></p>
+			<p>🚀 <strong>Let's Improve Together</strong></p>
 
-    <p>Join our community on <a href="https://github.com/cthae/Adobe-Launch-Debugger">GitHub</a> to explore the codebase, suggest improvements, or report bugs. Your contributions help us make analytics debugging smoother for everyone!</p>
+			<p>
+				Got an idea for improvement? Don't hesitate to submit an issue or contribute to the project. Together, we can enhance efficiency and accuracy in
+				analytics tracking.
+			</p>
 
-    <p>🚀 <strong>Let's Improve Together</strong></p>
+			<p>📣 <strong>Connect</strong></p>
+			<p></p>
 
-    <p>Got an idea for improvement? Don't hesitate to submit an issue or contribute to the project. Together, we can enhance efficiency and accuracy in analytics tracking.</p>
-
-    <p>📣 <strong>Connect</strong><p>
-
-    <p>Reach out on <a href="https://www.linkedin.com/in/nazaruk/"
-      target="_blank">LinkedIn</a> or join the conversation on <a href="https://www.measure.chat/">Measure Slack</a>. We're always eager to hear from you!</p>
-  </div>
-</body>
-
+			<p>
+				Reach out on <a href="https://www.linkedin.com/in/nazaruk/" target="_blank">LinkedIn</a> or join the conversation on
+				<a href="https://www.measure.chat/">Measure Slack</a>. We're always eager to hear from you!
+			</p>
+		</div>
+	</body>
 </html>
