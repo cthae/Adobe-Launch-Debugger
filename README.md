@@ -94,6 +94,7 @@ The dev plan and event log:
 * [x] Improve _satellite.setDebug(0) to work immediately rather than after a page reload.
 * [x] Small cosmetic improvements.
 * [x] Release v1.02.
+* [x] CSS improvements of the extension popup. Thanks Chip!
 * [ ] Configure selective logging for the web sdk, but maybe later.
 * [ ] Hesitant: Add the logic similar to switch to parse the environments from the opened Launch page. This is a flimsy logic though. Will break often, just like it does in switch.
 * [ ] Hesitant: Find an elegant way to inject a library. Should probably be one/domain. To avoid doing it globally. Maybe not...
