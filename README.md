@@ -95,6 +95,9 @@ The dev plan and event log:
 * [x] Small cosmetic improvements.
 * [x] Release v1.02.
 * [x] CSS improvements of the extension popup. Thanks Chip!
+* [x] Fix a bug in the new custom logging code.
+* [x] Add a line to indicate the end of the main logging group for easier reading.
+* [x] Release v1.03.
 * [ ] Configure selective logging for the web sdk, but maybe later.
 * [ ] Hesitant: Add the logic similar to switch to parse the environments from the opened Launch page. This is a flimsy logic though. Will break often, just like it does in switch.
 * [ ] Hesitant: Find an elegant way to inject a library. Should probably be one/domain. To avoid doing it globally. Maybe not...

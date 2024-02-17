@@ -73,12 +73,13 @@ function logAAServerCall(fullURL, _satelliteInfo, settings, networkError) {
   printOther(parsingResult.url2 ? parsingResult.url + parsingResult.url2 : parsingResult.url,
     parsingResult.server, _satelliteInfo.property, _satelliteInfo.environment, 
     _satelliteInfo.buildtime, parsingResult.mcorgid, parsingResult.mid);
+  console.log(`%c^^^ The end of the Server Call #${document.sCallCounter} ^^^`,cssHeadValue)
   console.groupEnd();
   logCustomFields(settings.loggingHeadings, fullURL);
 }
 
 function logCustomFields(loggingHeadings, fullURL){
-  if(loggingHeadings.length > 0){
+  if(loggingHeadings?.length > 0){
     const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Orange; color: black`;
     const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 800;font-size: 1.2em; background-color: Orange; color: black`;
     console.group(`%cUser-customized additional logging:`, cssHeadField);
