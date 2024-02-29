@@ -349,12 +349,8 @@ function logCustomXDMFields(loggingHeadings, xdm, counter){
 
 function GetXDMValue(xdm, path){
   //Recursion! How often can you justify it? heh!
-  if (typeof xdm[path[0]] === "object"){
-    if (path.length>1){
-      return GetXDMValue(xdm[path[0]], path.slice(1));
-    } else {
-      return xdm[path[0]]; 
-    }
+  if (typeof xdm[path[0]] === "object" && path.length > 1){
+    return GetXDMValue(xdm[path[0]], path.slice(1));
   } else {
     if(typeof xdm[path[0]] === "undefined"){
       return `Oopsie! The xdm.${path[0]} is undefined`;
