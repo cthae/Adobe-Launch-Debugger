@@ -99,6 +99,10 @@ The dev plan and event log:
 * [x] Add a line to indicate the end of the main logging group for easier reading.
 * [x] Release v1.03.
 * [x] Configure selective logging for the web SDK.
+* [x] Release v1.04.
+* [x] QOL Improvements for the custom web SDK logging
+* [x] Allow the underscore as the field name.
+* [ ] Release v1.05.
 * [ ] Hesitant: Add the logic similar to switch to parse the environments from the opened Launch page. This is a flimsy logic though. Will break often, just like it does in switch.
 * [ ] Hesitant: Find an elegant way to inject a library. Should probably be one/domain. To avoid doing it globally. Maybe not...
 

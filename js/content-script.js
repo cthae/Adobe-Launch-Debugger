@@ -75,14 +75,14 @@ function logAAServerCall(fullURL, _satelliteInfo, settings, networkError) {
     _satelliteInfo.buildtime, parsingResult.mcorgid, parsingResult.mid);
   console.log(`%c^^^ The end of the Server Call #${document.sCallCounter} ^^^`,cssHeadValue)
   console.groupEnd();
-  logCustomAAFields(settings.loggingHeadings, fullURL);
+  logCustomAAFields(settings.loggingHeadings, fullURL, document.sCallCounter);
 }
 
-function logCustomAAFields(loggingHeadings, fullURL){
+function logCustomAAFields(loggingHeadings, fullURL, counter){
   if(loggingHeadings?.length > 0){
     const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Orange; color: black`;
     const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 800;font-size: 1.2em; background-color: Orange; color: black`;
-    console.group(`%cUser-customized additional logging:`, cssHeadField);
+    console.group(`%cAA #${counter} User-customized additional logging:`, cssHeadField);
     loggingHeadings.forEach(heading => {
       console.log(`%c${heading} : %c${fullURL.split(heading + "=")[1]?.split("&")[0]}`, cssHeadValue, cssHeadField);
     });
@@ -332,14 +332,14 @@ function logWebSDKServerCall(postPayload, settings, networkError) {
       console.error(e);
     }
     console.groupEnd();
-    logCustomXDMFields(settings.loggingHeadings, WSEvent.xdm)
+    logCustomXDMFields(settings.loggingHeadings, WSEvent.xdm, document.wSDKCounter)
   });
 }
 
-function logCustomXDMFields(loggingHeadings, xdm){
+function logCustomXDMFields(loggingHeadings, xdm, counter){
   if(loggingHeadings?.length > 0){
     const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Orange; color: black`;
-    console.group(`%cUser-customized additional logging:`, cssHeadField);
+    console.group(`%c Web SDK #${counter} User-customized additional logging:`, cssHeadField);
     loggingHeadings.forEach(heading => {
       console.log(`%c${heading} : %o`, cssHeadField, GetXDMValue(xdm, heading.split(".")));  
     });
