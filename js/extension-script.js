@@ -38,7 +38,7 @@ function deployClickListeners() {
 
 function setLoggingHeadings(event){
   const textArea = document.getElementById("loggingHeadings");
-  textArea.value = textArea.value.replace(/\s/g, "").replace(/[^a-zA-Z0-9\-,]/g, "");
+  textArea.value = textArea.value.replace(/\s/g, "").replace(/[^a-zA-Z0-9\-,\.]/g, "");
   let queryParams = []
   if(textArea.value.length === 0){
     event.target.classList = "error";

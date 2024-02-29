@@ -75,10 +75,10 @@ function logAAServerCall(fullURL, _satelliteInfo, settings, networkError) {
     _satelliteInfo.buildtime, parsingResult.mcorgid, parsingResult.mid);
   console.log(`%c^^^ The end of the Server Call #${document.sCallCounter} ^^^`,cssHeadValue)
   console.groupEnd();
-  logCustomFields(settings.loggingHeadings, fullURL);
+  logCustomAAFields(settings.loggingHeadings, fullURL);
 }
 
-function logCustomFields(loggingHeadings, fullURL){
+function logCustomAAFields(loggingHeadings, fullURL){
   if(loggingHeadings?.length > 0){
     const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Orange; color: black`;
     const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 800;font-size: 1.2em; background-color: Orange; color: black`;
@@ -332,5 +332,34 @@ function logWebSDKServerCall(postPayload, settings, networkError) {
       console.error(e);
     }
     console.groupEnd();
+    logCustomXDMFields(settings.loggingHeadings, WSEvent.xdm)
   });
+}
+
+function logCustomXDMFields(loggingHeadings, xdm){
+  if(loggingHeadings?.length > 0){
+    const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Orange; color: black`;
+    console.group(`%cUser-customized additional logging:`, cssHeadField);
+    loggingHeadings.forEach(heading => {
+      console.log(`%c${heading} : %o`, cssHeadField, GetXDMValue(xdm, heading.split(".")));  
+    });
+    console.groupEnd();
+  }
+}
+
+function GetXDMValue(xdm, path){
+  //Recursion! How often can you justify it? heh!
+  if (typeof xdm[path[0]] === "object"){
+    if (path.length>1){
+      return GetXDMValue(xdm[path[0]], path.slice(1));
+    } else {
+      return xdm[path[0]]; 
+    }
+  } else {
+    if(typeof xdm[path[0]] === "undefined"){
+      return `Oopsie! The xdm.${path[0]} is undefined`;
+    } else {
+      return xdm[path[0]];
+    }
+  }
 }
