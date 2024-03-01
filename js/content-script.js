@@ -338,10 +338,21 @@ function logWebSDKServerCall(postPayload, settings, networkError) {
 
 function logCustomXDMFields(loggingHeadings, xdm, counter){
   if(loggingHeadings?.length > 0){
-    const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Orange; color: black`;
-    console.group(`%c Web SDK #${counter} User-customized additional logging:`, cssHeadField);
+    const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 600;font-size: 1.2em; background-color: Orange; color: black`;
+    const cssValueField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 400;font-size: 1.2em; background-color: Orange; color: black`;
+    console.group(`%c Web SDK #${counter} User-customized additional logging:`, cssValueField);
     loggingHeadings.forEach(heading => {
-      console.log(`%c${heading} : %o`, cssHeadField, GetXDMValue(xdm, heading.split(".")));  
+      const XDMValueResult = GetXDMValue(xdm, heading.split("."));
+      if (XDMValueResult.status === 'ok'){
+        console.log(`%c${heading} :%o`, cssHeadField, XDMValueResult.fieldValue);
+      } else if(XDMValueResult.status === 'path remaining'){
+        console.log(`%c${heading}%c requested, but %c${XDMValueResult.path[0]}%c is not an object. Its value is :%o`, 
+        cssHeadField, cssValueField, cssHeadField, cssValueField, XDMValueResult.fieldValue);
+      } else if(XDMValueResult.status === 'undefined'){
+        console.log(`%c${heading}%c requested, but ` +
+        `%c${XDMValueResult.propertyName === heading ? "it" : XDMValueResult.propertyName}%c is undefined`, 
+        cssHeadField, cssValueField, cssHeadField, cssValueField);
+      }
     });
     console.groupEnd();
   }
@@ -353,9 +364,23 @@ function GetXDMValue(xdm, path){
     return GetXDMValue(xdm[path[0]], path.slice(1));
   } else {
     if(typeof xdm[path[0]] === "undefined"){
-      return `Oopsie! The xdm.${path[0]} is undefined`;
+      return {
+        propertyName: path[0],
+        status: 'undefined'
+      };
     } else {
-      return xdm[path[0]];
+      if(path.length === 1){
+        return {
+          fieldValue: xdm[path[0]],
+          status: 'ok'
+        };
+      } else {
+        return {
+          fieldValue: xdm[path[0]],
+          status: 'path remaining',
+          path: path
+        };
+      }
     }
   }
 }
