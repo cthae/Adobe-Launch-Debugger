@@ -103,7 +103,8 @@ The dev plan and event log:
 * [x] QOL Improvements for the custom web SDK logging.
 * [x] Allow the underscore in the field names.
 * [x] Small reporting improvements.
-* [ ] Release v1.05.
+* [x] Release v1.05.
+* [ ] Improve autodebugging for web sdk: indicate when linkClicks will be treated as pageviews in AA due to the web fields set.
 * [ ] Hesitant: Add the logic similar to switch to parse the environments from the opened Launch page. This is a flimsy logic though. Will break often, just like it does in switch.
 * [ ] Hesitant: Find an elegant way to inject a library. Should probably be one/domain. To avoid doing it globally. Maybe not...
 
