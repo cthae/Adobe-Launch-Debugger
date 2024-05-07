@@ -104,11 +104,11 @@ The dev plan and event log:
 * [x] Allow the underscore in the field names.
 * [x] Small reporting improvements.
 * [x] Release v1.05.
-* [ ] Web SDK: surface the Edge config ids for every request, make them visible just like AA Report Suites.
+* [ ] Web SDK: surface the Edge config ids for every request, make them visible just like AA Report Suites. To ease the debugging of multi-destinational tracking. 
+* [ ] Add a setting to limit the number of characters for the config id logging in the websdk tracking. 4 characters by default.
 * [ ] Replace the counter of PVs and links with AA calls and WebSDK calls
 * [ ] Improve autodebugging for web sdk: indicate when linkClicks will be treated as pageviews in AA due to the web fields set.
-* [ ] Hesitant: Add the logic similar to switch to parse the environments from the opened Launch page. This is a flimsy logic though. Will break often, just like it does in switch.
-* [ ] Hesitant: Find an elegant way to inject a library. Should probably be one/domain. To avoid doing it globally. Maybe not...
+* [ ] Hesitant: Find an elegant way to inject a library rather than replace it. Should probably be one/domain. To avoid doing it globally. Maybe not...
 
 
 ## Contributions
