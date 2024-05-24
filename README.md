@@ -105,6 +105,7 @@ The dev plan and event log:
 * [x] Small reporting improvements.
 * [x] Release v1.05.
 * [ ] Web SDK: surface the Edge config ids for every request, make them visible just like AA Report Suites. To ease the debugging of multi-destinational tracking. 
+* [ ] Web SDK: change the default logging a bit to maybe try and expand the analytics object automatically.
 * [ ] Add a setting to limit the number of characters for the config id logging in the websdk tracking. 4 characters by default.
 * [ ] Replace the counter of PVs and links with AA calls and WebSDK calls
 * [ ] Improve autodebugging for web sdk: indicate when linkClicks will be treated as pageviews in AA due to the web fields set.
