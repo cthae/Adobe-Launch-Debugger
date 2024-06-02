@@ -112,7 +112,9 @@ The dev plan and event log:
 * [x] Web SDK: Change the default logging a bit to maybe try and expand the analytics object automatically. 
 * [x] Web SDK: Add a setting to remove the essentially useless xdm fields that are rarely useful to look at. On by default.
 * [x] Web SDK: Improve the logging for non-object fields.
-* [ ] Release v1.06 (Byanka's Web SDK improvements update)
+* [x] Web SDK: Add logging for the data.__adobe object. Off by default in settings.
+* [x] Web SDK: Reinforce the custom logging field, allow people to use the xdm. reference in the list of params.
+* [x] Release v1.06 (Byanka's Web SDK improvements update)
 * [ ] Hesitant: Web SDK: Add a setting to limit the number of characters for the config id logging in the websdk tracking. 4 characters by default.
 * [ ] Hesitant: Web SDK: Allow for custom Edge base path. It's /ee/ by default, but it can be customized, in which case the extension won't catch the network requests. (who uses a custom Edge base path?)
 * [ ] Hesitant: Find an elegant way to inject a library rather than replace it. Should probably be one/domain. To avoid doing it globally. Maybe not... It's so rare that we would need it, just use Overrides for ad-hoc injections?

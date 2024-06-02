@@ -293,6 +293,7 @@ function getComponent(allParams, paramName) {
 }
 
 function logWebSDKServerCall(postPayload, settings, networkError, baseURL) {
+  //console.log("@@@ Debugging: webSDK Detected! The post payload object is: ", postPayload);
   let edgeConfigId = "[Not Found]";
   try{
     edgeConfigId = baseURL.split("configId=")[1]?.split(/\&|$/)[0]?.slice(0,8);
@@ -329,22 +330,28 @@ function logWebSDKServerCall(postPayload, settings, networkError, baseURL) {
     try {
       const cssInnerStyle = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Yellow; color: black`;
       const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 900;font-size: 1.2em; background-color: Orange; color: black`;
-      Object.keys(WSEvent.xdm).forEach((field) => {
+      Object.keys(WSEvent?.xdm || {}).forEach((field) => {
         let fieldObject = WSEvent.xdm[field];
         if (fieldsToExclude.includes(field)){
           return;
         } else if (typeof fieldObject !== "object"){
-          console.log(`%c${field} = %c${fieldObject}`, cssInnerStyle, cssHeadValue);
+          console.log(`%cxdm.${field} = %c${fieldObject}`, cssInnerStyle, cssHeadValue);
         } else if(field === "_experience" && fieldObject?.analytics && Object.keys(fieldObject).length === 1){
-          console.log(`%c_experience.analytics:`, cssInnerStyle, fieldObject.analytics);
+          console.log(`%cxdm._experience.analytics:`, cssInnerStyle, fieldObject.analytics);
           //console.log(fieldObject.analytics);
           //console.groupEnd();
         } else {
-          console.log(`%c${field}:`,cssInnerStyle, fieldObject);
+          console.log(`%cxdm.${field}:`,cssInnerStyle, fieldObject);
           //console.log(fieldObject);
           //console.groupEnd();
         }
       });
+      if(settings.logDataObject){
+        Object.keys(WSEvent?.data?.__adobe || {}).forEach((field) => {
+          let fieldObject = WSEvent.data.__adobe[field];
+          console.log(`%cdata.__adobe.${field}:`,cssInnerStyle, fieldObject);
+        });
+      }
     } catch (e){
       console.error(e);
     }
