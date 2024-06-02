@@ -294,12 +294,16 @@ function getComponent(allParams, paramName) {
 
 function logWebSDKServerCall(postPayload, settings, networkError) {
   postPayload.events.forEach((WSEvent) => {
-    const parsingResult = {};
     document.wSDKCounter = document.wSDKCounter ? document.wSDKCounter + 1 : 1;
     let cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: DarkCyan; color: yellow`;
     let cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: DarkCyan; color: #fc0`;
-    const sCallName = WSEvent.xdm?.web?.webPageDetails?.name ? WSEvent.xdm.web.webPageDetails.name : "[No Page Name]";
-    const scType = WSEvent.xdm?.eventType || "[No Web SDK Type]";
+    const scType = WSEvent.xdm?.web?.webPageDetails?.name || WSEvent.xdm?.web?.webPageDetails?.URL ? "Page View" : "Link";
+    let sCallName = "[No Name]";
+    if (scType === "Page View"){
+      sCallName = WSEvent.xdm?.web?.webPageDetails?.name || "[No Name]";
+    } else if (scType === "Link"){
+      sCallName = WSEvent.xdm?.web?.webInteraction?.name || "[No Name]";
+    }
     if (networkError) {
       cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Red; color: black`;
       cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Red; color: black`;
@@ -315,13 +319,6 @@ function logWebSDKServerCall(postPayload, settings, networkError) {
         cssHeadField, cssHeadValue);
     }
     try {
-      /*
-      console.log(WSEvent.xdm.endUserIDs);
-      console.log(WSEvent.xdm.marketing);
-      console.log(WSEvent.xdm.webPageDetails);
-      console.log(WSEvent.xdm._experience);
-      console.log(WSEvent.xdm._uhc);
-      */
       Object.keys(WSEvent.xdm).forEach((field) => {
         let cssInnerStyle = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Yellow; color: black`;
         console.group("%c" + field, cssInnerStyle);
