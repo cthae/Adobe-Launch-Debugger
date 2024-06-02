@@ -105,10 +105,14 @@ The dev plan and event log:
 * [x] Small reporting improvements.
 * [x] Release v1.05.
 * [x] Replace the counter of PVs and links with AA calls and WebSDK calls
-* [x] Improve autodebugging for web sdk: indicate when linkClicks will be treated as pageviews in AA due to the web fields set.
-* [ ] Web SDK: surface the Edge config ids for every request, make them visible just like AA Report Suites. To ease the debugging of multi-destinational tracking. First 5 characters should suffice.
-* [ ] Web SDK: change the default logging a bit to maybe try and expand the analytics object automatically. Collapse the object nobody cares about like the device, environment, placeContext, timestamp or the implementationDetails.
-* [ ] Release v1.06.
+* [x] Web SDK: Improve autodebugging: indicate when linkClicks will be treated as pageviews in AA due to the web fields set.
+* [x] Web SDK: Surface the Edge config ids for every request, make them visible just like AA Report Suites. To ease the debugging of multi-destinational tracking. First 5 characters should suffice.
+* [x] Web SDK: Improve the tracking of network errors when edge network requests fail.
+* [x] Web SDK: Refactor logging. Make it less confusing. No more nested groups. 
+* [x] Web SDK: Change the default logging a bit to maybe try and expand the analytics object automatically. 
+* [x] Web SDK: Add a setting to remove the essentially useless xdm fields that are rarely useful to look at. On by default.
+* [x] Web SDK: Improve the logging for non-object fields.
+* [ ] Release v1.06 (Byanka's Web SDK improvements update)
 * [ ] Hesitant: Add a setting to limit the number of characters for the config id logging in the websdk tracking. 4 characters by default.
 * [ ] Hesitant: Web SDK: allow for custom Edge base path. It's /ee/ by default, but it can be customized, in which case the extension won't catch the network requests. (who uses a custom Edge base path?)
 * [ ] Hesitant: Find an elegant way to inject a library rather than replace it. Should probably be one/domain. To avoid doing it globally. Maybe not... It's so rare that we would need it, just use Overrides for ad-hoc injections?

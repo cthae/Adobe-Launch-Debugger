@@ -18,7 +18,7 @@ chrome.runtime.onMessage.addListener(request => {
         }
       } else if(request.type === "webSDK"){
         //console.log("@@@ Debugging: webSDK Detected! The Info object is: ", request);
-        logWebSDKServerCall(JSON.parse(request.postPayload), data.settings);
+        logWebSDKServerCall(JSON.parse(request.postPayload), data.settings, request.info?.error, decodeURIComponent(request.info?.url || ""));
       }
     }
   });
@@ -292,7 +292,13 @@ function getComponent(allParams, paramName) {
   return foundElement?.split(/=(.+)?/, 2)[1];
 }
 
-function logWebSDKServerCall(postPayload, settings, networkError) {
+function logWebSDKServerCall(postPayload, settings, networkError, baseURL) {
+  let edgeConfigId = "[Not Found]";
+  try{
+    edgeConfigId = baseURL.split("configId=")[1]?.split(/\&|$/)[0]?.slice(0,8);
+  } catch (e){
+    edgeConfigId = e;
+  }
   postPayload.events.forEach((WSEvent) => {
     document.wSDKCounter = document.wSDKCounter ? document.wSDKCounter + 1 : 1;
     let cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: DarkCyan; color: yellow`;
@@ -308,22 +314,36 @@ function logWebSDKServerCall(postPayload, settings, networkError) {
       cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Red; color: black`;
       cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Red; color: black`;
     }
-    const pNameMessage = scType + " : %c" + sCallName;
+    const pNameMessage = scType + ": %c" + sCallName;
+    const mainLogHeader = `${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` +
+    `Web SDK #${document.wSDKCounter}: ${pNameMessage}\n%c` + 
+    `Edge ID: %c${edgeConfigId}\n`;
     if (settings?.mainExpand === true) {
-      console.group(`${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` +
-        `Web SDK #${document.wSDKCounter} ${pNameMessage}\n`,
-        cssHeadField, cssHeadValue);
+      console.group(mainLogHeader,
+        cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
     } else {
-      console.groupCollapsed(`${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` +
-        `Web SDK #${document.wSDKCounter} ${pNameMessage}\n`,
-        cssHeadField, cssHeadValue);
+      console.groupCollapsed(mainLogHeader,
+        cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
     }
+    const fieldsToExclude = settings?.logBoringFieldsWebSDK === true ? [] : ["device", "environment", "placeContext", "implementationDetails", "timestamp"];
     try {
+      const cssInnerStyle = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Yellow; color: black`;
+      const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 900;font-size: 1.2em; background-color: Orange; color: black`;
       Object.keys(WSEvent.xdm).forEach((field) => {
-        let cssInnerStyle = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Yellow; color: black`;
-        console.group("%c" + field, cssInnerStyle);
-        console.log(WSEvent.xdm[field]);
-        console.groupEnd();
+        let fieldObject = WSEvent.xdm[field];
+        if (fieldsToExclude.includes(field)){
+          return;
+        } else if (typeof fieldObject !== "object"){
+          console.log(`%c${field} = %c${fieldObject}`, cssInnerStyle, cssHeadValue);
+        } else if(field === "_experience" && fieldObject?.analytics && Object.keys(fieldObject).length === 1){
+          console.log(`%c_experience.analytics:`, cssInnerStyle, fieldObject.analytics);
+          //console.log(fieldObject.analytics);
+          //console.groupEnd();
+        } else {
+          console.log(`%c${field}:`,cssInnerStyle, fieldObject);
+          //console.log(fieldObject);
+          //console.groupEnd();
+        }
       });
     } catch (e){
       console.error(e);
