@@ -104,10 +104,10 @@ The dev plan and event log:
 * [x] Allow the underscore in the field names.
 * [x] Small reporting improvements.
 * [x] Release v1.05.
-* [ ] Replace the counter of PVs and links with AA calls and WebSDK calls
+* [x] Replace the counter of PVs and links with AA calls and WebSDK calls
+* [x] Web SDK: allow for custom Edge base path. It's /ee/ by default, but it can be customized, in which case the extension won't catch the network requests.
 * [ ] Web SDK: surface the Edge config ids for every request, make them visible just like AA Report Suites. To ease the debugging of multi-destinational tracking. 
 * [ ] Web SDK: change the default logging a bit to maybe try and expand the analytics object automatically.
-* [ ] Web SDK: allow for custom Edge base path. It's /ee/ by default, but it can be customized, in which case the extension won't catch the network requests.
 * [ ] Add a setting to limit the number of characters for the config id logging in the websdk tracking. 4 characters by default.
 * [ ] Improve autodebugging for web sdk: indicate when linkClicks will be treated as pageviews in AA due to the web fields set.
 * [ ] Hesitant: Find an elegant way to inject a library rather than replace it. Should probably be one/domain. To avoid doing it globally. Maybe not...
