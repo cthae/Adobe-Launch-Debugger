@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   loadSettings();
   deployClickListeners();
   const client = await getValuesFromClient();
-  updatePage(await checkStatus(client._satellite, client.pageLoadTime, client.pvs.length, client.links.length));
+  updatePage(await checkStatus(client._satellite, client.pageLoadTime, client.aaHits.length, client.webSDKHits.length));
 });
 
 async function getValuesFromClient(){
@@ -10,11 +10,11 @@ async function getValuesFromClient(){
   client.timing = JSON.parse(await getTiming());
   client._satellite = JSON.parse(await getPageVar('_satellite'));
   client.serverCalls = JSON.parse(await getAACalls());
-  client.pvs = client.serverCalls.filter((url) => {
-    return !/pe=lnk/i.test(url.name);
+  client.aaHits = client.serverCalls.filter((url) => {
+    return /\/b\/ss\//i.test(url.name);
   });
-  client.links = client.serverCalls.filter((url) => {
-    return /pe=lnk/i.test(url.name);
+  client.webSDKHits = client.serverCalls.filter((url) => {
+    return /\/ee\//i.test(url.name);
   });
   client.pageLoadTime = client.timing.domContentLoadedEventEnd - client.timing.navigationStart;
   return client;
@@ -399,7 +399,7 @@ async function getContainer() {
 
 async function getAACalls() {
   const [{ result }] = await chrome.scripting.executeScript({
-    func: () => JSON.stringify(performance.getEntriesByType("resource").filter((obj) => { return /b\/ss/i.test(obj.name); })),
+    func: () => JSON.stringify(performance.getEntriesByType("resource").filter((obj) => { return /(\/b\/ss\/)|(\/ee\/)/i.test(obj.name); })),
     args: [],
     target: {
       tabId: (await chrome.tabs.query({ active: true, currentWindow: true }))[0].id
@@ -458,7 +458,7 @@ async function getDLWithNoGTM(name) {
   return result;
 }
 
-async function checkStatus(_satellite, pageLoadTime, pvsNumber, linksNumber) {
+async function checkStatus(_satellite, pageLoadTime, AAHitsNumber, WebSDKHitsNumber) {
   let dataLayer = [];
   let dlEvent = {};
   const details = {
@@ -467,8 +467,8 @@ async function checkStatus(_satellite, pageLoadTime, pvsNumber, linksNumber) {
     pname: {},
     env: {},
     bdate: {},
-    pvsNumber: {},
-    linksNumber: {},
+    AAHitsNumber: {},
+    WebSDKHitsNumber: {},
     dl: {},
     dlevent: {}
   };
@@ -532,30 +532,30 @@ async function checkStatus(_satellite, pageLoadTime, pvsNumber, linksNumber) {
         info: "Build info is not defined despite _satellite being loaded. Something must be interfering with the _satellite object."
       };
     }
-    if (pvsNumber > 0) {
-      details.pvsNumber = {
-        value: pvsNumber,
+    if (AAHitsNumber > 0) {
+      details.AAHitsNumber = {
+        value: AAHitsNumber,
         class: "success",
-        info: "Number of PageViews detected by now"
+        info: "Number of AA server calls detected by now, usually originated from the appmeasurement.js lib, deployed by the Adobe Analytics extension in Launch"
       };
     } else {
-      details.pvsNumber = {
-        value: pvsNumber,
+      details.AAHitsNumber = {
+        value: AAHitsNumber,
         class: "warn",
-        info: "No PageViews yet"
+        info: "No AA hits yet"
       };
     }
-    if (linksNumber > 0) {
-      details.linksNumber = {
-        value: linksNumber,
+    if (WebSDKHitsNumber > 0) {
+      details.WebSDKHitsNumber = {
+        value: WebSDKHitsNumber,
         class: "success",
-        info: "Number of Links detected by now"
+        info: "Number of Web SDK calls detected by now, usually originated from the alloy.js lib, deployed by the Web SDK extension in Launch"
       };
     } else {
-      details.linksNumber = {
-        value: linksNumber,
+      details.WebSDKHitsNumber = {
+        value: WebSDKHitsNumber,
         class: "warn",
-        info: "No Links yet"
+        info: "No Web SDK calls yet"
       };
     }
     if (_satellite._container && _satellite._container.extensions) {
@@ -620,13 +620,13 @@ async function checkStatus(_satellite, pageLoadTime, pvsNumber, linksNumber) {
     details.lstatus.class = "error";
     details.lstatus.info = "_satellite is not an object";
     details.env.value = details.bdate.value = details.pname.value =
-      details.linksNumber.value = details.pvsNumber.value = details.dl.value =
+      details.WebSDKHitsNumber.value = details.AAHitsNumber.value = details.dl.value =
       details.dlevent.value = "N/A";
     details.env.class = details.bdate.class = details.pname.class =
-      details.linksNumber.class = details.pvsNumber.class = details.dl.class =
+      details.WebSDKHitsNumber.class = details.AAHitsNumber.class = details.dl.class =
       details.dlevent.class = "warn";
     details.env.info = details.bdate.info = details.pname.info =
-      details.linksNumber.info = details.pvsNumber.info = details.dl.info =
+      details.WebSDKHitsNumber.info = details.AAHitsNumber.info = details.dl.info =
       details.dlevent.info = "Since _satellite is not there, no wonder this is not there either, heh.";
   }
   return details;
