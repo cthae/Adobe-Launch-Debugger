@@ -308,7 +308,7 @@ function logWebSDKServerCall(postPayload, settings, networkError) {
       cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Red; color: black`;
       cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Red; color: black`;
     }
-    const pNameMessage = scType + " Name : %c" + sCallName;
+    const pNameMessage = scType + " : %c" + sCallName;
     if (settings?.mainExpand === true) {
       console.group(`${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` +
         `Web SDK #${document.wSDKCounter} ${pNameMessage}\n`,
