@@ -80,19 +80,15 @@
     <table class="settingsTable">
       <tbody>
         <tr>
-          <td>Enable Core AA request logging:</td>
+          <td>Enable Core AA server calls logging:</td>
           <td class="centralize"><input type="checkbox" checked id="aabox" /></td>
         </tr>
         <tr>
-          <td>Enable Launch logging (setDebug):</td>
-          <td class="centralize"><input type="checkbox" id="launchbox" /></td>
-        </tr>
-        <tr>
-          <td>Main AA/Web SDK console logs expanded?</td>
+          <td>Core AA/Web SDK logs expanded?</td>
           <td class="centralize"><input type="checkbox" id="mainExpand" /></td>
         </tr>
         <tr>
-          <td>Evars and Props sections expanded?</td>
+          <td>Core Evars and Props sections expanded?</td>
           <td class="centralize"><input type="checkbox" checked id="varsExpand" /></td>
         </tr>
         <tr>
@@ -100,6 +96,10 @@
           <td class="centralize"><input type="checkbox" id="contextVarsExpand" /></td>
         </tr>
         <tr>
+          <td>Enable debug Launch logging (setDebug):</td>
+          <td class="centralize"><input type="checkbox" id="launchbox" /></td>
+        </tr>
+        <tr style="color:gray">
           <td>Your awesome useful setting could be here.</td>
           <td>If you have a cool idea:)</td>
         </tr>
@@ -108,7 +108,7 @@
             User-customized additional logging.
             <a target="_blank"
               href="https://experienceleague.adobe.com/docs/analytics/implementation/validate/query-parameters.html?lang=en">List
-              of applicable entries</a>. Or WebSDK <b>xdm fields</b>
+              of applicable entries</a>. Or WebSDK <b>XDM fields</b>
             <br />
             <div class="centralize"><button id="setLoggingHeadings">Set/Clear Headings</button></div>
           </td>
@@ -118,14 +118,14 @@
           </td>
         </tr>
         <tr>
-          <td colspan="2" class="centralize"><b>Redirection Settings:</b></td>
+          <td colspan="2" class="centralize" style="font-weight: 700;">Redirection Settings:</td>
         </tr>
         <tr>
           <td>Clear redirections after browsing session expired?</td>
           <td class="centralize"><input type="checkbox" checked id="sessionRedirections" /></td>
         </tr>
         <tr>
-          <td colspan="2" class="centralize"><b>Web SDK Settings:</b></td>
+          <td colspan="2" class="centralize" style="font-weight: 700;">Web SDK Settings:</td>
         </tr>
         <tr>
           <td>Log the boring XDM fields? (device, browser, environment and so on)</td>
