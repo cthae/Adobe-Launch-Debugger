@@ -292,7 +292,7 @@ function getComponent(allParams, paramName) {
   return foundElement?.split(/=(.+)?/, 2)[1];
 }
 
-function logWebSDKServerCall(postPayload, settings, networkError, baseURL) {
+function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) {
   //console.log("@@@ Debugging: webSDK Detected! The post payload object is: ", postPayload);
   let edgeConfigId = "[Not Found]";
   try{
