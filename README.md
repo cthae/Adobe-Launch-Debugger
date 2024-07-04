@@ -116,6 +116,7 @@ The dev plan and event log:
 * [x] Web SDK: Reinforce the custom logging field, allow people to use the xdm. reference in the list of params.
 * [x] Release v1.06 (Byanka's Web SDK improvements update)
 * [x] Small popup UI improvements.
+* [ ] Web SDK: Add logging for "event" just like we have for "data"
 * [ ] Web SDK: Make an option to exclude Target Web Sdk calls when they don't land in Anaytics. Have them excluded by default.
 * [ ] Consider adding support for other consent management systems, mostly TrustArc and Adobe's Evidon.
 * [ ] Hesitant: Web SDK: Add a setting to limit the number of characters for the config id logging in the websdk tracking. 4 characters by default.
