@@ -31,7 +31,9 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * * **AEP Debugging**. The Web SDK debugging is just an MVP for now, essentially pretty-printing the xdm object sent.
 
 ## Plan
-The dev plan and event log:
+<details>
+  <summary>The dev plan and event log:</summary>
+  
 * [x] Add logic to parse POST b/ss requests too
 * [x] Finish the Hierarchies parsing and logging
 * [x] Finish the Product string parsing and reporting
@@ -124,6 +126,8 @@ The dev plan and event log:
 * [ ] Hesitant: Web SDK: Add a setting to limit the number of characters for the config id logging in the websdk tracking. 4 characters by default.
 * [ ] Hesitant: Web SDK: Allow for custom Edge base path. It's /ee/ by default, but it can be customized, in which case the extension won't catch the network requests. (who uses a custom Edge base path?)
 * [ ] Hesitant: Find an elegant way to inject a library rather than replace it. Should probably be one/domain. To avoid doing it globally. Maybe not... It's so rare that we would need it, just use Overrides for ad-hoc injections?
+</details>
+
 
 
 ## Contributions
