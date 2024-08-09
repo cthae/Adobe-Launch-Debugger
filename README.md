@@ -33,9 +33,7 @@ This extension essentially has four parts accomplishing different facets of AA/L
 ## Plan
 <details>
   <summary>The dev plan and event log:</summary>
-* [ ] Hesitant: Find an elegant way to inject a library rather than replace it. Should probably be one/domain. To avoid doing it globally. Maybe not... It's so rare that we would need it, just use Overrides for ad-hoc injections?
-* [ ] Hesitant: Web SDK: Allow for custom Edge base path. It's /ee/ by default, but it can be customized, in which case the extension won't catch the network requests. (who uses a custom Edge base path?)
-* [ ] Hesitant: Web SDK: Add a setting to limit the number of characters for the config id logging in the websdk tracking. 4 characters by default.
+* [ ] Release v1.07.  
 * [ ] Consider adding support for other consent management systems, mostly TrustArc and Adobe's Evidon.
 * [ ] Web SDK: Make an option to exclude Target Web Sdk calls when they don't land in Anaytics. Have them excluded by default.
 * [ ] Web SDK: Add logging for "event" just like we have for "data"
@@ -126,8 +124,12 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * [x] Finish the Hierarchies parsing and logging
 * [x] Add logic to parse POST b/ss requests too
 </details>
-
-
+<details>
+  <summary>Questionable features</summary>
+* [ ] Hesitant: Find an elegant way to inject a library rather than replace it. Should probably be one/domain. To avoid doing it globally. Maybe not... It's so rare that we would need it, just use Overrides for ad-hoc injections?
+* [ ] Hesitant: Web SDK: Allow for custom Edge base path. It's /ee/ by default, but it can be customized, in which case the extension won't catch the network requests. (who uses a custom Edge base path?)
+* [ ] Hesitant: Web SDK: Add a setting to limit the number of characters for the config id logging in the websdk tracking. 4 characters by default.
+</details>
 
 ## Contributions
 Contributions are welcome! Whether it's code, ux/ui solutions or just advice. If you're inspired to do so, please contribute!
