@@ -33,99 +33,98 @@ This extension essentially has four parts accomplishing different facets of AA/L
 ## Plan
 <details>
   <summary>The dev plan and event log:</summary>
-  
-* [x] Add logic to parse POST b/ss requests too
-* [x] Finish the Hierarchies parsing and logging
-* [x] Finish the Product string parsing and reporting
-* [x] Adjust colors in the console logging to work well in the light console
-* [x] Add a settings and info tabs to the popup
-* [x] Add settings to change the default behavior of the main console log to be collapsed
-* [x] Deploy a test launch property with AA tracking for advanced testing
-* [x] Get some help from designers on the favicon, popup ui and logging
-* [x] Initial release to the Chrome web store v0.87 - first release: https://chromewebstore.google.com/detail/adobe-launch-debugger/ehadnibhemgjphdjgkallndphbghlpkn
-* [x] Wrong DL is checked sometimes for the last event info (GTM's DL instead of DM)
-* [x] Add logging for the Site Section near the PV info
-* [x] Implement server call counting in logging
-* [x] Release the v0.88
-* [x] When DL found, clicking on the DL cell will neatly print it to the console.
-* [x] When last event in DL found, clicking on the its cell will neatly print it to the console.
-* [x] Empty product fields are reported as Undefined when they're not defined. Replace it with a less generic message or just an empty string to avoid confusion for when "undefined" is the actual value of it
-* [x] A pageview is misfiring on adobe launch site. When there's no page/link name in a call, make it clear. 
-* [X] Implement logging for failed server calls. Maybe an SSL error is a good one to simulate.
-* [x] Release the v0.90
-* [x] Formatting improvements in Settings.
-* [x] Simplest Launch library detection logic (from DOM only, whatever has \/launch-.*8\.js) (MVP)
-* [x] Redirections settings/error reporting logic.
-* [x] Redirections management tab and logic.
-* [x] SetDebug's default state is not taken into account.
-* [x] Less bold text in ui.
-* [x] Add an option to quickly kill current page's redirection from the Settings tab.
-* [x] Implement the actual library switching logic (redirects)
-* [x] Add a button to delete all redirects.
-* [x] Make sure redirects logic is synced and enabled automatically when user uses a different browser with the same account and extension sync is on.
-* [x] Add an option for redirects to be session-based. By default.
-* [x] Instead of reporting into an active tab, report into the one the listeners are deployed to.
-* [x] Deal properly with empty dataLayers found. (the extension throws)
-* [x] Release v0.95.
-* [x] Implement _satellite.setDebug() polling logic for when the lib is not loaded when the extension tries to set it.
-* [x] Deletion of all redirection rules must delete both dynamic and sync rules.
-* [x] Better date formatting.
-* [x] Add useful snippets to the extension. Basically window.onbeforeunload = ()=>false and one trust stuff maybe.
-* [x] Release v0.96.
-* [x] setDebug reimplementation. Now it works better.
-* [x] Release v0.97.
-* [x] Also detect /satelliteLib- libraries besides /launch-
-* [x] Context data logging: https://experienceleague.adobe.com/docs/analytics/implementation/vars/page-vars/contextdata.html?lang=en Thanks to chip for suggesting it!
-* [x] Release v0.98.
-* [x] OT - Allow All and Deny All buttons.
-* [x] Web SDK/AEP MVP logging implementation.
-* [x] setDebug made more reliable.
-* [x] Slight UI adjustments.
-* [x] Update extension store/repo screenshots.
-* [x] Release v0.99.
-* [x] Raccooning!
-* [x] Release v1.00.
-* [x] Code refactory in the popup scripts.
-* [x] Add a feature to highlight merch events that aren't present in s.events. Why would Adobe do this? Feels like a bug.
-* [x] Merchandising variables logging improvements (", " delimiter instead of the pipe "|").
-* [x] Add reporting for s.zip, currency code, org id (mcorgid) and visitor id (mid).
-* [x] The "Other" reporting section is now collapsed by default due to the number of not-so-useful new dimensions added there.
-* [x] A bit more ui improvements.
-* [x] Release v1.01.
-* [x] Allow the user to set their own variables to be included in the header of the logging. Thanks Arun T for suggesting.
-* [x] Improve _satellite.setDebug(0) to work immediately rather than after a page reload.
-* [x] Small cosmetic improvements.
-* [x] Release v1.02.
-* [x] CSS improvements of the extension popup. Thanks Chip!
-* [x] Fix a bug in the new custom logging code.
-* [x] Add a line to indicate the end of the main logging group for easier reading.
-* [x] Release v1.03.
-* [x] Configure selective logging for the web SDK.
-* [x] Release v1.04.
-* [x] QOL Improvements for the custom web SDK logging.
-* [x] Allow the underscore in the field names.
-* [x] Small reporting improvements.
-* [x] Release v1.05.
-* [x] Replace the counter of PVs and links with AA calls and WebSDK calls
-* [x] Web SDK: Improve autodebugging: indicate when linkClicks will be treated as pageviews in AA due to the web fields set.
-* [x] Web SDK: Surface the Edge config ids for every request, make them visible just like AA Report Suites. To ease the debugging of multi-destinational tracking. First 5 characters should suffice.
-* [x] Web SDK: Improve the tracking of network errors when edge network requests fail.
-* [x] Web SDK: Refactor logging. Make it less confusing. No more nested groups. 
-* [x] Web SDK: Change the default logging a bit to maybe try and expand the analytics object automatically. 
-* [x] Web SDK: Add a setting to remove the essentially useless xdm fields that are rarely useful to look at. On by default.
-* [x] Web SDK: Improve the logging for non-object fields.
-* [x] Web SDK: Add logging for the data.__adobe object. Off by default in settings.
-* [x] Web SDK: Reinforce the custom logging field, allow people to use the xdm. reference in the list of params.
-* [x] Release v1.06 (Byanka's Web SDK improvements update)
-* [x] Small popup UI improvements.
-* [ ] Web SDK: Apply the error logging logic to Web SDK tracking too
-* [ ] Add a callback and error logging for "cancelled" requests. That's when the browser cancells the request.
-* [ ] Web SDK: Add logging for "event" just like we have for "data"
-* [ ] Web SDK: Make an option to exclude Target Web Sdk calls when they don't land in Anaytics. Have them excluded by default.
-* [ ] Consider adding support for other consent management systems, mostly TrustArc and Adobe's Evidon.
-* [ ] Hesitant: Web SDK: Add a setting to limit the number of characters for the config id logging in the websdk tracking. 4 characters by default.
-* [ ] Hesitant: Web SDK: Allow for custom Edge base path. It's /ee/ by default, but it can be customized, in which case the extension won't catch the network requests. (who uses a custom Edge base path?)
 * [ ] Hesitant: Find an elegant way to inject a library rather than replace it. Should probably be one/domain. To avoid doing it globally. Maybe not... It's so rare that we would need it, just use Overrides for ad-hoc injections?
+* [ ] Hesitant: Web SDK: Allow for custom Edge base path. It's /ee/ by default, but it can be customized, in which case the extension won't catch the network requests. (who uses a custom Edge base path?)
+* [ ] Hesitant: Web SDK: Add a setting to limit the number of characters for the config id logging in the websdk tracking. 4 characters by default.
+* [ ] Consider adding support for other consent management systems, mostly TrustArc and Adobe's Evidon.
+* [ ] Web SDK: Make an option to exclude Target Web Sdk calls when they don't land in Anaytics. Have them excluded by default.
+* [ ] Web SDK: Add logging for "event" just like we have for "data"
+* [ ] Add a callback and error logging for "cancelled" requests. That's when the browser cancells the request.
+* [ ] Web SDK: Apply the error logging logic to Web SDK tracking too
+* [x] Small popup UI improvements.
+* [x] Release v1.06 (Byanka's Web SDK improvements update)
+* [x] Web SDK: Reinforce the custom logging field, allow people to use the xdm. reference in the list of params.
+* [x] Web SDK: Add logging for the data.__adobe object. Off by default in settings.
+* [x] Web SDK: Improve the logging for non-object fields.
+* [x] Web SDK: Add a setting to remove the essentially useless xdm fields that are rarely useful to look at. On by default.
+* [x] Web SDK: Change the default logging a bit to maybe try and expand the analytics object automatically. 
+* [x] Web SDK: Refactor logging. Make it less confusing. No more nested groups. 
+* [x] Web SDK: Improve the tracking of network errors when edge network requests fail.
+* [x] Web SDK: Surface the Edge config ids for every request, make them visible just like AA Report Suites. To ease the debugging of multi-destinational tracking. First 5 characters should suffice.
+* [x] Web SDK: Improve autodebugging: indicate when linkClicks will be treated as pageviews in AA due to the web fields set.
+* [x] Replace the counter of PVs and links with AA calls and WebSDK calls
+* [x] Release v1.05.
+* [x] Small reporting improvements.
+* [x] Allow the underscore in the field names.
+* [x] QOL Improvements for the custom web SDK logging.
+* [x] Release v1.04.
+* [x] Configure selective logging for the web SDK.
+* [x] Release v1.03.
+* [x] Add a line to indicate the end of the main logging group for easier reading.
+* [x] Fix a bug in the new custom logging code.
+* [x] CSS improvements of the extension popup. Thanks Chip!
+* [x] Release v1.02.
+* [x] Small cosmetic improvements.
+* [x] Improve _satellite.setDebug(0) to work immediately rather than after a page reload.
+* [x] Allow the user to set their own variables to be included in the header of the logging. Thanks Arun T for suggesting.
+* [x] Release v1.01.
+* [x] A bit more ui improvements.
+* [x] The "Other" reporting section is now collapsed by default due to the number of not-so-useful new dimensions added there.
+* [x] Add reporting for s.zip, currency code, org id (mcorgid) and visitor id (mid).
+* [x] Merchandising variables logging improvements (", " delimiter instead of the pipe "|").
+* [x] Add a feature to highlight merch events that aren't present in s.events. Why would Adobe do this? Feels like a bug.
+* [x] Code refactory in the popup scripts.
+* [x] Release v1.00.
+* [x] Raccooning!
+* [x] Release v0.99.
+* [x] Update extension store/repo screenshots.
+* [x] Slight UI adjustments.
+* [x] setDebug made more reliable.
+* [x] Web SDK/AEP MVP logging implementation.
+* [x] OT - Allow All and Deny All buttons.
+* [x] Release v0.98.
+* [x] Context data logging: https://experienceleague.adobe.com/docs/analytics/implementation/vars/page-vars/contextdata.html?lang=en Thanks to chip for suggesting it!
+* [x] Also detect /satelliteLib- libraries besides /launch-
+* [x] Release v0.97.
+* [x] setDebug reimplementation. Now it works better.
+* [x] Release v0.96.
+* [x] Add useful snippets to the extension. Basically window.onbeforeunload = ()=>false and one trust stuff maybe.
+* [x] Better date formatting.
+* [x] Deletion of all redirection rules must delete both dynamic and sync rules.
+* [x] Implement _satellite.setDebug() polling logic for when the lib is not loaded when the extension tries to set it.
+* [x] Release v0.95.
+* [x] Deal properly with empty dataLayers found. (the extension throws)
+* [x] Instead of reporting into an active tab, report into the one the listeners are deployed to.
+* [x] Add an option for redirects to be session-based. By default.
+* [x] Make sure redirects logic is synced and enabled automatically when user uses a different browser with the same account and extension sync is on.
+* [x] Add a button to delete all redirects.
+* [x] Implement the actual library switching logic (redirects)
+* [x] Add an option to quickly kill current page's redirection from the Settings tab.
+* [x] Less bold text in ui.
+* [x] SetDebug's default state is not taken into account.
+* [x] Redirections management tab and logic.
+* [x] Redirections settings/error reporting logic.
+* [x] Simplest Launch library detection logic (from DOM only, whatever has \/launch-.*8\.js) (MVP)
+* [x] Formatting improvements in Settings.
+* [x] Release the v0.90
+* [X] Implement logging for failed server calls. Maybe an SSL error is a good one to simulate.
+* [x] A pageview is misfiring on adobe launch site. When there's no page/link name in a call, make it clear. 
+* [x] Empty product fields are reported as Undefined when they're not defined. Replace it with a less generic message or just an empty string to avoid confusion for when "undefined" is the actual value of it
+* [x] When last event in DL found, clicking on the its cell will neatly print it to the console.
+* [x] When DL found, clicking on the DL cell will neatly print it to the console.
+* [x] Release the v0.88
+* [x] Implement server call counting in logging
+* [x] Add logging for the Site Section near the PV info
+* [x] Wrong DL is checked sometimes for the last event info (GTM's DL instead of DM)
+* [x] Initial release to the Chrome web store v0.87 - first release: https://chromewebstore.google.com/detail/adobe-launch-debugger/ehadnibhemgjphdjgkallndphbghlpkn
+* [x] Get some help from designers on the favicon, popup ui and logging
+* [x] Deploy a test launch property with AA tracking for advanced testing
+* [x] Add settings to change the default behavior of the main console log to be collapsed
+* [x] Add a settings and info tabs to the popup
+* [x] Adjust colors in the console logging to work well in the light console
+* [x] Finish the Product string parsing and reporting
+* [x] Finish the Hierarchies parsing and logging
+* [x] Add logic to parse POST b/ss requests too
 </details>
 
 
