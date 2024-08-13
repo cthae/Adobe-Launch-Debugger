@@ -39,7 +39,7 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * [x] UX improvements, CSS fixes. 
 * [x] Add a bug submission button in info.
 * [x] Web SDK: Add an option to log all fields there are, giving the user the raw object.
-* [x] Add a callback and error logging for "cancelled" requests. That's when the browser cancells the request. And a few other types of requests. Thanks to Arun for the suggestion.
+* [x] Add a callback and error logging for "cancelled" requests. That's when the browser cancels the request. And a few other types of requests. Thanks to Arun for the suggestion.
 * [x] Web SDK: Apply the error logging logic to Web SDK tracking too
 * [x] Small popup UI improvements.
 * [x] Release v1.06 (Byanka's Web SDK improvements update)
