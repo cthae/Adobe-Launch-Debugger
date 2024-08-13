@@ -60,7 +60,6 @@ async function mainListener() {
       if (info.method === "POST" && postRequest){
         postRequest._satelliteInfo = _satelliteInfo;
         sendToTab(postRequest, info.tabId);
-        requests.delete(info.requestId);
       } else {
         sendToTab({
           info: info,
@@ -69,6 +68,7 @@ async function mainListener() {
           type: urlType
         }, info.tabId);
       }
+      requests.delete(info?.requestId);
     }
   }, filter);
 
@@ -83,6 +83,7 @@ async function mainListener() {
           type: urlType
         }, info.tabId);
     }
+    requests.delete(info?.requestId);
   }, filter);
 
   async function processOrphanedRequest(requestId){
