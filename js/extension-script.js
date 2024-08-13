@@ -1,9 +1,14 @@
 document.addEventListener('DOMContentLoaded', async () => {
+  updateVersion(chrome.runtime.getManifest().version);
   loadSettings();
   deployClickListeners();
   const client = await getValuesFromClient();
   updatePage(await checkStatus(client._satellite, client.pageLoadTime, client.aaHits.length, client.webSDKHits.length));
 });
+
+function updateVersion(version){
+  document.getElementsByName("version").forEach((element) => {element.innerText = version});
+}
 
 async function getValuesFromClient(){
   const client = {};
@@ -258,7 +263,9 @@ function switchTab(event) {
 
 function renderRedirections(){
   const table = document.getElementsByClassName("redirectionsTable")[0];
-  table.innerHTML = `<tbody>
+  chrome.storage.sync.get('redirections', function (data) {
+    if (data.redirections?.length > 0){
+      table.innerHTML = `<tbody>
   <tr>
      <th style = "text-align: center; vertical-align: middle;">Date</th>
      <th>From</th>
@@ -266,8 +273,6 @@ function renderRedirections(){
      <th style = "text-align: center; vertical-align: middle;">Delete</th>
   </tr>
 </tbody>`;
-  chrome.storage.sync.get('redirections', function (data) {
-    if (data.redirections){
       console.log("@@@ Redirections Exist, the obj is ", data.redirections);
       data.redirections.forEach(redirection => {
         const row = table.insertRow(-1);
@@ -335,7 +340,7 @@ async function updateRedirections(redirections) {
           ]
         }
       };
-      console.log("The redirect rule is: ", rule);
+      //console.log("The redirect rule is: ", rule);
       return rule;
     });
     if(data?.settings?.sessionRedirections !== false){

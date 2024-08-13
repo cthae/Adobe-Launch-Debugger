@@ -10,15 +10,21 @@ chrome.runtime.onMessage.addListener(request => {
   chrome.storage.sync.get('settings', function (data) {
     if (data?.settings?.aabox !== false) {
       //console.log("@@@ Debugging: The Info object is: ", request);
+      let error = "";
+      if (request.info?.error)
+        error = request.info?.error;
+      else if(request.eventTriggered === "timeoutError"){
+        error = "This request was sent, but the server didn't bother to respond in longer than a second, which indicates that this has likely not reached AA.";
+      }
       if(request.type === "AA"){
         if(request.postPayload) {
-          logAAServerCall(decodeURIComponent(request.info.url) + request.postPayload, request?._satelliteInfo, data.settings, request.info?.error);
+          logAAServerCall(decodeURIComponent(request.info.url) + request.postPayload, request?._satelliteInfo, data.settings, error);
         } else {
-          logAAServerCall(decodeURIComponent(request.info.url), request?._satelliteInfo, data.settings, request.info?.error);
+          logAAServerCall(decodeURIComponent(request.info.url), request?._satelliteInfo, data.settings, error);
         }
       } else if(request.type === "webSDK"){
         //console.log("@@@ Debugging: webSDK Detected! The Info object is: ", request);
-        logWebSDKServerCall(JSON.parse(request.postPayload), data.settings, request.info?.error, decodeURIComponent(request.info?.url || ""));
+        logWebSDKServerCall(JSON.parse(request.postPayload || ""), data.settings, error, decodeURIComponent(request.info?.url || ""));
       }
     }
   });
@@ -47,7 +53,6 @@ function logAAServerCall(fullURL, _satelliteInfo, settings, networkError) {
     cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Red; color: black`;
     cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Red; color: black`;
   }
-  
   const pNameMessage = sCallType + " Name : %c" + sCallName;
   const eventsMessage = `%cEvents: %c${parsingResult.events ? parsingResult.events : "[No Events]"}`;
   const RSMessage = `%cReport Suite: %c${parsingResult.rSuite ? parsingResult.rSuite : "[No RS Found]"}`;
@@ -330,23 +335,30 @@ function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) 
     try {
       const cssInnerStyle = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Yellow; color: black`;
       const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 900;font-size: 1.2em; background-color: Orange; color: black`;
-      Object.keys(WSEvent?.xdm || {}).forEach((field) => {
-        let fieldObject = WSEvent.xdm[field];
-        if (fieldsToExclude.includes(field)){
-          return;
-        } else if (typeof fieldObject !== "object"){
-          console.log(`%cxdm.${field} = %c${fieldObject}`, cssInnerStyle, cssHeadValue);
-        } else if(field === "_experience" && fieldObject?.analytics && Object.keys(fieldObject).length === 1){
-          console.log(`%cxdm._experience.analytics:`, cssInnerStyle, fieldObject.analytics);
-          //console.log(fieldObject.analytics);
-          //console.groupEnd();
-        } else {
-          console.log(`%cxdm.${field}:`,cssInnerStyle, fieldObject);
-          //console.log(fieldObject);
-          //console.groupEnd();
-        }
-      });
-      if(settings.logDataObject){
+      if (!settings.logAllWebSDK){
+        Object.keys(WSEvent?.xdm || {}).forEach((field) => {
+          let fieldObject = WSEvent.xdm[field];
+          if (fieldsToExclude.includes(field)){
+            return;
+          } else if (typeof fieldObject !== "object"){
+            console.log(`%cxdm.${field} = %c${fieldObject}`, cssInnerStyle, cssHeadValue);
+          } else if(field === "_experience" && fieldObject?.analytics && Object.keys(fieldObject).length === 1){
+            console.log(`%cxdm._experience.analytics:`, cssInnerStyle, fieldObject.analytics);
+          } else {
+            console.log(`%cxdm.${field}:`,cssInnerStyle, fieldObject);
+          }
+        });
+      } else {
+        Object.keys(WSEvent || {}).forEach((field) => {
+          let fieldObject = WSEvent[field];
+          if (typeof fieldObject !== "object"){
+            console.log(`%c${field} = %c${fieldObject}`, cssInnerStyle, cssHeadValue);
+          } else {
+            console.log(`%c${field}:`,cssInnerStyle, fieldObject);
+          }
+        });
+      }
+      if(settings.logDataObject && !settings.logAllWebSDK){
         Object.keys(WSEvent?.data?.__adobe || {}).forEach((field) => {
           let fieldObject = WSEvent.data.__adobe[field];
           console.log(`%cdata.__adobe.${field}:`,cssInnerStyle, fieldObject);

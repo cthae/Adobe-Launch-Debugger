@@ -48,6 +48,7 @@ async function mainListener() {
         eventTriggered: "onBeforeRequest",
         type: urlType
       });
+      setTimeout(processOrphanedRequest, 1000, info.requestId);
     }
   }, filter, ['requestBody']);
 
@@ -83,6 +84,15 @@ async function mainListener() {
         }, info.tabId);
     }
   }, filter);
+
+  async function processOrphanedRequest(requestId){
+    const request = requests.get(requestId);
+    if(request){
+      request._satelliteInfo = JSON.parse(await getSatelliteInfo(request.info.tabId));
+      request.eventTriggered = "timeoutError";
+      sendToTab(request, request.info.tabId);
+    }
+  }
 }
 
 function getUrlType(url){

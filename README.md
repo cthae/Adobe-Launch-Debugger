@@ -28,17 +28,19 @@ This extension essentially has four parts accomplishing different facets of AA/L
 
 * **Library Replacement**. Reimplement the Switch extension, essentially, but simpler and working properly. Simple logic to redirect the launch library fetch to a custom library.
 
-* * **AEP Debugging**. The Web SDK debugging is just an MVP for now, essentially pretty-printing the xdm object sent.
+* **AEP Debugging**. The Web SDK debugging. (I should add screenshots here)
 
 ## Plan
 <details>
   <summary>The dev plan and event log:</summary>
-* [ ] Release v1.07.  
-* [ ] Consider adding support for other consent management systems, mostly TrustArc and Adobe's Evidon.
-* [ ] Web SDK: Make an option to exclude Target Web Sdk calls when they don't land in Anaytics. Have them excluded by default.
-* [ ] Web SDK: Add logging for "event" just like we have for "data"
-* [ ] Add a callback and error logging for "cancelled" requests. That's when the browser cancells the request.
-* [ ] Web SDK: Apply the error logging logic to Web SDK tracking too
+* [ ] Release v1.08.  
+* [x] Release v1.07.  
+* [x] Print the extension version, getting it from the manifest.
+* [x] UX improvements, CSS fixes. 
+* [x] Add a bug submission button in info.
+* [x] Web SDK: Add an option to log all fields there are, giving the user the raw object.
+* [x] Add a callback and error logging for "cancelled" requests. That's when the browser cancells the request. And a few other types of requests. Thanks to Arun for the suggestion.
+* [x] Web SDK: Apply the error logging logic to Web SDK tracking too
 * [x] Small popup UI improvements.
 * [x] Release v1.06 (Byanka's Web SDK improvements update)
 * [x] Web SDK: Reinforce the custom logging field, allow people to use the xdm. reference in the list of params.
@@ -126,6 +128,8 @@ This extension essentially has four parts accomplishing different facets of AA/L
 </details>
 <details>
   <summary>Questionable features</summary>
+* [ ] Consider adding support for other consent management systems, mostly TrustArc and Adobe's Evidon. I would love to, but they lack documentation. Maybe next time I have to work with them.
+* [ ] Web SDK: Make an option to exclude Target Web Sdk calls when they don't land in Anaytics. Have them excluded by default. I'm not sure they don't land in AA. I think they do. Will skip this one until I run into it.
 * [ ] Hesitant: Find an elegant way to inject a library rather than replace it. Should probably be one/domain. To avoid doing it globally. Maybe not... It's so rare that we would need it, just use Overrides for ad-hoc injections?
 * [ ] Hesitant: Web SDK: Allow for custom Edge base path. It's /ee/ by default, but it can be customized, in which case the extension won't catch the network requests. (who uses a custom Edge base path?)
 * [ ] Hesitant: Web SDK: Add a setting to limit the number of characters for the config id logging in the websdk tracking. 4 characters by default.

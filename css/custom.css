@@ -25,6 +25,7 @@ td,th{
   font-weight: 400;
   font-size: large;
 }
+
 th{
   font-weight: 700;
 }
@@ -34,6 +35,11 @@ th{
   border-color: red;
   background: salmon;
   color: black;
+}
+
+button.error:hover {
+  border-style: solid;
+  color: white;
 }
 
 .success{
@@ -62,3 +68,9 @@ textarea {
   text-align: center; 
   vertical-align: middle;
 }
+
+button#deleteRedirection, button#delAllRedirections, .tabButtons{
+  font-weight: 400;
+  font-size: medium;
+}
+
