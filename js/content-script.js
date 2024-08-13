@@ -14,7 +14,7 @@ chrome.runtime.onMessage.addListener(request => {
       if (request.info?.error)
         error = request.info?.error;
       else if(request.eventTriggered === "timeoutError"){
-        error = "This request was sent, but the server didn't bother to respond in longer than a second, which indicates that this has likely not reached AA.";
+        error = "This request was sent, but the server didn't bother to respond in two seconds, which indicates that this has likely not reached AA.";
       }
       if(request.type === "AA"){
         if(request.postPayload) {

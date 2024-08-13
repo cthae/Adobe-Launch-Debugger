@@ -34,6 +34,7 @@ This extension essentially has four parts accomplishing different facets of AA/L
 <details>
   <summary>The dev plan and event log:</summary>
 * [ ] Release v1.08.  
+* [ ] Consider integrating with devtools to better monitor all network tab activity. https://chromedevtools.github.io/devtools-protocol/tot/Network/#method-enable
 * [x] Release v1.07.  
 * [x] Print the extension version, getting it from the manifest.
 * [x] UX improvements, CSS fixes. 
