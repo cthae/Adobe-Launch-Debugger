@@ -99,7 +99,7 @@ async function mainListener() {
 function getUrlType(url){
   if(/\/b\/ss\//.test(url)){
     return "AA";
-  } else if(/\/ee\/.*interact\?configId=/.test(url)){
+  } else if(/\/ee\/.*(interact)|(collect)\?configId=/.test(url)){
     return "webSDK";
   } else {
     return "Not Adobe";

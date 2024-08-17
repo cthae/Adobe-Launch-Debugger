@@ -34,7 +34,10 @@ This extension essentially has four parts accomplishing different facets of AA/L
 <details>
   <summary>The dev plan and event log:</summary>
 * [ ] Release v1.08.  
-* [ ] Consider integrating with devtools to better monitor all network tab activity. https://chromedevtools.github.io/devtools-protocol/tot/Network/#method-enable
+* [ ]
+* [ ]
+* [ ] Web SDK: Track the sendBeacon api.
+* [x] Delete requests from the map on other callbacks too to avoid misreporting calls as such that didn't receive the server response.
 * [x] Release v1.07.  
 * [x] Print the extension version, getting it from the manifest.
 * [x] UX improvements, CSS fixes. 
@@ -129,6 +132,7 @@ This extension essentially has four parts accomplishing different facets of AA/L
 </details>
 <details>
   <summary>Questionable features</summary>
+* [ ] Consider integrating with devtools to better monitor all network tab activity. https://chromedevtools.github.io/devtools-protocol/tot/Network/#method-enable
 * [ ] Consider adding support for other consent management systems, mostly TrustArc and Adobe's Evidon. I would love to, but they lack documentation. Maybe next time I have to work with them.
 * [ ] Web SDK: Make an option to exclude Target Web Sdk calls when they don't land in Anaytics. Have them excluded by default. I'm not sure they don't land in AA. I think they do. Will skip this one until I run into it.
 * [ ] Hesitant: Find an elegant way to inject a library rather than replace it. Should probably be one/domain. To avoid doing it globally. Maybe not... It's so rare that we would need it, just use Overrides for ad-hoc injections?
