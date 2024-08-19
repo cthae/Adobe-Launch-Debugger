@@ -90,7 +90,7 @@ async function mainListener() {
           type: urlType
         }, info.tabId);
     }
-    requests.delete(info?.requestId);
+    //requests.delete(info?.requestId);
   }, filter);
 
   async function processOrphanedRequest(requestId){

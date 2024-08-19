@@ -33,9 +33,9 @@ This extension essentially has four parts accomplishing different facets of AA/L
 ## Plan
 <details>
   <summary>The dev plan and event log:</summary>
-* [ ] Release v1.08.  
-* [ ] Web SDK: Enable custom logging for failed requests.
-* [ ] Web SDK: Track the sendBeacon api.
+* [x] Release v1.08.  
+* [x] Web SDK: On errors, in custom logs, add an indication that the request resulted in an error. This is for people who use filters in the console like pros. Thanks Arun for noticing.
+* [x] Web SDK: MVP tracking the navigator.sendBeacon() ping network requests. No access to their payloads, however, because the Chrome devteam neglects fixing related bugs.
 * [x] Delete requests from the map on other callbacks too to avoid misreporting calls as such that didn't receive the server response.
 * [x] v1.07.1: increase the timeout limit from 1 to 2 seconds.
 * [x] Release v1.07.  

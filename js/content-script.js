@@ -396,15 +396,17 @@ function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) 
       console.error(e);
     }
     console.groupEnd();
-    logCustomXDMFields(settings.loggingHeadings, WSEvent.xdm, document.wSDKCounter)
+    logCustomXDMFields(settings.loggingHeadings, WSEvent.xdm, document.wSDKCounter, networkError)
   });
 }
 
-function logCustomXDMFields(loggingHeadings, xdm, counter) {
+function logCustomXDMFields(loggingHeadings, xdm, counter, networkError) {
   if (loggingHeadings?.length > 0) {
-    const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 600;font-size: 1.2em; background-color: Orange; color: black`;
-    const cssValueField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 400;font-size: 1.2em; background-color: Orange; color: black`;
-    console.group(`%c Web SDK #${counter} User-customized additional logging:`, cssValueField);
+    const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 600;font-size: 1.2em;` + 
+                         ` background-color: ${networkError ? "Red" : "Orange"}; color: black`;
+    const cssValueField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 400;font-size: 1.2em;` + 
+                          ` background-color: ${networkError ? "Red" : "Orange"}; color: black`;
+    console.group(`%c Web SDK #${counter}${networkError ? " (ERROR)" : ""} User-customized additional logging:`, cssValueField);
     loggingHeadings.forEach(heading => {
       const XDMValueResult = GetXDMValue(xdm, heading.split("."));
       if (XDMValueResult.status === 'ok') {
