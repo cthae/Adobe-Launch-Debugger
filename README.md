@@ -32,7 +32,9 @@ This extension essentially has four parts accomplishing different facets of AA/L
 
 ## Plan
 <details>
+
   <summary>The dev plan and event log:</summary>
+
 * [x] Release v1.08.  
 * [x] Web SDK: On errors, in custom logs, add an indication that the request resulted in an error. This is for people who use filters in the console like pros. Thanks Arun for noticing.
 * [x] Web SDK: MVP tracking the navigator.sendBeacon() ping network requests. No access to their payloads, however, because the Chrome devteam neglects fixing related bugs.
@@ -129,15 +131,20 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * [x] Finish the Product string parsing and reporting
 * [x] Finish the Hierarchies parsing and logging
 * [x] Add logic to parse POST b/ss requests too
+
 </details>
+
 <details>
+
   <summary>Questionable features</summary>
+
 * [ ] Consider integrating with devtools to better monitor all network tab activity. https://chromedevtools.github.io/devtools-protocol/tot/Network/#method-enable
 * [ ] Consider adding support for other consent management systems, mostly TrustArc and Adobe's Evidon. I would love to, but they lack documentation. Maybe next time I have to work with them.
 * [ ] Web SDK: Make an option to exclude Target Web Sdk calls when they don't land in Anaytics. Have them excluded by default. I'm not sure they don't land in AA. I think they do. Will skip this one until I run into it.
 * [ ] Hesitant: Find an elegant way to inject a library rather than replace it. Should probably be one/domain. To avoid doing it globally. Maybe not... It's so rare that we would need it, just use Overrides for ad-hoc injections?
 * [ ] Hesitant: Web SDK: Allow for custom Edge base path. It's /ee/ by default, but it can be customized, in which case the extension won't catch the network requests. (who uses a custom Edge base path?)
 * [ ] Hesitant: Web SDK: Add a setting to limit the number of characters for the config id logging in the websdk tracking. 4 characters by default.
+
 </details>
 
 ## Contributions
