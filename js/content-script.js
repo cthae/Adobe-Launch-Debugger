@@ -13,22 +13,50 @@ chrome.runtime.onMessage.addListener(request => {
       let error = "";
       if (request.info?.error)
         error = request.info?.error;
-      else if(request.eventTriggered === "timeoutError"){
+      else if (request.eventTriggered === "timeoutError") {
         error = "This request was sent, but the server didn't bother to respond in two seconds, which indicates that this has likely not reached AA.";
       }
-      if(request.type === "AA"){
-        if(request.postPayload) {
+      if (request.type === "AA") {
+        if (request.postPayload) {
           logAAServerCall(decodeURIComponent(request.info.url) + request.postPayload, request?._satelliteInfo, data.settings, error);
         } else {
           logAAServerCall(decodeURIComponent(request.info.url), request?._satelliteInfo, data.settings, error);
         }
-      } else if(request.type === "webSDK"){
+      } else if (request.type === "webSDK") {
         //console.log("@@@ Debugging: webSDK Detected! The Info object is: ", request);
         logWebSDKServerCall(JSON.parse(request.postPayload || ""), data.settings, error, decodeURIComponent(request.info?.url || ""));
+      } else if (request.type === "Beaconed webSDK") {
+        logWebSDKBeaconCall(decodeURIComponent(request.info?.url || ""));
       }
     }
   });
 });
+
+function logWebSDKBeaconCall(baseURL) {
+  document.wSDKCounter = document.wSDKCounter ? document.wSDKCounter + 1 : 1;
+  const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: DarkCyan; color: yellow`;
+  const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: DarkCyan; color: #fc0`;
+  const cssNormal = `font-family: 'Courier New';font-weight: 400; font-size: 1.2em`;
+  const cssBold = `font-family: 'Courier New';font-weight: 800; font-size: 1.4em; background-color: DarkCyan; color: #fc0`;
+  let edgeConfigId = "[Not Found]";
+  try {
+    edgeConfigId = baseURL.split("configId=")[1]?.split(/\&|$/)[0]?.slice(0, 8);
+  } catch (e) {
+    edgeConfigId = e;
+  }
+  const mainLogHeader = `%cWeb SDK #${document.wSDKCounter}: %cBeacon Payload Detected!\n` +
+    `%cEdge ID: %c${edgeConfigId}\n`;
+  console.groupCollapsed(mainLogHeader, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
+  console.log("%cSorry, but no payload is available currently for ping type requests due to long-lived Chrome bug where it fails to give extensions the payload of ping POSTs in network listeners.\n\n" +
+    "%cHowever!%c \n\nYou still can get access to it by simply looking in your Network tab. Don't forget to preserve log since the page will likely unload. Or, better yet, block unload. There's an option in the extensions' 'Snippets' tab. Adobe doesn't use the 'interact' endpoint for pings, however. They decided to use a different url.\n\n" +
+    "Filter the Network tab by %c'collect?configId'%c and you'll get the pings.\n" +
+    "What's the difference between beacons and normal requests? In Launch, in the Send Event action, you have an option called %c'Document will unload'%c.\n\n" +
+    "Or if you use alloy directly to send events, it has a binary option called %c'documentUnloading'%c\nRead more about it here: https://experienceleague.adobe.com/en/docs/analytics/implementation/vars/config-vars/usebeacon\n\n" +
+    "Technically, I could try using a different api to still get the payloads in the console, but I don't know if it's worth it given how normally the beacons are rarely used and they generally have low business value. Well let me know if you need it. Devtools chrome.debugger API may be fun.",
+    cssNormal, cssBold, cssNormal, cssBold, cssNormal, cssBold, cssNormal, cssBold, cssNormal);
+  console.log(`%c^^^ The end of the Server Call #${document.wSDKCounter} ^^^`, cssHeadValue)
+  console.groupEnd();
+}
 
 function talkToBG(message) {
   chrome.runtime.sendMessage(message);
@@ -49,42 +77,42 @@ function logAAServerCall(fullURL, _satelliteInfo, settings, networkError) {
     cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: DarkSlateBlue; color: #fc0`;
     sCallName = parsingResult.customLinkName ? parsingResult.customLinkName : "[No Link Name]";
   }
-  if(networkError){
+  if (networkError) {
     cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Red; color: black`;
     cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Red; color: black`;
   }
   const pNameMessage = sCallType + " Name : %c" + sCallName;
   const eventsMessage = `%cEvents: %c${parsingResult.events ? parsingResult.events : "[No Events]"}`;
   const RSMessage = `%cReport Suite: %c${parsingResult.rSuite ? parsingResult.rSuite : "[No RS Found]"}`;
-  if(settings?.mainExpand === true){
-    console.group(`${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` + 
-      `AA #${document.sCallCounter} ${pNameMessage}\n` + 
+  if (settings?.mainExpand === true) {
+    console.group(`${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` +
+      `AA #${document.sCallCounter} ${pNameMessage}\n` +
       eventsMessage + " " + RSMessage,
       cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
   } else {
-    console.groupCollapsed(`${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` + 
-      `AA #${document.sCallCounter} ${pNameMessage}\n` + 
+    console.groupCollapsed(`${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` +
+      `AA #${document.sCallCounter} ${pNameMessage}\n` +
       eventsMessage + " " + RSMessage,
       cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
   }
   printProducts(parsingResult.products, parsingResult.events);
-  printMisc(parsingResult.pageName, parsingResult.pageType, parsingResult.campaign, 
-    parsingResult.currencyCode, parsingResult.allHierarchy, parsingResult.siteSection, 
+  printMisc(parsingResult.pageName, parsingResult.pageType, parsingResult.campaign,
+    parsingResult.currencyCode, parsingResult.allHierarchy, parsingResult.siteSection,
     parsingResult.zip)
   printVars(parsingResult.allListVars, "ListVars");
   printVars(parsingResult.alleVars, "eVars", settings.varsExpand);
   printVars(parsingResult.allProps, "props", settings.varsExpand);
   printContext(parsingResult.contextVars, settings);
   printOther(parsingResult.url2 ? parsingResult.url + parsingResult.url2 : parsingResult.url,
-    parsingResult.server, _satelliteInfo.property, _satelliteInfo.environment, 
+    parsingResult.server, _satelliteInfo.property, _satelliteInfo.environment,
     _satelliteInfo.buildtime, parsingResult.mcorgid, parsingResult.mid);
-  console.log(`%c^^^ The end of the Server Call #${document.sCallCounter} ^^^`,cssHeadValue)
+  console.log(`%c^^^ The end of the Server Call #${document.sCallCounter} ^^^`, cssHeadValue)
   console.groupEnd();
   logCustomAAFields(settings.loggingHeadings, fullURL, document.sCallCounter);
 }
 
-function logCustomAAFields(loggingHeadings, fullURL, counter){
-  if(loggingHeadings?.length > 0){
+function logCustomAAFields(loggingHeadings, fullURL, counter) {
+  if (loggingHeadings?.length > 0) {
     const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Orange; color: black`;
     const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 800;font-size: 1.2em; background-color: Orange; color: black`;
     console.group(`%cAA #${counter} User-customized additional logging:`, cssHeadField);
@@ -95,17 +123,17 @@ function logCustomAAFields(loggingHeadings, fullURL, counter){
   }
 }
 
-function printContext(contextVars, settings){
-  if (contextVars.length === 0){
+function printContext(contextVars, settings) {
+  if (contextVars.length === 0) {
     console.groupCollapsed(`Context Vars: No context variables were found.`);
-  } else{
-    if (settings?.contextVarsExpand){
+  } else {
+    if (settings?.contextVarsExpand) {
       console.group(`Context Vars: ${contextVars.length} variables found`);
     } else {
       console.groupCollapsed(`Context Vars: ${contextVars.length} variables found`);
     }
     contextVars.forEach((contextVar => {
-      console.log (contextVar.replace("=", " = "));
+      console.log(contextVar.replace("=", " = "));
     }));
   }
   console.groupEnd();
@@ -130,7 +158,7 @@ function printVars(vars, name, printExpanded = true) {
   if (vars.length === 0) {
     return false;
   }
-  if (printExpanded){
+  if (printExpanded) {
     console.group(name + ": " + vars.length);
   } else {
     console.groupCollapsed(name + ": " + vars.length);
@@ -180,22 +208,22 @@ function printProducts(productString, globalEvents) {
   console.group("Products: " + products.length);
   products.forEach((product) => {
     const prodEventsContainer = product.split(";")[4] ? getProductEvents(product.split(";")[4], globalEvents) : {};
-    if(prodEventsContainer?.areRogueEventsPresent){
-      console.log(`Category   : ${product.split(";")[0] ? product.split(";")[0] : '[Not Set]'}\n` + 
-        `Name       : ${product.split(";")[1] ? product.split(";")[1] : '[Not Set]'}\n` + 
-        `Quantity   : ${product.split(";")[2] ? product.split(";")[2] : '[Not Set]'}\n` + 
-        `Price      : ${product.split(";")[3] ? product.split(";")[3] : '[Not Set]'}\n` + 
-        `Events     : ${prodEventsContainer?.events ? prodEventsContainer.events : '[Not Set]'}\n` + 
-        `Merch.Vars : ${product.split(";")[5] ? product.split(";")[5].split("|").join(", ") : '[Not Set]'}\n` + 
+    if (prodEventsContainer?.areRogueEventsPresent) {
+      console.log(`Category   : ${product.split(";")[0] ? product.split(";")[0] : '[Not Set]'}\n` +
+        `Name       : ${product.split(";")[1] ? product.split(";")[1] : '[Not Set]'}\n` +
+        `Quantity   : ${product.split(";")[2] ? product.split(";")[2] : '[Not Set]'}\n` +
+        `Price      : ${product.split(";")[3] ? product.split(";")[3] : '[Not Set]'}\n` +
+        `Events     : ${prodEventsContainer?.events ? prodEventsContainer.events : '[Not Set]'}\n` +
+        `Merch.Vars : ${product.split(";")[5] ? product.split(";")[5].split("|").join(", ") : '[Not Set]'}\n` +
         `🦝%cMerchandising events should be in s.events too, otherwise AA won't display them%c🦝`
-        ,"background-color: Red; color: black", "", "background-color: Red; color: black", ""
+        , "background-color: Red; color: black", "", "background-color: Red; color: black", ""
       );
     } else {
-      console.log(`Category   : ${product.split(";")[0] ? product.split(";")[0] : '[Not Set]'}\n` + 
-        `Name       : ${product.split(";")[1] ? product.split(";")[1] : '[Not Set]'}\n` + 
-        `Quantity   : ${product.split(";")[2] ? product.split(";")[2] : '[Not Set]'}\n` + 
-        `Price      : ${product.split(";")[3] ? product.split(";")[3] : '[Not Set]'}\n` + 
-        `Events     : ${prodEventsContainer?.events ? prodEventsContainer?.events : '[Not Set]'}\n` + 
+      console.log(`Category   : ${product.split(";")[0] ? product.split(";")[0] : '[Not Set]'}\n` +
+        `Name       : ${product.split(";")[1] ? product.split(";")[1] : '[Not Set]'}\n` +
+        `Quantity   : ${product.split(";")[2] ? product.split(";")[2] : '[Not Set]'}\n` +
+        `Price      : ${product.split(";")[3] ? product.split(";")[3] : '[Not Set]'}\n` +
+        `Events     : ${prodEventsContainer?.events ? prodEventsContainer?.events : '[Not Set]'}\n` +
         `Merch.Vars : ${product.split(";")[5] ? product.split(";")[5].split("|").join(", ") : '[Not Set]'}`
       );
     }
@@ -204,9 +232,9 @@ function printProducts(productString, globalEvents) {
   return true;
 }
 
-function getProductEvents(prodEvents, globalEvents){
+function getProductEvents(prodEvents, globalEvents) {
   const result = {};
-  if(prodEvents.length < 7){
+  if (prodEvents.length < 7) {
     return {
       events: prodEvents,
       wrongEvents: false
@@ -215,11 +243,11 @@ function getProductEvents(prodEvents, globalEvents){
   const rogueEvents = prodEvents.split("|").filter(prodEvent => {
     return globalEvents.indexOf(prodEvent.split("=")[0].split(":")[0]) === -1;
   });
-  if(rogueEvents.length > 0){
+  if (rogueEvents.length > 0) {
     const presentEvents = prodEvents.split("|").filter(prodEvent => {
       return globalEvents.indexOf(prodEvent.split("=")[0].split(":")[0]) !== -1;
     });
-    result.events = "%c" + rogueEvents.join(", ") + "%c" + 
+    result.events = "%c" + rogueEvents.join(", ") + "%c" +
       (presentEvents.length > 0 ? ", " + presentEvents.join(", ") : "");
     result.areRogueEventsPresent = true;
   } else {
@@ -276,12 +304,12 @@ function parseAAServerCall(fullURL) {
   return parsingResult;
 }
 
-function getContextVars(fullURL){
-  if (fullURL.indexOf("&c.&") > 0 && fullURL.indexOf("&.c&") > 0){
-    try{
+function getContextVars(fullURL) {
+  if (fullURL.indexOf("&c.&") > 0 && fullURL.indexOf("&.c&") > 0) {
+    try {
       return fullURL.split("&c.&")[1].split("&.c&")[0].split("&");
     } catch {
-      return [];  
+      return [];
     }
   } else {
     return [];
@@ -300,9 +328,9 @@ function getComponent(allParams, paramName) {
 function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) {
   //console.log("@@@ Debugging: webSDK Detected! The post payload object is: ", postPayload);
   let edgeConfigId = "[Not Found]";
-  try{
-    edgeConfigId = baseURL.split("configId=")[1]?.split(/\&|$/)[0]?.slice(0,8);
-  } catch (e){
+  try {
+    edgeConfigId = baseURL.split("configId=")[1]?.split(/\&|$/)[0]?.slice(0, 8);
+  } catch (e) {
     edgeConfigId = e;
   }
   postPayload.events.forEach((WSEvent) => {
@@ -311,9 +339,9 @@ function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) 
     let cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: DarkCyan; color: #fc0`;
     const scType = WSEvent.xdm?.web?.webPageDetails?.name || WSEvent.xdm?.web?.webPageDetails?.URL ? "Page View" : "Link";
     let sCallName = "[No Name]";
-    if (scType === "Page View"){
+    if (scType === "Page View") {
       sCallName = WSEvent.xdm?.web?.webPageDetails?.name || "[No Name]";
-    } else if (scType === "Link"){
+    } else if (scType === "Link") {
       sCallName = WSEvent.xdm?.web?.webInteraction?.name || "[No Name]";
     }
     if (networkError) {
@@ -322,8 +350,8 @@ function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) 
     }
     const pNameMessage = scType + ": %c" + sCallName;
     const mainLogHeader = `${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` +
-    `Web SDK #${document.wSDKCounter}: ${pNameMessage}\n%c` + 
-    `Edge ID: %c${edgeConfigId}\n`;
+      `Web SDK #${document.wSDKCounter}: ${pNameMessage}\n%c` +
+      `Edge ID: %c${edgeConfigId}\n`;
     if (settings?.mainExpand === true) {
       console.group(mainLogHeader,
         cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
@@ -335,36 +363,36 @@ function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) 
     try {
       const cssInnerStyle = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Yellow; color: black`;
       const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 900;font-size: 1.2em; background-color: Orange; color: black`;
-      if (!settings.logAllWebSDK){
+      if (!settings.logAllWebSDK) {
         Object.keys(WSEvent?.xdm || {}).forEach((field) => {
           let fieldObject = WSEvent.xdm[field];
-          if (fieldsToExclude.includes(field)){
+          if (fieldsToExclude.includes(field)) {
             return;
-          } else if (typeof fieldObject !== "object"){
+          } else if (typeof fieldObject !== "object") {
             console.log(`%cxdm.${field} = %c${fieldObject}`, cssInnerStyle, cssHeadValue);
-          } else if(field === "_experience" && fieldObject?.analytics && Object.keys(fieldObject).length === 1){
+          } else if (field === "_experience" && fieldObject?.analytics && Object.keys(fieldObject).length === 1) {
             console.log(`%cxdm._experience.analytics:`, cssInnerStyle, fieldObject.analytics);
           } else {
-            console.log(`%cxdm.${field}:`,cssInnerStyle, fieldObject);
+            console.log(`%cxdm.${field}:`, cssInnerStyle, fieldObject);
           }
         });
       } else {
         Object.keys(WSEvent || {}).forEach((field) => {
           let fieldObject = WSEvent[field];
-          if (typeof fieldObject !== "object"){
+          if (typeof fieldObject !== "object") {
             console.log(`%c${field} = %c${fieldObject}`, cssInnerStyle, cssHeadValue);
           } else {
-            console.log(`%c${field}:`,cssInnerStyle, fieldObject);
+            console.log(`%c${field}:`, cssInnerStyle, fieldObject);
           }
         });
       }
-      if(settings.logDataObject && !settings.logAllWebSDK){
+      if (settings.logDataObject && !settings.logAllWebSDK) {
         Object.keys(WSEvent?.data?.__adobe || {}).forEach((field) => {
           let fieldObject = WSEvent.data.__adobe[field];
-          console.log(`%cdata.__adobe.${field}:`,cssInnerStyle, fieldObject);
+          console.log(`%cdata.__adobe.${field}:`, cssInnerStyle, fieldObject);
         });
       }
-    } catch (e){
+    } catch (e) {
       console.error(e);
     }
     console.groupEnd();
@@ -372,40 +400,40 @@ function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) 
   });
 }
 
-function logCustomXDMFields(loggingHeadings, xdm, counter){
-  if(loggingHeadings?.length > 0){
+function logCustomXDMFields(loggingHeadings, xdm, counter) {
+  if (loggingHeadings?.length > 0) {
     const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 600;font-size: 1.2em; background-color: Orange; color: black`;
     const cssValueField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 400;font-size: 1.2em; background-color: Orange; color: black`;
     console.group(`%c Web SDK #${counter} User-customized additional logging:`, cssValueField);
     loggingHeadings.forEach(heading => {
       const XDMValueResult = GetXDMValue(xdm, heading.split("."));
-      if (XDMValueResult.status === 'ok'){
+      if (XDMValueResult.status === 'ok') {
         console.log(`%c${heading} :%o`, cssHeadField, XDMValueResult.fieldValue);
-      } else if(XDMValueResult.status === 'path remaining'){
-        console.log(`%c${heading}%c requested, but %c${XDMValueResult.path[0]}%c is not an object. Its value is :%o`, 
-        cssHeadField, cssValueField, cssHeadField, cssValueField, XDMValueResult.fieldValue);
-      } else if(XDMValueResult.status === 'undefined'){
+      } else if (XDMValueResult.status === 'path remaining') {
+        console.log(`%c${heading}%c requested, but %c${XDMValueResult.path[0]}%c is not an object. Its value is :%o`,
+          cssHeadField, cssValueField, cssHeadField, cssValueField, XDMValueResult.fieldValue);
+      } else if (XDMValueResult.status === 'undefined') {
         console.log(`%c${heading}%c requested, but ` +
-        `%c${XDMValueResult.propertyName === heading ? "it" : XDMValueResult.propertyName}%c is undefined`, 
-        cssHeadField, cssValueField, cssHeadField, cssValueField);
+          `%c${XDMValueResult.propertyName === heading ? "it" : XDMValueResult.propertyName}%c is undefined`,
+          cssHeadField, cssValueField, cssHeadField, cssValueField);
       }
     });
     console.groupEnd();
   }
 }
 
-function GetXDMValue(xdm, path){
+function GetXDMValue(xdm, path) {
   //Recursion! How often can you justify it? heh!
-  if (typeof xdm[path[0]] === "object" && path.length > 1){
+  if (typeof xdm[path[0]] === "object" && path.length > 1) {
     return GetXDMValue(xdm[path[0]], path.slice(1));
   } else {
-    if(typeof xdm[path[0]] === "undefined"){
+    if (typeof xdm[path[0]] === "undefined") {
       return {
         propertyName: path[0],
         status: 'undefined'
       };
     } else {
-      if(path.length === 1){
+      if (path.length === 1) {
         return {
           fieldValue: xdm[path[0]],
           status: 'ok'

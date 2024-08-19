@@ -33,7 +33,7 @@ async function mainListener() {
   chrome.webRequest.onBeforeRequest.addListener(async info => {
     let urlType = getUrlType(info.url);
     if (urlType !== "Not Adobe" && info.method === "POST" && 
-        info.requestBody.raw && info.requestBody.raw.length > 0) {
+        (info.requestBody.raw && info.requestBody.raw.length > 0 || urlType === "Beaconed webSDK")) {
       let postedString = "";
       if(urlType === "AA"){
         postedString = decodeURIComponent(String.fromCharCode.apply(null,
@@ -41,6 +41,13 @@ async function mainListener() {
       } else if (urlType === "webSDK"){
         postedString = String.fromCharCode.apply(null,
           new Uint8Array(info.requestBody.raw[0].bytes));
+      } else if (urlType === "Beaconed webSDK"){
+        sendToTab({
+          info: info,
+          eventTriggered: "onBeforeRequest",
+          type: urlType
+        }, info.tabId);
+        return; //pings (beacons) sometimes don't get responses, or they come in too late, so this.
       }
       requests.set(info.requestId, {
         info: info,
@@ -99,8 +106,10 @@ async function mainListener() {
 function getUrlType(url){
   if(/\/b\/ss\//.test(url)){
     return "AA";
-  } else if(/\/ee\/.*(interact)|(collect)\?configId=/.test(url)){
+  } else if(/\/ee\/.*interact\?configId=/.test(url)){
     return "webSDK";
+  } else if(/\/ee\/.*collect\?configId=/.test(url)){
+    return "Beaconed webSDK";
   } else {
     return "Not Adobe";
   }

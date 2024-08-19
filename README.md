@@ -34,10 +34,10 @@ This extension essentially has four parts accomplishing different facets of AA/L
 <details>
   <summary>The dev plan and event log:</summary>
 * [ ] Release v1.08.  
-* [ ]
-* [ ]
+* [ ] Web SDK: Enable custom logging for failed requests.
 * [ ] Web SDK: Track the sendBeacon api.
 * [x] Delete requests from the map on other callbacks too to avoid misreporting calls as such that didn't receive the server response.
+* [x] v1.07.1: increase the timeout limit from 1 to 2 seconds.
 * [x] Release v1.07.  
 * [x] Print the extension version, getting it from the manifest.
 * [x] UX improvements, CSS fixes. 
