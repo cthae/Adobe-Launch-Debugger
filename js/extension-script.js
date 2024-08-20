@@ -61,7 +61,7 @@ function setLoggingHeadings(event){
 
 function loveTheRaccoon(event){
   event.target.innerText = "😻";
-  setTimeout(() => event.target.innerText = "🦝", 2000);
+  setTimeout(() => event.target.innerText = "🦝", 6000);
 }
 
 async function OTAllowAll(event){
