@@ -14,7 +14,7 @@ chrome.runtime.onMessage.addListener(request => {
       if (request.info?.error)
         error = request.info?.error;
       else if (request.eventTriggered === "timeoutError") {
-        error = "This request was sent, but the server didn't respond in six seconds, which indicates that this has likely not reached AA.";
+        error = "This request was sent, but the server didn't respond in six seconds, which indicates that this has likely not reached AA. Check your Adblocker and Throttling config.";
       }
       if (request.type === "AA") {
         if (request.postPayload) {
@@ -396,28 +396,91 @@ function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) 
       console.error(e);
     }
     console.groupEnd();
-    logCustomXDMFields(settings.loggingHeadings, WSEvent.xdm, document.wSDKCounter, networkError)
+    logCustomXDMFields(settings.loggingHeadings, WSEvent.xdm, document.wSDKCounter, networkError, WSEvent.data?.__adobe?.analytics)
   });
 }
 
-function logCustomXDMFields(loggingHeadings, xdm, counter, networkError) {
+function logCustomXDMFields(loggingHeadings, xdm, counter, networkError, dataAnalytics = {}) {
   if (loggingHeadings?.length > 0) {
-    const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 600;font-size: 1.2em;` + 
-                         ` background-color: ${networkError ? "Red" : "Orange"}; color: black`;
-    const cssValueField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 400;font-size: 1.2em;` + 
-                          ` background-color: ${networkError ? "Red" : "Orange"}; color: black`;
+    const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 600;font-size: 1.2em;` +
+      ` background-color: ${networkError ? "Red" : "Orange"}; color: black`;
+    const cssValueField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 400;font-size: 1.2em;` +
+      ` background-color: ${networkError ? "Red" : "Orange"}; color: black`;
     console.group(`%c Web SDK #${counter}${networkError ? " (ERROR)" : ""} User-customized additional logging:`, cssValueField);
     loggingHeadings.forEach(heading => {
-      const XDMValueResult = GetXDMValue(xdm, heading.split("."));
-      if (XDMValueResult.status === 'ok') {
-        console.log(`%c${heading} :%o`, cssHeadField, XDMValueResult.fieldValue);
-      } else if (XDMValueResult.status === 'path remaining') {
-        console.log(`%c${heading}%c requested, but %c${XDMValueResult.path[0]}%c is not an object. Its value is :%o`,
-          cssHeadField, cssValueField, cssHeadField, cssValueField, XDMValueResult.fieldValue);
-      } else if (XDMValueResult.status === 'undefined') {
-        console.log(`%c${heading}%c requested, but ` +
-          `%c${XDMValueResult.propertyName === heading ? "it" : XDMValueResult.propertyName}%c is undefined`,
-          cssHeadField, cssValueField, cssHeadField, cssValueField);
+      let shortCutValue = "";
+      if (/^evar/i.test(heading)) {
+        shortCutValue = dataAnalytics[heading?.replace(/evar/i, "eVar")];
+        if (shortCutValue) {
+          heading = `data.__adobe.analytics.${heading}`;
+        } else {
+          heading = "_experience.analytics.customDimensions.eVars." + heading.replace(/evar/i, "eVar");
+        }
+      } else if (/^event/i.test(heading.toLowerCase())) {
+        const eventNumber = Number?.parseInt(heading.split("event")?.slice(-1));
+        if (eventNumber) {
+          if (dataAnalytics?.events?.toLowerCase()?.includes(heading?.toLowerCase())) {
+            shortCutValue = dataAnalytics.events.split(heading?.toLowerCase() + "=")[1]?.split(/,|$/)[0] || 1;
+            heading = `data.__adobe.analytics.events.${heading}`;
+          } else {
+            if (eventNumber) {
+              heading += ".value";
+              if (eventNumber < 101) {
+                heading = "_experience.analytics.event1to100." + heading;
+              } else if (eventNumber < 201) {
+                heading = "_experience.analytics.event101to200." + heading;
+              } else if (eventNumber < 301) {
+                heading = "_experience.analytics.event201to300." + heading;
+              } else if (eventNumber < 401) {
+                heading = "_experience.analytics.event301to400." + heading;
+              } else if (eventNumber < 501) {
+                heading = "_experience.analytics.event401to500." + heading;
+              } else if (eventNumber < 601) {
+                heading = "_experience.analytics.event501to600." + heading;
+              } else if (eventNumber < 701) {
+                heading = "_experience.analytics.event601to700." + heading;
+              } else if (eventNumber < 801) {
+                heading = "_experience.analytics.event701to800." + heading;
+              } else if (eventNumber < 901) {
+                heading = "_experience.analytics.event801to900." + heading;
+              } else if (eventNumber < 1000) {
+                heading = "_experience.analytics.event901to1000." + heading;
+              }
+            }
+          }
+        }
+      } else if (/^prop/i.test(heading)) {
+        if (dataAnalytics[heading.toLowerCase()]) {
+          heading = `data.__adobe.analytics.${heading}`;
+          shortCutValue = dataAnalytics[heading.toLowerCase()];
+        } else {
+          heading = "_experience.analytics.customDimensions.props." + heading.replace(/prop/i, "prop");
+        }
+      } else if (/^(listvar\d)|(list\d)|(l\d$)|(lvar\d$)/i.test(heading)) {
+        const listNumber = parseInt(heading.slice(-1));
+        if (listNumber) {
+          if (dataAnalytics["list" + listNumber]) {
+            heading = `data.__adobe.analytics.list${listNumber}`;
+            shortCutValue = dataAnalytics['list' + listNumber];
+          } else {
+            heading = `_experience.analytics.customDimensions.lists.list${listNumber}.list`;
+          }
+        }
+      }
+      if(shortCutValue){
+        console.log(`%c${heading} :%o`, cssHeadField, shortCutValue);
+      } else {
+        const XDMValueResult = GetXDMValue(xdm, heading.split("."));
+        if (XDMValueResult.status === 'ok') {
+          console.log(`%c${heading} :%o`, cssHeadField, XDMValueResult.fieldValue);
+        } else if (XDMValueResult.status === 'path remaining') {
+          console.log(`%c${heading}%c requested, but %c${XDMValueResult.path[0]}%c is not an object. Its value is :%o`,
+            cssHeadField, cssValueField, cssHeadField, cssValueField, XDMValueResult.fieldValue);
+        } else if (XDMValueResult.status === 'undefined') {
+          console.log(`%c${heading}%c requested, but ` +
+            `%c${XDMValueResult.propertyName === heading ? "it" : XDMValueResult.propertyName}%c is undefined`,
+            cssHeadField, cssValueField, cssHeadField, cssValueField);
+        }
       }
     });
     console.groupEnd();

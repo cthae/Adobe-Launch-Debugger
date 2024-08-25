@@ -35,7 +35,13 @@ This extension essentially has four parts accomplishing different facets of AA/L
 
   <summary>The dev plan and event log:</summary>
 
-* [ ] Release v1.09.  
+* [ ] Release v1.09.
+* [ ]
+* [ ] Web SDK: Expose the event type in the logging header.
+* [ ] Web SDK: Improve the custom logger to also check the data.__adobe.analytics object when using shortcuts.
+* [ ] Web SDK: Refactor custom logging for the data obj.  
+* [x] Web SDK: Make it easier for non-technical people to use the custom logging: don't require them to specify the full path to evars, props or events for xdm payloads. If users ask for evars and it's an xdm event, just add the correct path to it.
+* [ ] Reimplement page load time to something like performance.getEntriesByType("navigation")[0]?.duration 
 * [x] Release v1.08.  
 * [x] Web SDK: On errors, in custom logs, add an indication that the request resulted in an error. This is for people who use filters in the console like pros. Thanks Arun for noticing.
 * [x] Web SDK: MVP tracking the navigator.sendBeacon() ping network requests. No access to their payloads, however, because the Chrome devteam neglects fixing related bugs.
