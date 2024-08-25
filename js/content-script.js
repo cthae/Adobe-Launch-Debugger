@@ -351,13 +351,14 @@ function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) 
     const pNameMessage = scType + ": %c" + sCallName;
     const mainLogHeader = `${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` +
       `Web SDK #${document.wSDKCounter}: ${pNameMessage}\n%c` +
+      `Event Type:%c${WSEvent.xdm?.eventType || "[none]"}%c, ` +
       `Edge ID: %c${edgeConfigId}\n`;
     if (settings?.mainExpand === true) {
       console.group(mainLogHeader,
-        cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
+        cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
     } else {
       console.groupCollapsed(mainLogHeader,
-        cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
+        cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
     }
     const fieldsToExclude = settings?.logBoringFieldsWebSDK === true ? [] : ["device", "environment", "placeContext", "implementationDetails", "timestamp"];
     try {
