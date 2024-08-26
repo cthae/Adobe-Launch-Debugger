@@ -21,7 +21,7 @@ async function getValuesFromClient(){
   client.webSDKHits = client.serverCalls.filter((url) => {
     return /\/ee\//i.test(url.name);
   });
-  client.pageLoadTime = client.timing.domContentLoadedEventEnd - client.timing.navigationStart;
+  client.pageLoadTime = client.timing.toFixed(0);
   return client;
 }
 
@@ -416,7 +416,7 @@ async function getAACalls() {
 
 async function getTiming() {
   const [{ result }] = await chrome.scripting.executeScript({
-    func: () => JSON.stringify(window["performance"]["timing"]),
+    func: () => JSON.stringify(performance.getEntriesByType("navigation")[0]?.duration),
     args: [],
     target: {
       tabId: (await chrome.tabs.query({ active: true, currentWindow: true }))[0].id
