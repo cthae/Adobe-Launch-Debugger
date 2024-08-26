@@ -412,7 +412,7 @@ function logCustomXDMFields(loggingHeadings, xdm, counter, networkError, dataAna
       let shortCutValue = "";
       if (/^evar/i.test(heading)) {
         shortCutValue = dataAnalytics[heading?.replace(/evar/i, "eVar")];
-        if (shortCutValue) {
+        if (shortCutValue !== undefined) {
           heading = `data.__adobe.analytics.${heading}`;
         } else {
           heading = "_experience.analytics.customDimensions.eVars." + heading.replace(/evar/i, "eVar");
@@ -420,7 +420,7 @@ function logCustomXDMFields(loggingHeadings, xdm, counter, networkError, dataAna
       } else if (/^event/i.test(heading.toLowerCase())) {
         const eventNumber = Number?.parseInt(heading.split("event")?.slice(-1));
         if (eventNumber) {
-          if (dataAnalytics?.events?.toLowerCase()?.includes(heading?.toLowerCase())) {
+          if (dataAnalytics?.events?.toLowerCase()?.includes(heading?.toLowerCase()) !== undefined) {
             shortCutValue = dataAnalytics.events.split(heading?.toLowerCase() + "=")[1]?.split(/,|$/)[0] || 1;
             heading = `data.__adobe.analytics.events.${heading}`;
           } else {
@@ -451,11 +451,11 @@ function logCustomXDMFields(loggingHeadings, xdm, counter, networkError, dataAna
           }
         }
       } else if (/^prop/i.test(heading)) {
-        if (dataAnalytics[heading.toLowerCase()]) {
-          heading = `data.__adobe.analytics.${heading}`;
+        if (dataAnalytics[heading.toLowerCase()] !== undefined) {
           shortCutValue = dataAnalytics[heading.toLowerCase()];
+          heading = `data.__adobe.analytics.${heading}`;
         } else {
-          heading = "_experience.analytics.customDimensions.props." + heading.replace(/prop/i, "prop");
+          heading = "_experience.analytics.customDimensions.props." + heading.toLowerCase();
         }
       } else if (/^(listvar\d)|(list\d)|(l\d$)|(lvar\d$)/i.test(heading)) {
         const listNumber = parseInt(heading.slice(-1));
@@ -468,7 +468,7 @@ function logCustomXDMFields(loggingHeadings, xdm, counter, networkError, dataAna
           }
         }
       }
-      if(shortCutValue){
+      if(shortCutValue || /^data\.__adobe/.test(heading)){
         console.log(`%c${heading} :%o`, cssHeadField, shortCutValue);
       } else {
         const XDMValueResult = GetXDMValue(xdm, heading.split("."));
