@@ -51,7 +51,7 @@ function setLoggingHeadings(event){
   } else {
     event.target.classList = "success";
     event.target.innerText = "Set!";
-    queryParams = textArea.value.split(",").map(param => param.replace(/^xdm\./,"").trim()).filter(item => item);
+    queryParams = textArea.value.split(",").map(param => param.replace(/^xdm\./,"").trim()).filter(Boolean);
   }
   chrome.storage.sync.get('settings', function (data) {
     data.settings.loggingHeadings = queryParams;
