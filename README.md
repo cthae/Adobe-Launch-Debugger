@@ -35,7 +35,7 @@ This extension essentially has four parts accomplishing different facets of AA/L
 
   <summary>The dev plan and event log:</summary>
 
-* [x] Release v1.09.1.
+* [ ] Release v1.09.1.
 * [ ] Fix a bug in custom logging, in event shortcuts for the data.__adobe.analytics usecases.
 * [x] Fix a bug in custom logging, in prop shortcuts for the data.__adobe.analytics usecases.
 * [x] Release v1.09.
