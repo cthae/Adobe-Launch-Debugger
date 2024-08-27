@@ -34,9 +34,10 @@ This extension essentially has four parts accomplishing different facets of AA/L
 <details>
 
   <summary>The dev plan and event log:</summary>
-
-* [ ] Release v1.09.1.
-* [ ] Fix a bug in custom logging, in event shortcuts for the data.__adobe.analytics usecases.
+* [ ]] Release v1.10.
+* [ ] Implement Launch UI improvements.
+* [x] Release v1.09.1 To the webstore only.
+* [x] Fix a bug in custom logging, in event shortcuts for the data.__adobe.analytics usecases.
 * [x] Fix a bug in custom logging, in prop shortcuts for the data.__adobe.analytics usecases.
 * [x] Release v1.09.
 * [x] Web SDK: Expose the event type in the logging header.
