@@ -34,8 +34,9 @@ This extension essentially has four parts accomplishing different facets of AA/L
 <details>
 
   <summary>The dev plan and event log:</summary>
-* [ ]] Release v1.10.
+* [ ] Release v1.10.
 * [ ] Implement Launch UI improvements.
+* [ ] Rename the content-script.js to something more interesting. It's visible in the console and can be filtered by.
 * [x] Release v1.09.1 To the webstore only.
 * [x] Fix a bug in custom logging, in event shortcuts for the data.__adobe.analytics usecases.
 * [x] Fix a bug in custom logging, in prop shortcuts for the data.__adobe.analytics usecases.
