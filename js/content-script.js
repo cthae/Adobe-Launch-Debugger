@@ -420,7 +420,7 @@ function logCustomXDMFields(loggingHeadings, xdm, counter, networkError, dataAna
       } else if (/^event/i.test(heading.toLowerCase())) {
         const eventNumber = Number?.parseInt(heading.split("event")?.slice(-1));
         if (eventNumber) {
-          if (dataAnalytics?.events?.toLowerCase()?.includes(heading?.toLowerCase()) !== undefined) {
+          if (dataAnalytics?.events?.toLowerCase()?.includes(heading?.toLowerCase())) {
             shortCutValue = dataAnalytics.events.split(heading?.toLowerCase() + "=")[1]?.split(/,|$/)[0] || 1;
             heading = `data.__adobe.analytics.events.${heading}`;
           } else {
