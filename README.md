@@ -39,7 +39,7 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * [ ] Create an infrastructure around the codebase of the extension, introduce unit tests, look into CI.
 * [ ] Support for Mozilla FF. Same extension. Cross-browsers. Seems like mostly only background will have to be reimplemented, but many APIs may be off. We'll see.
 * [ ] Rename the content-script.js to something more interesting. It's visible in the console and can be filtered by.
-* [ ] Further improve the custom logging, allowing shorthands: p12/c12/v12/e12/l2.
+* [x] Further improve the custom logging, allowing shorthands: p12/c12/v12/e12/l2.
 * [x] Apply all the shorthanded custom logging to Appmeasurement logging too.
 * [x] Release v1.09.1 To the webstore only.
 * [x] Fix a bug in custom logging, in event shortcuts for the data.__adobe.analytics usecases.

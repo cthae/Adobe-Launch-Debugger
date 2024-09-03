@@ -415,14 +415,16 @@ function logCustomXDMFields(loggingHeadings, xdm, counter, networkError, dataAna
     console.group(`%c Web SDK #${counter}${networkError ? " (ERROR)" : ""} User-customized additional logging:`, cssValueField);
     loggingHeadings.forEach(heading => {
       let shortCutValue = "";
-      if (/^evar/i.test(heading)) {
+      if (/^evar\d/i.test(heading) || /^v\d/i.test(heading)) {
+        heading = heading.replace(/^(v)(\d+)/i, "eVar$2");
         shortCutValue = dataAnalytics[heading?.replace(/evar/i, "eVar")];
         if (shortCutValue !== undefined) {
           heading = `data.__adobe.analytics.${heading}`;
         } else {
           heading = "_experience.analytics.customDimensions.eVars." + heading.replace(/evar/i, "eVar");
         }
-      } else if (/^event/i.test(heading.toLowerCase())) {
+      } else if (/^(event)|e\d/i.test(heading.toLowerCase())) {
+        heading = heading.replace(/^(e)(\d+)/i, "event$2");
         const eventNumber = Number?.parseInt(heading.split("event")?.slice(-1));
         if (eventNumber) {
           if (dataAnalytics?.events?.toLowerCase()?.includes(heading?.toLowerCase())) {
@@ -455,7 +457,8 @@ function logCustomXDMFields(loggingHeadings, xdm, counter, networkError, dataAna
             }
           }
         }
-      } else if (/^prop/i.test(heading)) {
+      } else if (/^(prop)|p|c\d/i.test(heading)) {
+        heading = heading.replace(/^(p|c)(\d+)/i, "prop$2");
         if (dataAnalytics[heading.toLowerCase()] !== undefined) {
           shortCutValue = dataAnalytics[heading.toLowerCase()];
           heading = `data.__adobe.analytics.${heading}`;
