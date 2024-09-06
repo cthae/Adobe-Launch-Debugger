@@ -16,7 +16,13 @@
   "content_scripts": [{
       "matches": ["<all_urls>", "http://*/*", "https://*/*"],
       "js": ["js/UAD-cs.js"]
-    }],
+    },
+    {
+      "matches": ["https://assets.adobedtm.com/extensions/*", "https://launch.adobe.com/*", "https://experience.adobe.com/*"],
+      "js": ["js/adobe-launch.js"],
+      "css": ["css/adobe-launch.css"]
+    }
+  ],
   "host_permissions": ["<all_urls>", "http://*/*", "https://*/*"],
   "externally_connectable": {
     "ids": ["*"],
