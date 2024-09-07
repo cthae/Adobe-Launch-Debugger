@@ -33,6 +33,7 @@ function deployClickListeners() {
   document.getElementById("delAllRedirections").addEventListener("click", removeAllRedirections);
   document.getElementById("newlib").addEventListener("click", evnt => {event.target.innerText=""});
   document.getElementById("blockPageUnload").addEventListener("click", blockPageUnload);
+  document.getElementById("printAlloy").addEventListener("click", printAlloy);
   document.getElementById("OTCheckConsent").addEventListener("click", OTCheckConsent);
   document.getElementById("OTOpenManager").addEventListener("click", OTOpenManager);
   document.getElementById("OTRejectAll").addEventListener("click", OTRejectAll);
@@ -153,6 +154,25 @@ function OTCheckConsent(event){
     console.groupEnd()
     function css(c) {
       return `text-shadow: 1px 1px 1px ${c}, 0 0 1em ${c}, 0 0 0.2em ${c};color: ${c};font-weight: 500;font-size: 1.3em; background-color: dimgray`;
+    }
+  });
+}
+
+function printAlloy(event){
+  event.target.classList = "success";
+  event.target.innerText = "Check the console";
+  executeOnPage("", () => {
+    const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 400;font-size: 1.2em; background-color: DarkCyan; color: yellow`;
+    const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: DarkCyan; color: yellow`;
+    if(Array.isArray(window?.__alloyNS)){
+      console.log("%cUniversal Adobe Debugger - Alloy instances debugging:", cssHeadField);
+      const promises = __alloyNS.map(alloy => window[alloy]("getLibraryInfo").then(response => {
+        console.log(`%cAlloy instance name: %c${alloy}`, cssHeadField, cssHeadValue);
+        console.log(response.libraryInfo);
+      }));
+      Promise.allSettled(promises).then(_ => {console.log("%c^^^", cssHeadField) });
+    } else {
+      console.log("%cUniversal Adobe Debugger: Alloy instances haven't been found on the page.", cssHeadField);
     }
   });
 }
