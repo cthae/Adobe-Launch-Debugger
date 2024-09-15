@@ -39,6 +39,7 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * [ ] Create an infrastructure around the codebase of the extension, introduce unit tests, look into CI.
 * [ ] Support for Mozilla FF. Same extension. Cross-browsers. Seems like mostly only background will have to be reimplemented, but many APIs may be off. We'll see.
 * [ ] Implement Launch UI improvements.
+* [ ] Add transaction id in the product string prettifier for Appmeasurement logging.
 * [x] Add an option to print general alloy config
 * [x] Release v1.09.50
 * [x] Rename the content-script.js to something more interesting. It's visible in the console and can be filtered by.
