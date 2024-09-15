@@ -20,7 +20,8 @@
     {
       "matches": ["https://assets.adobedtm.com/extensions/*", "https://launch.adobe.com/*", "https://experience.adobe.com/*"],
       "js": ["js/adobe-launch.js"],
-      "css": ["css/adobe-launch.css"]
+      "css": ["css/adobe-launch.css"],
+      "all_frames": true
     }
   ],
   "host_permissions": ["<all_urls>", "http://*/*", "https://*/*"],
