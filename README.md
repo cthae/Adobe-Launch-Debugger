@@ -42,6 +42,7 @@ This extension essentially has four parts accomplishing different facets of AA/L
   * [ ] Add the red indicator whenever a lib is not selected.
   * [ ] Add a shortcut for the appmeasurement and Web SDK extension to quickly open the s code or the websdk callback.
   * [ ] Search. Fix. The. Bloody. Search. Gosh Adobe, what a shame. Having broken search for years.
+* [ ] Add transaction id in the product string prettifier for Appmeasurement logging.
 * [x] Add an option to print general alloy config
 * [x] Release v1.09.50
 * [x] Rename the content-script.js to something more interesting. It's visible in the console and can be filtered by.
