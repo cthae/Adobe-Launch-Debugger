@@ -40,7 +40,7 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * [ ] Support for Mozilla FF. Same extension. Cross-browsers. Seems like mostly only background will have to be reimplemented, but many APIs may be off. We'll see.
 * [ ] Implement Launch UI improvements:
   * [x] Launch UI: Add the red indicator whenever a lib is not selected.
-  * [ ] Launch UI: Add a shortcut for the appmeasurement and Web SDK extension to quickly open the s code or the websdk callback.
+  * [ ] Launch UI: Add an experimental option for a dark theme.
   * [ ] Launch UI: Search. Fix. The. Bloody. Search. Gosh Adobe, what a shame. Having broken search for years.
 * [ ] Add transaction id in the product string prettifier for Appmeasurement logging.
 * [x] Add an option to print general alloy config
