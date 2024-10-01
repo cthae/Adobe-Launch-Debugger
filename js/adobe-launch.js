@@ -10,7 +10,6 @@ function main(UADSettingsObject = {}){
   const librarySelector = document.querySelector("div.librarySelect");
   if (!librarySelector) return false;
   libraryCheck(librarySelector);
-  switchLaunchTheme(UADSettingsObject.launchDarkTheme);
 }
 
 function libraryCheck(librarySelector){
@@ -18,14 +17,5 @@ function libraryCheck(librarySelector){
     librarySelector.querySelector("span").classList.add("UAD-lib-error");
   } else {
     librarySelector.querySelector("span").classList.remove("UAD-lib-error");
-  }
-}
-
-function switchLaunchTheme(dark){
-  const wrapper = document.querySelector("div[data-test-id='leftNav']").parentElement;
-  if (dark && !wrapper.classList.contains("dark-background")){
-    wrapper.classList.add("dark-background");
-  } else if (!dark && wrapper.classList.contains("dark-background")){
-    wrapper.classList.remove("dark-background");
   }
 }

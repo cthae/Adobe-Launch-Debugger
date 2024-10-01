@@ -38,12 +38,11 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * [ ] Release v1.10.
 * [ ] Create an infrastructure around the codebase of the extension, introduce unit tests, look into CI.
 * [ ] Support for Mozilla FF. Same extension. Cross-browsers. Seems like mostly only background will have to be reimplemented, but many APIs may be off. We'll see.
-* [ ] Implement Launch UI improvements:
-  * [x] Launch UI: Add the red indicator whenever a lib is not selected.
-  * [ ] Launch UI: Add an experimental option for a dark theme.
-  * [ ] Launch UI: Search. Fix. The. Bloody. Search. Gosh Adobe, what a shame. Having broken search for years.
 * [ ] Add transaction id in the product string prettifier for Appmeasurement logging.
-* [x] Add an option to print general alloy config
+* [x] Implement Launch UI improvements POC:
+  * [x] Launch UI: Add the red indicator whenever a lib is not selected.
+  * [x] Launch UI: Add a hint about how to change the Launch UI via Chrome flags.
+* [x] Add an option to print general alloy config in the snippets tab. Make sure it does so for all Alloy instances.
 * [x] Release v1.09.50
 * [x] Rename the content-script.js to something more interesting. It's visible in the console and can be filtered by.
 * [x] Web SDK: Further improve the custom logging, allowing shorthands: p12/c12/v12/e12/l2.
