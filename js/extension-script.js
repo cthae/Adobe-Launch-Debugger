@@ -40,8 +40,12 @@ function deployClickListeners() {
   document.getElementById("OTAllowAll").addEventListener("click", OTAllowAll);
   document.getElementById("raccoon").addEventListener("click", loveTheRaccoon);
   document.getElementById("setLoggingHeadings").addEventListener("click", setLoggingHeadings);
+  document.getElementById("openChromeFlags").addEventListener("click", openChromeFlags);
 }
 
+function openChromeFlags(){
+  chrome.tabs.create({url: 'chrome://flags/#enable-force-dark'});
+}
 function setLoggingHeadings(event){
   const textArea = document.getElementById("loggingHeadings");
   textArea.value = textArea.value.replace(/\s/g, "").replace(/[^a-zA-Z0-9\-,\._]/g, "");
@@ -701,7 +705,7 @@ async function loadSettings() {
 async function settingsSetter(settings) {
   document.querySelectorAll("input[type='checkbox']").forEach(checkbox => {
     checkbox.addEventListener("click", (event) => {
-      settings[event.target.id] = event.target.checked;
+      settings[event.target.id] = event?.target?.checked ?? false;
       chrome.storage.sync.set({ settings: settings });
       if(event.target.id === "launchbox"){
         executeOnPage(event.target.checked, (flag) => {

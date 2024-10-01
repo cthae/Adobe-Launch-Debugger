@@ -1,0 +1,9 @@
+
+.UAD-lib-error{
+  border-style: solid !important;
+  border-color: red !important;
+  background: salmon !important;
+  color: black !important;
+  font-weight: 1000 !important;
+  font-size: 200% !important;
+}
