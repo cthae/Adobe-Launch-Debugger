@@ -95,7 +95,7 @@ function logAAServerCall(fullURL, _satelliteInfo, settings, networkError) {
       eventsMessage + " " + RSMessage,
       cssHeadField, cssHeadValue, cssHeadField, cssHeadValue, cssHeadField, cssHeadValue);
   }
-  printProducts(parsingResult.products, parsingResult.events);
+  printProducts(parsingResult.products, parsingResult.events, parsingResult.transactionId);
   printMisc(parsingResult.pageName, parsingResult.pageType, parsingResult.campaign,
     parsingResult.currencyCode, parsingResult.allHierarchy, parsingResult.siteSection,
     parsingResult.zip)
@@ -202,7 +202,7 @@ function printMisc(pName, pType, campaign, currency, hierarchies, siteSection, z
   return true;
 }
 
-function printProducts(productString, globalEvents) {
+function printProducts(productString, globalEvents, transactionId) {
   //console.log("@@@ DEBUGGING: ", productString);
   if (!productString || productString.length === 0) {
     return false;
@@ -219,6 +219,7 @@ function printProducts(productString, globalEvents) {
         `Quantity   : ${product.split(";")[2] ? product.split(";")[2] : '[Not Set]'}\n` +
         `Price      : ${product.split(";")[3] ? product.split(";")[3] : '[Not Set]'}\n` +
         `Events     : ${prodEventsContainer?.events ? prodEventsContainer.events : '[Not Set]'}\n` +
+        `Trans. Id  : ${transactionId || '[Not Set]'}\n` +
         `Merch.Vars : ${product.split(";")[5] ? product.split(";")[5].split("|").join(", ") : '[Not Set]'}\n` +
         `🦝%cMerchandising events should be in s.events too, otherwise AA won't display them%c🦝`
         , "background-color: Red; color: black", "", "background-color: Red; color: black", ""
@@ -229,6 +230,7 @@ function printProducts(productString, globalEvents) {
         `Quantity   : ${product.split(";")[2] ? product.split(";")[2] : '[Not Set]'}\n` +
         `Price      : ${product.split(";")[3] ? product.split(";")[3] : '[Not Set]'}\n` +
         `Events     : ${prodEventsContainer?.events ? prodEventsContainer?.events : '[Not Set]'}\n` +
+        `Trans. Id  : ${transactionId || '[Not Set]'}\n` +
         `Merch.Vars : ${product.split(";")[5] ? product.split(";")[5].split("|").join(", ") : '[Not Set]'}`
       );
     }
@@ -306,6 +308,7 @@ function parseAAServerCall(fullURL) {
   parsingResult.customLinkUrl = getComponent(allParams, "pev1");
   parsingResult.customLinkName = getComponent(allParams, "pev2");
   parsingResult.siteSection = getComponent(allParams, "ch");
+  parsingResult.transactionId = getComponent(allParams, "xact");
   return parsingResult;
 }
 

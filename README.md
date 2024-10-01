@@ -38,7 +38,8 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * [ ] Release v1.10.
 * [ ] Create an infrastructure around the codebase of the extension, introduce unit tests, look into CI.
 * [ ] Support for Mozilla FF. Same extension. Cross-browsers. Seems like mostly only background will have to be reimplemented, but many APIs may be off. We'll see.
-* [ ] Add transaction id in the product string prettifier for Appmeasurement logging.
+* [ ] Appmeasurement: Prettify the product string printing.
+* [x] Appmeasurement: Add transaction id in the product string prettifier.
 * [x] Implement Launch UI improvements POC:
   * [x] Launch UI: Add the red indicator whenever a lib is not selected.
   * [x] Launch UI: Add a hint about how to change the Launch UI via Chrome flags.
