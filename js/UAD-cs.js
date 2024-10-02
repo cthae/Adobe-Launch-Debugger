@@ -207,31 +207,33 @@ function printProducts(productString, globalEvents, transactionId) {
   if (!productString || productString.length === 0) {
     return false;
   }
-  cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Red; color: black`;
   //console.log("@@@ Debugging product string:", productString);
   const products = productString.split(",");
+  const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 600;font-size: 1.2em;background-color: Orange; color: black`;
+  const cssError = `background-color: Red; color: black`;
   console.group("Products: " + products.length);
   products.forEach((product) => {
     const prodEventsContainer = product.split(";")[4] ? getProductEvents(product.split(";")[4], globalEvents) : {};
     if (prodEventsContainer?.areRogueEventsPresent) {
-      console.log(`Category   : ${product.split(";")[0] ? product.split(";")[0] : '[Not Set]'}\n` +
-        `Name       : ${product.split(";")[1] ? product.split(";")[1] : '[Not Set]'}\n` +
-        `Quantity   : ${product.split(";")[2] ? product.split(";")[2] : '[Not Set]'}\n` +
-        `Price      : ${product.split(";")[3] ? product.split(";")[3] : '[Not Set]'}\n` +
-        `Events     : ${prodEventsContainer?.events ? prodEventsContainer.events : '[Not Set]'}\n` +
-        `Trans. Id  : ${transactionId || '[Not Set]'}\n` +
-        `Merch.Vars : ${product.split(";")[5] ? product.split(";")[5].split("|").join(", ") : '[Not Set]'}\n` +
-        `🦝%cMerchandising events should be in s.events too, otherwise AA won't display them%c🦝`
-        , "background-color: Red; color: black", "", "background-color: Red; color: black", ""
+      console.log(`%cCategory   :%c ${product.split(";")[0] ? product.split(";")[0] : '[Not Set]'}\n` +
+        `%cName       :%c ${product.split(";")[1] ? product.split(";")[1] : '[Not Set]'}\n` +
+        `%cQuantity   :%c ${product.split(";")[2] ? product.split(";")[2] : '[Not Set]'}\n` +
+        `%cPrice      :%c ${product.split(";")[3] ? product.split(";")[3] : '[Not Set]'}\n` +
+        `%cEvents     :%c ${prodEventsContainer?.events ? prodEventsContainer.events : '[Not Set]'}\n` +
+        `%cTrans. Id  :%c ${transactionId || '[Not Set]'}\n` +
+        `%cMerch.Vars :%c ${product.split(";")[5] ? product.split(";")[5].split("|").join(", ") : '[Not Set]'}\n` +
+        `🦝%cMerchandising events should be in s.events too, otherwise AA won't display them%c🦝`,
+        cssHeadField, "", cssHeadField, "", cssHeadField, "", cssHeadField, "", cssHeadField, "", cssError, "", cssHeadField, "", cssHeadField, "", cssError, ""
       );
     } else {
-      console.log(`Category   : ${product.split(";")[0] ? product.split(";")[0] : '[Not Set]'}\n` +
-        `Name       : ${product.split(";")[1] ? product.split(";")[1] : '[Not Set]'}\n` +
-        `Quantity   : ${product.split(";")[2] ? product.split(";")[2] : '[Not Set]'}\n` +
-        `Price      : ${product.split(";")[3] ? product.split(";")[3] : '[Not Set]'}\n` +
-        `Events     : ${prodEventsContainer?.events ? prodEventsContainer?.events : '[Not Set]'}\n` +
-        `Trans. Id  : ${transactionId || '[Not Set]'}\n` +
-        `Merch.Vars : ${product.split(";")[5] ? product.split(";")[5].split("|").join(", ") : '[Not Set]'}`
+      console.log(`%cCategory   :%c ${product.split(";")[0] ? product.split(";")[0] : '[Not Set]'}\n` +
+        `%cName       :%c ${product.split(";")[1] ? product.split(";")[1] : '[Not Set]'}\n` +
+        `%cQuantity   :%c ${product.split(";")[2] ? product.split(";")[2] : '[Not Set]'}\n` +
+        `%cPrice      :%c ${product.split(";")[3] ? product.split(";")[3] : '[Not Set]'}\n` +
+        `%cEvents     :%c ${prodEventsContainer?.events ? prodEventsContainer?.events : '[Not Set]'}\n` +
+        `%cTrans. Id  :%c ${transactionId || '[Not Set]'}\n` +
+        `%cMerch.Vars :%c ${product.split(";")[5] ? product.split(";")[5].split("|").join(", ") : '[Not Set]'}`,
+        cssHeadField, "", cssHeadField, "", cssHeadField, "", cssHeadField, "", cssHeadField, "", cssHeadField, "", cssHeadField, ""
       );
     }
   });
