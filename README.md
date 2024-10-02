@@ -35,9 +35,9 @@ This extension essentially has four parts accomplishing different facets of AA/L
 
   <summary>The dev plan and event log:</summary>
 
-* [ ] Release v1.10.
 * [ ] Create an infrastructure around the codebase of the extension, introduce unit tests, look into CI.
 * [ ] Support for Mozilla FF. Same extension. Cross-browsers. Seems like mostly only background will have to be reimplemented, but many APIs may be off. We'll see.
+* [x] Release v1.10
 * [x] Appmeasurement: Prettify the product string printing.
 * [x] Appmeasurement: Add transaction id in the product string prettifier.
 * [x] Implement Launch UI improvements POC:
