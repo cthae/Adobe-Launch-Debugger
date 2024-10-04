@@ -190,6 +190,7 @@ If it's a deeper change of the content-script.js or background.js or manifest, y
 * To the **#adobe-launch** and **#adobe-analytics** channels of [Measure Slack](https://www.measure.chat/) community for early testing and precious feedback from staff enterprise analytics experts.
 * To the **#javascript** channel of [Libera Chat](https://libera.chat/) community and especially to [LJHarb](https://github.com/ljharb) in there for always being able to answer even most complex JS questions with kindness and patience.
 * To the [Chromium Extensions](https://groups.google.com/a/chromium.org/g/chromium-extensions) Google group and especially to [wOxxOm](https://stackoverflow.com/users/3959875/woxxom) there and on Stack Overflow for guiding me through most critical stages of extension development.
+* To [Mozilla's Matrix community](https://wiki.mozilla.org/Add-ons/Community/) for extensive help with Updating the extension to support Firefox. 
 
 ## License
 Mozilla Public License Version 2.0
