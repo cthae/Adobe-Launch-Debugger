@@ -12,7 +12,10 @@
     "32": "debuggerFavicon 32.png",
     "48": "debuggerFavicon 48.png"
   },
-  "background": {"service_worker": "js/background.js"},
+  "background": {
+    "scripts": ["js/background.js"],
+    "service_worker": "js/background.js"
+  },
   "content_scripts": [{
       "matches": ["<all_urls>", "http://*/*", "https://*/*"],
       "js": ["js/UAD-cs.js"]

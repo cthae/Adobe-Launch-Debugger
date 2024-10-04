@@ -681,6 +681,9 @@ async function loadSettings() {
 
   const settings = {};
   chrome.storage.sync.get('settings', function (data) {
+    if(!data){
+      data = {settings:{}};
+    }
     settingsSetter(data.settings);
     if (data.settings) {
       console.log("@@@ Settings Exist, the obj is ", data.settings);
