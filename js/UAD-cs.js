@@ -117,7 +117,7 @@ function logCustomAAFields(loggingHeadings, fullURL, counter) {
     const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 800;font-size: 1.2em; background-color: Orange; color: black`;
     console.group(`%cAA #${counter} User-customized additional logging:`, cssHeadField);
     loggingHeadings.forEach(heading => {
-      if(!/^(event\d)/i.test(heading)){
+      if (!/^(event\d)/i.test(heading)) {
         heading = heading.replace(/^prop/i, "c").replace(/^(p)(\d+)/i, "c$2").replace(/^evar/i, "v").replace(/^list/i, "l");
         console.log(`%c${heading} : %c${fullURL.split(heading + "=")[1]?.split("&")[0]}`, cssHeadValue, cssHeadField);
       } else {
@@ -481,7 +481,7 @@ function logCustomXDMFields(loggingHeadings, xdm, counter, networkError, dataAna
           }
         }
       }
-      if(shortCutValue || /^data\.__adobe/.test(heading)){
+      if (shortCutValue || /^data\.__adobe/.test(heading)) {
         console.log(`%c${heading} :%o`, cssHeadField, shortCutValue);
       } else {
         const XDMValueResult = GetXDMValue(xdm, heading.split("."));

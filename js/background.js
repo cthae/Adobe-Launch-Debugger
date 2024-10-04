@@ -1,5 +1,9 @@
 main()
 
+chrome.runtime.onStartup.addListener(checkSettings);
+
+chrome.runtime.onInstalled.addListener(checkSettings);
+
 async function main() {
   setDebugLogicListener()
   mainListener();
@@ -16,7 +20,7 @@ function setDebugLogicListener() {
 async function setDebug(flag) {
   chrome.scripting.executeScript({
     func: (flag) => {
-      localStorage.setItem("com.adobe.reactor.debug",!!flag); 
+      localStorage.setItem("com.adobe.reactor.debug", !!flag);
       typeof _satellite !== 'undefined' ? _satellite?.setDebug(flag ? 1 : 0) : '';
     },
     args: [flag],
@@ -32,16 +36,16 @@ async function mainListener() {
   const requests = new Map();
   chrome.webRequest.onBeforeRequest.addListener(async info => {
     let urlType = getUrlType(info.url);
-    if (urlType !== "Not Adobe" && info.method === "POST" && 
-        (info.requestBody.raw && info.requestBody.raw.length > 0 || urlType === "Beaconed webSDK")) {
+    if (urlType !== "Not Adobe") {
+    }
+    if (urlType !== "Not Adobe" && info.method === "POST" &&
+      (info?.requestBody?.raw?.length > 0 || info?.requestBody?.formData || urlType === "Beaconed webSDK")) {
       let postedString = "";
-      if(urlType === "AA"){
-        postedString = decodeURIComponent(String.fromCharCode.apply(null,
-          new Uint8Array(info.requestBody.raw[0].bytes)));
-      } else if (urlType === "webSDK"){
-        postedString = String.fromCharCode.apply(null,
-          new Uint8Array(info.requestBody.raw[0].bytes));
-      } else if (urlType === "Beaconed webSDK"){
+      if (urlType === "AA") {
+        postedString = decodeURIComponent(universalPostParser(info));
+      } else if (urlType === "webSDK") {
+        postedString = universalPostParser(info);
+      } else if (urlType === "Beaconed webSDK") {
         sendToTab({
           info: info,
           eventTriggered: "onBeforeRequest",
@@ -64,7 +68,7 @@ async function mainListener() {
     if (urlType !== "Not Adobe" && info.statusCode === 200) {
       let _satelliteInfo = JSON.parse(await getSatelliteInfo(info.tabId))
       const postRequest = requests.get(info.requestId);
-      if (info.method === "POST" && postRequest){
+      if (info.method === "POST" && postRequest) {
         postRequest._satelliteInfo = _satelliteInfo;
         sendToTab(postRequest, info.tabId);
       } else {
@@ -83,19 +87,19 @@ async function mainListener() {
     let urlType = getUrlType(info.url);
     if (urlType !== "Not Adobe") {
       let _satelliteInfo = JSON.parse(await getSatelliteInfo(info.tabId))
-        sendToTab({
-          info: info,
-          eventTriggered: "onErrorOccurred",
-          _satelliteInfo: _satelliteInfo,
-          type: urlType
-        }, info.tabId);
+      sendToTab({
+        info: info,
+        eventTriggered: "onErrorOccurred",
+        _satelliteInfo: _satelliteInfo,
+        type: urlType
+      }, info.tabId);
     }
     //requests.delete(info?.requestId);
   }, filter);
 
-  async function processOrphanedRequest(requestId){
+  async function processOrphanedRequest(requestId) {
     const request = requests.get(requestId);
-    if(request){
+    if (request) {
       request._satelliteInfo = JSON.parse(await getSatelliteInfo(request.info.tabId));
       request.eventTriggered = "timeoutError";
       sendToTab(request, request.info.tabId);
@@ -103,12 +107,12 @@ async function mainListener() {
   }
 }
 
-function getUrlType(url){
-  if(/\/b\/ss\//.test(url)){
+function getUrlType(url) {
+  if (/\/b\/ss\//.test(url)) {
     return "AA";
-  } else if(/\/ee\/.*interact\?configId=/.test(url)){
+  } else if (/\/ee\/.*interact\?configId=/.test(url)) {
     return "webSDK";
-  } else if(/\/ee\/.*collect\?configId=/.test(url)){
+  } else if (/\/ee\/.*collect\?configId=/.test(url)) {
     return "Beaconed webSDK";
   } else {
     return "Not Adobe";
@@ -143,3 +147,29 @@ async function sendToTab(msg, tabIdFromOutside) {
   }
 }
 
+function checkSettings(e) {
+  chrome.storage.sync.get('settings', function (data) {
+    const settings = data?.settings || {};
+    settings.aabox = settings.aabox ?? true;
+    settings.mainExpand = settings.mainExpand ?? false;
+    settings.varsExpand = settings.varsExpand ?? true;
+    settings.contextVarsExpand = settings.contextVarsExpand ?? false;
+    settings.launchbox = settings.launchbox ?? false;
+    settings.sessionRedirections = settings.sessionRedirections ?? true;
+    settings.logAllWebSDK = settings.logAllWebSDK ?? false;
+    settings.logBoringFieldsWebSDK = settings.logBoringFieldsWebSDK ?? false;
+    settings.logDataObject = settings.logDataObject ?? false;
+    settings.enableLaunchUIImprovements = settings.enableLaunchUIImprovements ?? true;
+    chrome.storage.sync.set({ settings: settings });
+  });
+}
+
+function universalPostParser(info) {
+  if (info?.requestBody?.raw?.length > 0) { //for when a browser has no clue these are trivial key-value pairs.
+    return String.fromCharCode.apply(null, new Uint8Array(info.requestBody.raw[0].bytes));
+  } else if (info?.requestBody?.formData) { //for when a browser notices that these are trivial key-value pairs. FF does it. Chrome's algo is broken.
+    return Object.keys(info.requestBody.formData).reduce((acc, currKey) => acc + decodeURIComponent(currKey + `=` + info.requestBody.formData[currKey]) + "&", "").slice(0, -1);
+  } else {
+    return false;
+  }
+}
