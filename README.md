@@ -36,6 +36,8 @@ This extension essentially has four parts accomplishing different facets of AA/L
   <summary>The dev plan and event log:</summary>
 
 * [ ] Create an infrastructure around the codebase of the extension, introduce unit tests, look into CI.
+* [x] Release v1.20.1 to Chrome
+* [x] Fix the custom logging prop detection regex.
 * [x] Release v1.20 both to Chrome and FF.
 * [x] Add onInstalled/onStartup callbacks to set the default set of settings specifically for those who don't open the popup after installation.
 * [x] Support for Mozilla FF. Same extension. Cross-browsers. Seems like mostly only background will have to be reimplemented, but many APIs may be off. We'll see.

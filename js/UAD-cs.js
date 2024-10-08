@@ -462,7 +462,7 @@ function logCustomXDMFields(loggingHeadings, xdm, counter, networkError, dataAna
             }
           }
         }
-      } else if (/^(prop)|p|c\d/i.test(heading)) {
+      } else if (/^(prop|p|c)\d/i.test(heading)) {
         heading = heading.replace(/^(p|c)(\d+)/i, "prop$2");
         if (dataAnalytics[heading.toLowerCase()] !== undefined) {
           shortCutValue = dataAnalytics[heading.toLowerCase()];
@@ -470,7 +470,7 @@ function logCustomXDMFields(loggingHeadings, xdm, counter, networkError, dataAna
         } else {
           heading = "_experience.analytics.customDimensions.props." + heading.toLowerCase();
         }
-      } else if (/^(listvar\d)|(list\d)|(l\d$)|(lvar\d$)/i.test(heading)) {
+      } else if (/^(listvar\d|list\d|l\d$|lvar\d$)/i.test(heading)) {
         const listNumber = parseInt(heading.slice(-1));
         if (listNumber) {
           if (dataAnalytics["list" + listNumber]) {
