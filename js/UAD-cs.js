@@ -462,7 +462,7 @@ function logCustomXDMFields(loggingHeadings, xdm, counter, networkError, dataAna
             }
           }
         }
-      } else if (/^(prop)|p|c\d/i.test(heading)) {
+      } else if (/^(prop|p|c)\d/i.test(heading)) {
         heading = heading.replace(/^(p|c)(\d+)/i, "prop$2");
         if (dataAnalytics[heading.toLowerCase()] !== undefined) {
           shortCutValue = dataAnalytics[heading.toLowerCase()];
