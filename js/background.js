@@ -59,7 +59,7 @@ async function mainListener() {
         eventTriggered: "onBeforeRequest",
         type: urlType
       });
-      setTimeout(processOrphanedRequest, 5000, info.requestId);
+      setTimeout(processOrphanedRequest, 6000, info.requestId);
     }
   }, filter, ['requestBody']);
 
