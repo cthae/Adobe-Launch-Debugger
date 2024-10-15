@@ -18,9 +18,9 @@ chrome.runtime.onMessage.addListener(request => {
       }
       if (request.type === "AA") {
         if (request.postPayload) {
-          logAAServerCall(decodeURIComponent(request.info.url) + request.postPayload, request?._satelliteInfo, data.settings, error);
+          logAAServerCall(request.info.url + request.postPayload, request?._satelliteInfo, data.settings, error);
         } else {
-          logAAServerCall(decodeURIComponent(request.info.url), request?._satelliteInfo, data.settings, error);
+          logAAServerCall(request.info.url, request?._satelliteInfo, data.settings, error);
         }
       } else if (request.type === "webSDK") {
         //console.log("@@@ Debugging: webSDK Detected! The Info object is: ", request);
@@ -282,16 +282,16 @@ function parseAAServerCall(fullURL) {
   const allParams = fullURL.split("&");
   parsingResult.allProps = allParams.filter(param => {
     return /^c\d?\d?\d=/.test(param);
-  });
+  }).map(param => decodeURIComponent(param));
   parsingResult.alleVars = allParams.filter(param => {
     return /^v[1-9]\d?\d?=/.test(param);
-  });
+  }).map(param => decodeURIComponent(param));
   parsingResult.allListVars = allParams.filter(param => {
     return /^l\d=/.test(param);
-  });
+  }).map(param => decodeURIComponent(param));
   parsingResult.allHierarchy = allParams.filter(param => {
     return /^h\d=/.test(param);
-  });
+  }).map(param => decodeURIComponent(param));
   parsingResult.rSuite = allParams[0].match(/b\/ss\/([^\/]+)\//)[1];
   parsingResult.events = getComponent(allParams, "events");
   parsingResult.campaign = getComponent(allParams, "v0");
@@ -317,7 +317,7 @@ function parseAAServerCall(fullURL) {
 function getContextVars(fullURL) {
   if (fullURL.indexOf("&c.&") > 0 && fullURL.indexOf("&.c&") > 0) {
     try {
-      return fullURL.split("&c.&")[1].split("&.c&")[0].split("&");
+      return fullURL.split("&c.&")[1].split("&.c&")[0].split("&").map(contextVar => decodeURIComponent(contextVar));
     } catch {
       return [];
     }
@@ -332,7 +332,7 @@ function getComponent(allParams, paramName) {
   if (typeof foundElement === "undefined") {
     return false;
   }
-  return foundElement?.split(/=(.+)?/, 2)[1];
+  return decodeURIComponent(foundElement?.split(/=(.+)?/, 2)[1]);
 }
 
 function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) {
