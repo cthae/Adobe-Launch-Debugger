@@ -168,7 +168,7 @@ function universalPostParser(info) {
   if (info?.requestBody?.raw?.length > 0) { //for when a browser has no clue these are trivial key-value pairs.
     return String.fromCharCode.apply(null, new Uint8Array(info.requestBody.raw[0].bytes));
   } else if (info?.requestBody?.formData) { //for when a browser notices that these are trivial key-value pairs. FF does it. Chrome's algo is broken.
-    return Object.keys(info.requestBody.formData).reduce((acc, currKey) => acc + currKey + `=` + info.requestBody.formData[currKey] + "&", "").slice(0, -1);
+    return Object.keys(info.requestBody.formData).reduce((acc, currKey) => acc + currKey + `=` + encodeURIComponent(info.requestBody.formData[currKey]) + "&", "").slice(0, -1);
   } else {
     return false;
   }
