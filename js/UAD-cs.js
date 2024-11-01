@@ -117,11 +117,19 @@ function logCustomAAFields(loggingHeadings, fullURL, counter) {
     const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 800;font-size: 1.2em; background-color: Orange; color: black`;
     console.group(`%cAA #${counter} User-customized additional logging:`, cssHeadField);
     loggingHeadings.forEach(heading => {
-      if (!/^(event\d)/i.test(heading)) {
-        heading = heading.replace(/^prop/i, "c").replace(/^(p)(\d+)/i, "c$2").replace(/^evar/i, "v").replace(/^list/i, "l");
-        console.log(`%c${heading} : %c${fullURL.split(heading + "=")[1]?.split("&")[0]}`, cssHeadValue, cssHeadField);
+      console.log("@@@ Debugging: " + fullURL);
+      if (/^(event\d|e\d)/i.test(heading)) {
+        heading = heading.replace(/^(e)(\d+)/i, "event$2");
+        console.log("@@@ Debugging - event: " + heading);
+        const headingVal = decodeURIComponent(fullURL.split("events=")[1].split("&")[0])?.//event string
+          split(",")?.find(event => {
+            return event.includes(heading+"=") || event === heading;
+          })?.replace(heading, "").replace("=", "");
+        console.log(`%c${heading} : %c${headingVal === "" ? " Found!" : headingVal}`, cssHeadValue, cssHeadField);
       } else {
-        console.log(`%c${heading} : %c${fullURL.split(heading + "=")[1]?.split(/,|&/)[0]}`, cssHeadValue, cssHeadField);
+        heading = heading.replace(/^prop/i, "c").replace(/^(p)(\d+)/i, "c$2").replace(/^evar/i, "v").replace(/^list/i, "l");
+        console.log("@@@ Debugging - not event: " + heading);
+        console.log(`%c${heading} : %c${decodeURIComponent(fullURL.split(heading + "=")[1]?.split("&")[0])}`, cssHeadValue, cssHeadField);
       }
     });
     console.groupEnd();

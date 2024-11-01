@@ -36,6 +36,9 @@ This extension essentially has four parts accomplishing different facets of AA/L
   <summary>The dev plan and event log:</summary>
 
 * [ ] Create an infrastructure around the codebase of the extension, introduce unit tests, look into CI.
+* [x] Release v1.20.3 to Chrome
+* [x] Appmeasurement: fix e# custom logging. Refactor custom events logging.
+* [x] Appmeasurement: URL decode values of variables in custom logging.
 * [x] Release v1.20.2 to Chrome and FF
 * [x] Allow ampersands.
 * [x] Release v1.20.1 to Chrome
