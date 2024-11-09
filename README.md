@@ -38,12 +38,12 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * [ ] Create an infrastructure around the codebase of the extension, introduce unit tests, look into CI.
 * [x] Release v1.21 to Chrome and FF
 * [x] Change the extension icon depending on the env: 
-  * grey is for when the extension hasn't yet executed all code or doesn't have permission to do so;
+  * grey for when the extension hasn't yet executed all code or doesn't have the permission to do so;
   * green indicates that the Launch env is production;
   * yellow indicates that the Launch env is dev or staging;
-  * red indicates that the Launch library is not loaded or loaded incompletely.
+  * red indicates that the Launch library is not loaded or loaded incompletely. Basically, _satellite?.environment?.stage is falsy. The rest of the functionality won't be stopped by this, however.
 * [x] Update the extension icon.
-* [x] Disable Launch UI improvements on by default
+* [x] Disable Launch UI improvements on by default.
 * [x] Release v1.20.3 to Chrome
 * [x] Appmeasurement: fix e# custom logging. Refactor custom events logging.
 * [x] Appmeasurement: URL decode values of variables in custom logging.
