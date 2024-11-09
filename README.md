@@ -37,7 +37,11 @@ This extension essentially has four parts accomplishing different facets of AA/L
 
 * [ ] Create an infrastructure around the codebase of the extension, introduce unit tests, look into CI.
 * [x] Release v1.21 to Chrome and FF
-* [x] Change the extension icon depending on the env: green for prod, yellow for lowers, red for when Launch's not loaded at all. I'm tired clicking the button all the time. This is to make it easier/faster to see what's happening.
+* [x] Change the extension icon depending on the env: 
+  * grey is for when the extension hasn't yet executed all code or doesn't have permission to do so;
+  * green indicates that the Launch env is production;
+  * yellow indicates that the Launch env is dev or staging;
+  * red indicates that the Launch library is not loaded or loaded incompletely.
 * [x] Update the extension icon.
 * [x] Disable Launch UI improvements on by default
 * [x] Release v1.20.3 to Chrome

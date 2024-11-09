@@ -1,18 +1,17 @@
 chrome.tabs.onUpdated.addListener(async () => {
   const tab = (await chrome.tabs.query({ active: true, currentWindow: true }))[0];
   if (!isTabLegal(tab)){return false;}
-  main();
+  setFavicon();
+  setDebugLogicListener();
 })
+main();
 
 chrome.runtime.onStartup.addListener(checkSettings);
-
 chrome.runtime.onInstalled.addListener(checkSettings);
 
 async function main() {
-
   setDebugLogicListener();
   mainListener();
-  pollLaunchEnvironment();
 }
 
 function setDebugLogicListener() {
@@ -40,8 +39,6 @@ async function setDebug(flag) {
 }
 
 async function mainListener() {
-  const tab = (await chrome.tabs.query({ active: true, currentWindow: true }))[0];
-  if (!isTabLegal(tab)){return false;}
   const filter = { urls: ["<all_urls>", "http://*/*", "https://*/*"] }//   *://*/*/b/ss/*   --   <all_urls>
   const requests = new Map();
   chrome.webRequest.onBeforeRequest.addListener(async info => {
@@ -74,7 +71,7 @@ async function mainListener() {
   }, filter, ['requestBody']);
 
   chrome.webRequest.onHeadersReceived.addListener(async info => {
-    //pollLaunchEnvironment();
+    //setFavicon();
     let urlType = getUrlType(info.url);
     if (urlType !== "Not Adobe" && info.statusCode === 200) {
       let _satelliteInfo = JSON.parse(await getSatelliteInfo(info.tabId))
@@ -185,19 +182,13 @@ function universalPostParser(info) {
   }
 }
 
-async function pollLaunchEnvironment(){
-  const tab = (await chrome.tabs.query({ active: true, currentWindow: true }))[0];
-  if (!isTabLegal(tab)){return false;}
-  setFavicon();
-}
-
 async function setFavicon() {
   const tab = (await chrome.tabs.query({ active: true, currentWindow: true }))[0];
   if (!isTabLegal(tab)){return false;}
   const details = {path: "favicon 16-4.png", tabId: tab.id};
   const environment = await chrome.scripting.executeScript({
     func: () => {
-      return window?._satellite?.buildInfo?.environment
+      return window?._satellite?.environment?.stage;
     },
     args: [],
     target: {
