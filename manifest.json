@@ -5,10 +5,10 @@
   "version": "1.20.3",
   "action": {
     "default_popup": "main.html",
-    "default_icon": "debuggerFavicon 16-3.png"
+    "default_icon": "favicon 16-4 - grey.png"
   },
   "icons": {
-    "16": "debuggerFavicon 16-3.png",
+    "16": "favicon 16-4 - green.png",
     "32": "debuggerFavicon 32.png",
     "48": "debuggerFavicon 48.png"
   },

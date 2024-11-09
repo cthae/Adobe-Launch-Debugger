@@ -36,6 +36,9 @@ This extension essentially has four parts accomplishing different facets of AA/L
   <summary>The dev plan and event log:</summary>
 
 * [ ] Create an infrastructure around the codebase of the extension, introduce unit tests, look into CI.
+* [x] Release v1.21 to Chrome and FF
+* [x] Change the extension icon depending on the env: green for prod, yellow for lowers, red for when Launch's not loaded at all. I'm tired clicking the button all the time. This is to make it easier/faster to see what's happening.
+* [x] Update the extension icon.
 * [x] Disable Launch UI improvements on by default
 * [x] Release v1.20.3 to Chrome
 * [x] Appmeasurement: fix e# custom logging. Refactor custom events logging.

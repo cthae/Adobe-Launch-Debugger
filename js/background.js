@@ -1,12 +1,18 @@
-main()
+chrome.tabs.onUpdated.addListener(async () => {
+  const tab = (await chrome.tabs.query({ active: true, currentWindow: true }))[0];
+  if (!isTabLegal(tab)){return false;}
+  main();
+})
 
 chrome.runtime.onStartup.addListener(checkSettings);
 
 chrome.runtime.onInstalled.addListener(checkSettings);
 
 async function main() {
-  setDebugLogicListener()
+
+  setDebugLogicListener();
   mainListener();
+  pollLaunchEnvironment();
 }
 
 function setDebugLogicListener() {
@@ -18,6 +24,8 @@ function setDebugLogicListener() {
 }
 
 async function setDebug(flag) {
+  const tab = (await chrome.tabs.query({ active: true, currentWindow: true }))[0];
+  if (!isTabLegal(tab)){return false;}
   chrome.scripting.executeScript({
     func: (flag) => {
       localStorage.setItem("com.adobe.reactor.debug", !!flag);
@@ -25,13 +33,15 @@ async function setDebug(flag) {
     },
     args: [flag],
     target: {
-      tabId: (await chrome.tabs.query({ active: true, currentWindow: true }))[0].id
+      tabId: tab.id
     },
     world: 'MAIN'
   });
 }
 
 async function mainListener() {
+  const tab = (await chrome.tabs.query({ active: true, currentWindow: true }))[0];
+  if (!isTabLegal(tab)){return false;}
   const filter = { urls: ["<all_urls>", "http://*/*", "https://*/*"] }//   *://*/*/b/ss/*   --   <all_urls>
   const requests = new Map();
   chrome.webRequest.onBeforeRequest.addListener(async info => {
@@ -64,6 +74,7 @@ async function mainListener() {
   }, filter, ['requestBody']);
 
   chrome.webRequest.onHeadersReceived.addListener(async info => {
+    //pollLaunchEnvironment();
     let urlType = getUrlType(info.url);
     if (urlType !== "Not Adobe" && info.statusCode === 200) {
       let _satelliteInfo = JSON.parse(await getSatelliteInfo(info.tabId))
@@ -172,4 +183,41 @@ function universalPostParser(info) {
   } else {
     return false;
   }
+}
+
+async function pollLaunchEnvironment(){
+  const tab = (await chrome.tabs.query({ active: true, currentWindow: true }))[0];
+  if (!isTabLegal(tab)){return false;}
+  setFavicon();
+}
+
+async function setFavicon() {
+  const tab = (await chrome.tabs.query({ active: true, currentWindow: true }))[0];
+  if (!isTabLegal(tab)){return false;}
+  const details = {path: "favicon 16-4.png", tabId: tab.id};
+  const environment = await chrome.scripting.executeScript({
+    func: () => {
+      return window?._satellite?.buildInfo?.environment
+    },
+    args: [],
+    target: {
+      tabId: tab.id
+    },
+    world: 'MAIN'
+  });
+  //console.log("@@@ Debugging, the environment is", environment[0].result);
+  if(!environment[0]?.result){
+    details.path = "../favicon 16-4 - pink.png";
+  } else if (environment[0].result === "production"){
+    details.path = "../favicon 16-4 - green.png";
+  } else {
+    details.path = "../favicon 16-4 - orange.png";
+  }
+  chrome.action.setIcon(details);
+}
+
+function isTabLegal(tab){
+  const isLegal = !!tab.url && !/^(about:|chrome:\/\/)/i.test(tab.url);
+  //console.log("@@@ Debugging, the tab legality is", isLegal);
+  return isLegal;
 }
