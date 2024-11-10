@@ -1,9 +1,13 @@
-chrome.tabs.onUpdated.addListener(async () => {
+chrome.tabs.onUpdated.addListener(tabChangedCallback);
+chrome.tabs.onActivated.addListener(tabChangedCallback);
+
+async function tabChangedCallback(){
   const tab = (await chrome.tabs.query({ active: true, currentWindow: true }))[0];
   if (!isTabLegal(tab)){return false;}
   setFavicon();
   setDebugLogicListener();
-})
+}
+
 main();
 
 chrome.runtime.onStartup.addListener(checkSettings);
