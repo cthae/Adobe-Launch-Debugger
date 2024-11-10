@@ -36,6 +36,8 @@ This extension essentially has four parts accomplishing different facets of AA/L
   <summary>The dev plan and event log:</summary>
 
 * [ ] Create an infrastructure around the codebase of the extension, introduce unit tests, look into CI.
+* [ ] UI improvements in logging and the popup
+* [ ] Launch UI improvements: statuses of the rules and DEs both in the list and in the item's interface.
 * [x] Release v1.21 to Chrome and FF
 * [x] Change the extension icon depending on the env: 
   * grey for when the extension hasn't yet executed all code or doesn't have the permission to do so;
