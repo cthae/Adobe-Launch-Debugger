@@ -699,11 +699,11 @@
   }
   
   tbody tr:nth-child(even) {
-    background-color: #161f27;
+    background-color: #2a3b4a;
     background-color: var(--background);
   }
   
-  tbody tr:nth-child(even) button:not(.error) {
+  tbody tr:nth-child(even) button:not(.error) button:not(.success) button:not(.tablinks) {
     background-color: #1a242f;
     background-color: var(--background-alt);
   }

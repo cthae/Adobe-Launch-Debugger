@@ -43,7 +43,7 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * [ ] Release v1.22 to Chrome and FF.
 * [ ] Reimplementation of Adobe Experience Cloud Bookmarks
   * [x] Rename tabs to icons
-  * [ ] Move the redirects tab to somewhere else. To Settings and Home probably
+  * [x] Move the redirects tab to somewhere else. To Settings and Home probably
   * [ ] Make a New Tab for bookmarks
   * [ ] Add a setting to choose the tab that would be opened by default when the popup renders (Home/Settings/Bookmarks)
   * [ ] Reimplement the bookmarks with the tenant id
