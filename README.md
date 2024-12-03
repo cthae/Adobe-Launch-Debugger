@@ -36,11 +36,17 @@ This extension essentially has four parts accomplishing different facets of AA/L
   <summary>The dev plan and event log:</summary>
 
 * [ ] Create an infrastructure around the codebase of the extension, introduce unit tests, look into CI.
-* [ ] UI improvements in logging and the popup
 * [ ] Launch UI improvements: statuses of the rules and DEs both in the list and in the item's interface.
 * [ ] Update the large icons design.
-* [ ] Adobe Experience Cloud Bookmarks (https://chromewebstore.google.com/detail/adobe-experience-cloud-bo/eobofinmnpbpbbmjhoickgllciakebjn)
-  * [ ] Reimplement the bookmarks
+* [ ] Reimplementation of AECB
+  * [ ] Attempt to reimplement the Launch UI improvements.
+* [ ] Release v1.22 to Chrome and FF.
+* [ ] Reimplementation of Adobe Experience Cloud Bookmarks
+  * [x] Rename tabs to icons
+  * [ ] Move the redirects tab to somewhere else. To Settings and Home probably
+  * [ ] Make a New Tab for bookmarks
+  * [ ] Add a setting to choose the tab that would be opened by default when the popup renders (Home/Settings/Bookmarks)
+  * [ ] Reimplement the bookmarks with the tenant id
   * [ ] Reimplement the Launch UI improvements
 * [x] Release v1.21.1 to Chrome and FF.
 * [x] Add the onActivated listener for smoother favicon and setdebug reevaluation.
