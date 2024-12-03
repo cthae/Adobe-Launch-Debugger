@@ -39,6 +39,9 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * [ ] UI improvements in logging and the popup
 * [ ] Launch UI improvements: statuses of the rules and DEs both in the list and in the item's interface.
 * [ ] Update the large icons design.
+* [ ] Adobe Experience Cloud Bookmarks (https://chromewebstore.google.com/detail/adobe-experience-cloud-bo/eobofinmnpbpbbmjhoickgllciakebjn)
+  * [ ] Reimplement the bookmarks
+  * [ ] Reimplement the Launch UI improvements
 * [x] Release v1.21.1 to Chrome and FF.
 * [x] Add the onActivated listener for smoother favicon and setdebug reevaluation.
 * [x] Release v1.21 to Chrome and FF.
