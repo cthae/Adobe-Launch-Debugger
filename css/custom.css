@@ -74,3 +74,8 @@ button#deleteRedirection, button#delAllRedirections, .tabButtons{
   font-size: medium;
 }
 
+.bookmark{
+  font-size: 1.7em;
+  font-weight: 600;
+  color: #343a40;
+}

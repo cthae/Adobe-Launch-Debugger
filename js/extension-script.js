@@ -41,6 +41,14 @@ function deployClickListeners() {
   document.getElementById("raccoon").addEventListener("click", loveTheRaccoon);
   document.getElementById("setLoggingHeadings").addEventListener("click", setLoggingHeadings);
   document.getElementById("openChromeFlags").addEventListener("click", openChromeFlags);
+  document.getElementById("defaultTab").addEventListener("change", defaultTabChange);
+}
+
+function defaultTabChange(event){
+  chrome.storage.sync.get('settings', function (data) {
+    data.settings.defaultTab = event.target.value;
+    chrome.storage.sync.set({settings:data.settings});
+  });
 }
 
 function openChromeFlags(){
@@ -272,6 +280,7 @@ function updateRedirectionIfExists(redirections, redirectFrom, redirectTo, date,
 }
 
 function switchTab(event) {
+  console.log("switch tab invoked, event is", event);
   const tabName = event.target.name;
   document.querySelectorAll("div.tab").forEach((tab) => {
     if (tab.id === tabName) {
@@ -686,6 +695,10 @@ async function loadSettings() {
     }
     settingsSetter(data.settings);
     if (data.settings) {
+      if (data.settings.defaultTab){
+        switchTab({target: {name: data.settings.defaultTab}});
+        document.getElementById("defaultTab").querySelector(`[value=${data.settings.defaultTab}]`).selected = "selected";
+      }
       console.log("@@@ Settings Exist, the obj is ", data.settings);
       Object.keys(data.settings).forEach(setting => {
         if (document.getElementById(setting)){
