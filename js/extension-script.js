@@ -295,9 +295,10 @@ function switchTab(event) {
 }
 
 function renderRedirections(){
-  const table = document.getElementsByClassName("redirectionsTable")[0];
   chrome.storage.sync.get('redirections', function (data) {
     if (data.redirections?.length > 0){
+      document.getElementById("redirectionMessage").innerText = "";
+      const table = document.getElementsByClassName("redirectionsTable")[0];
       table.innerHTML = `<tbody>
   <tr>
      <th style = "text-align: center; vertical-align: middle;">Date</th>
@@ -326,9 +327,7 @@ function renderRedirections(){
       });
       deleteRedirectionButtonListener()
     } else {
-      const row = table.insertRow;
-      row.innerText = "No saved redirection rules found, sorry.";
-      row.classList = "error";
+      document.getElementById("redirectionMessage").innerText = "No redirections as of yet!";
     }
   });
 }
