@@ -40,8 +40,8 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * [ ] Update the large icons design.
 * [ ] Reimplementation of AECB
   * [ ] Attempt to reimplement the Launch UI improvements.
-* [ ] Release v1.22 to Chrome and FF.
-* [ ] Reimplementation of Adobe Experience Cloud Bookmarks
+* [x] Release v1.22 to Chrome and FF.
+* [x] Reimplementation of Adobe Experience Cloud Bookmarks
   * [x] Rename tabs to icons
   * [x] Move the redirects tab to somewhere else. To Settings and Home probably
   * [x] Make a New Tab for bookmarks
