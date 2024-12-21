@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Universal Adobe Debugger",
   "description": "A universal debugger for Adobe Analytics/AEP products for analysts and developers alike. A spiritual successor of AAD, Switch, AEPD.",
-  "version": "1.22",
+  "version": "1.22.1",
   "action": {
     "default_popup": "main.html",
     "default_icon": "favicon 16-4 - grey.png"
@@ -13,7 +13,6 @@
     "48": "debuggerFavicon 48.png"
   },
   "background": {
-    "scripts": ["js/background.js"],
     "service_worker": "js/background.js"
   },
   "content_scripts": [{
