@@ -40,6 +40,8 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * [ ] Update the large icons design.
 * [ ] Reimplementation of AECB
   * [ ] Attempt to reimplement the Launch UI improvements.
+* [ ] Add an option for light mode for the extension's UI.  
+* [ ] Add a setting and a global redirect from launch.adobe.com to the new location.
 * [x] Release v1.22 to Chrome and FF.
 * [x] Reimplementation of Adobe Experience Cloud Bookmarks
   * [x] Rename tabs to icons
