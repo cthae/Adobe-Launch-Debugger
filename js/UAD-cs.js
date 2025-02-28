@@ -1,8 +1,8 @@
 chrome.storage.sync.get('settings', function (data) {
   if (data?.settings?.launchbox !== false) {
-    talkToBG({ type: 'setDebug', value: 1 });
+    talkToBG({ type: 'setDebug', value: true });
   } else {
-    talkToBG({ type: 'setDebug', value: 0 });
+    talkToBG({ type: 'setDebug', value: false });
   }
 });
 

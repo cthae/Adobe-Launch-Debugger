@@ -37,11 +37,11 @@ This extension essentially has four parts accomplishing different facets of AA/L
 
 * [ ] Create an infrastructure around the codebase of the extension, introduce unit tests, look into CI.
 * [ ] Launch UI improvements: statuses of the rules and DEs both in the list and in the item's interface.
-* [ ] Update the large icons design.
 * [ ] Reimplementation of AECB
   * [ ] Attempt to reimplement the Launch UI improvements.
 * [ ] Add an option for light mode for the extension's UI.  
 * [ ] Add a setting and a global redirect from launch.adobe.com to the new location.
+* [x] _satellite decided to become touchy about setDebug() using a truthy arg. Replace 1 with true.
 * [x] Release v1.22 to Chrome and FF.
 * [x] Reimplementation of Adobe Experience Cloud Bookmarks
   * [x] Rename tabs to icons

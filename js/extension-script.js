@@ -725,7 +725,7 @@ async function settingsSetter(settings) {
       if(event.target.id === "launchbox"){
         executeOnPage(event.target.checked, (flag) => {
           localStorage.setItem("com.adobe.reactor.debug",!!flag); 
-          typeof window._satellite !== 'undefined' ? window._satellite?.setDebug(flag ? 1 : 0) : '';
+          typeof window._satellite !== 'undefined' ? window._satellite?.setDebug(flag ? true : false) : '';
         });
       }
     })
