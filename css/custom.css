@@ -49,19 +49,8 @@ button.error:hover {
   color: black;
 }
 
-.warn{
-  border-style: solid;
-  border-color: palegoldenrod;
-  background: olive;
-  color: black;
-}
-
 p,label{
   font-size: 1.5em;
-}
-
-textarea {
-  background: gray;
 }
 
 .centralize {

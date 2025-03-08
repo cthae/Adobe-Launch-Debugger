@@ -42,6 +42,26 @@ function deployClickListeners() {
   document.getElementById("setLoggingHeadings").addEventListener("click", setLoggingHeadings);
   document.getElementById("openChromeFlags").addEventListener("click", openChromeFlags);
   document.getElementById("defaultTab").addEventListener("change", defaultTabChange);
+  document.getElementById("themeSwitcher").addEventListener("click", switchTheme);
+}
+
+function switchTheme(event){
+  const icon = event.target;
+  const css = document.getElementById("cssTheme");
+  chrome.storage.sync.get('settings', function (data) {
+    if(icon.innerText.includes("☀️")){
+      icon.innerText = "🌙";
+      css.href = "css/water_light.css";
+      data.settings.themeSwitcher = "light";
+      console.log("theme switched, the themeSwitcher is " + data.settings.themeSwitcher);
+    } else {
+      icon.innerText = "☀️";
+      css.href = "css/water_dark.css";
+      data.settings.themeSwitcher = "dark";
+      console.log("theme switched, the themeSwitcher is " + data.settings.themeSwitcher);
+    }
+    chrome.storage.sync.set({settings:data.settings});
+  });
 }
 
 function defaultTabChange(event){
@@ -694,6 +714,10 @@ async function loadSettings() {
     }
     settingsSetter(data.settings);
     if (data.settings) {
+      if (data.settings?.themeSwitcher == "light"){
+        document.getElementById("cssTheme").href = "css/water_light.css";
+        document.getElementById("themeSwitcher").innerText = "🌙";
+      }
       if (data.settings.defaultTab){
         switchTab({target: {name: data.settings.defaultTab}});
         document.getElementById("defaultTab").querySelector(`[value=${data.settings.defaultTab}]`).selected = "selected";
