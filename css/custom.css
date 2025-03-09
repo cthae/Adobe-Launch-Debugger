@@ -30,23 +30,9 @@ th{
   font-weight: 700;
 }
 
-.error{
-  border-style: solid;
-  border-color: red;
-  background: salmon;
-  color: black;
-}
-
 button.error:hover {
   border-style: solid;
   color: white;
-}
-
-.success{
-  border-style: solid;
-  border-color: green;
-  background: greenyellow;
-  color: black;
 }
 
 p,label{

@@ -927,8 +927,8 @@
   
   .error{
     border-style: solid;
-    border-color: red;
-    background: salmon;
+    border-color: #FFCCCC;
+    background: #FFDDDD;
     color: black;
   }
   
@@ -939,15 +939,15 @@
   
   .success{
     border-style: solid;
-    border-color: green;
-    background: greenyellow;
+    border-color: PaleGreen;
+    background: #CCFFCC;
     color: black;
   }
   
   .warn{
     border-style: solid;
-    border-color: palegoldenrod;
-    background: gold;
+    border-color: #EEEE00;
+    background: #FFFFCC;
     color: black;
   }
   
