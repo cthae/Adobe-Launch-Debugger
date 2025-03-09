@@ -39,7 +39,9 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * [ ] Launch UI improvements: statuses of the rules and DEs both in the list and in the item's interface.
 * [ ] Reimplementation of AECB
   * [ ] Attempt to reimplement the Launch UI improvements.
-* [x] Add an option for light mode for the extension's UI.  
+* [x] CSS refactory
+* [x] Better bookmarks design
+* [x] Add an option for the light mode for the extension's UI.  
 * [x] _satellite decided to become touchy about setDebug() using a truthy arg. Replace 1 with true.
 * [x] Release v1.22 to Chrome and FF.
 * [x] Reimplementation of Adobe Experience Cloud Bookmarks
