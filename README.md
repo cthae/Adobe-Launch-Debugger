@@ -39,6 +39,7 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * [ ] Launch UI improvements: statuses of the rules and DEs both in the list and in the item's interface.
 * [ ] Reimplementation of AECB
   * [ ] Attempt to reimplement the Launch UI improvements.
+* [x] Release v1.23 to Chrome and FF.
 * [x] CSS refactory
 * [x] Better bookmarks design
 * [x] Add an option for the light mode for the extension's UI.  
