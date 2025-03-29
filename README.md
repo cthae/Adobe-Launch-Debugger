@@ -39,6 +39,9 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * [ ] Launch UI improvements: statuses of the rules and DEs both in the list and in the item's interface.
 * [ ] Reimplementation of AECB
   * [ ] Attempt to reimplement the Launch UI improvements.
+* [ ] Make a snippet shortcut to delete all cookies and local storage present on a page.
+* [ ] Make OT printouts not fuzzy again.
+* [ ] Add a color picker set of settings that would allow users configure the colors of console printouts.
 * [x] Release v1.23 to Chrome and FF.
 * [x] CSS refactory
 * [x] Better bookmarks design
