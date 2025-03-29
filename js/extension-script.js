@@ -185,7 +185,7 @@ function OTCheckConsent(event){
     });
     console.groupEnd()
     function css(c) {
-      return `text-shadow: 1px 1px 1px ${c}, 0 0 1em ${c}, 0 0 0.2em ${c};color: ${c};font-weight: 500;font-size: 1.3em; background-color: dimgray`;
+      return `color: ${c};font-weight: 500;font-size: 1.3em; background-color: dimgray`;
     }
   });
 }
