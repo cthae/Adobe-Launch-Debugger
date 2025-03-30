@@ -373,8 +373,8 @@ function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) 
       sCallName = WSEvent.xdm?.web?.webInteraction?.name || "[No Name]";
     }
     if (networkError) {
-      cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; ${errorBackgroundColor}; color: ${errorTextColor}`;
-      cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; ${errorBackgroundColor}; color: ${errorTextColor}`;
+      cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: ${errorBackgroundColor}; color: ${errorTextColor}`;
+      cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: ${errorBackgroundColor}; color: ${errorTextColor}`;
     }
     const pNameMessage = scType + ": %c" + sCallName;
     const mainLogHeader = `${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` +
