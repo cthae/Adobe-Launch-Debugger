@@ -113,14 +113,14 @@ function logAAServerCall(fullURL, _satelliteInfo, settings, networkError) {
     _satelliteInfo.buildtime, parsingResult.mcorgid, parsingResult.mid);
   console.log(`%c^^^ The end of the Server Call #${document.sCallCounter} ^^^`, cssHeadValue)
   console.groupEnd();
-  logCustomAAFields(settings.loggingHeadings, fullURL, document.sCallCounter);
+  logCustomAAFields(settings, fullURL, document.sCallCounter);
 }
 
 function logCustomAAFields(settings, fullURL, counter) {
-  const customBackgroundColor = settings.colors?.["custom-bg"] || "#FFA500";
-  const customTextColor = settings.colors?.["custom-txt"] || "#000000";
-  const loggingHeadings = settings.loggingHeadings;
+  const loggingHeadings = settings?.loggingHeadings || [];
   if (loggingHeadings?.length > 0) {
+    const customBackgroundColor = settings?.colors?.["custom-bg"] || "#FFA500";
+    const customTextColor = settings?.colors?.["custom-txt"] || "#000000";
     const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: ${customBackgroundColor}; color: ${customTextColor}`;
     const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 800;font-size: 1.2em; background-color: ${customBackgroundColor}; color: ${customTextColor}`;
     console.group(`%cAA #${counter} User-customized additional logging:`, cssHeadField);

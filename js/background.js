@@ -214,7 +214,7 @@ async function setFavicon() {
 }
 
 function isTabLegal(tab){
-  const isLegal = !!tab.url && !/^(about:|chrome:\/\/)/i.test(tab.url);
+  const isLegal = !!tab?.url && !/^(about:|chrome:\/\/)/i.test(tab.url);
   //console.log("@@@ Debugging, the tab legality is", isLegal);
   return isLegal;
 }
