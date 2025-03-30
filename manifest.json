@@ -34,6 +34,7 @@
     "accepts_tls_channel_id": false
   },
   "permissions": [
+    "cookies",
     "storage",
     "webRequest",
     "declarativeNetRequest",

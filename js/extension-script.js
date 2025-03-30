@@ -43,6 +43,16 @@ function deployClickListeners() {
   document.getElementById("openChromeFlags").addEventListener("click", openChromeFlags);
   document.getElementById("defaultTab").addEventListener("change", defaultTabChange);
   document.getElementById("themeSwitcher").addEventListener("click", switchTheme);
+  document.getElementById("clearCookies").addEventListener("click", clearCookies);
+}
+function clearCookies(event){
+  executeOnPage("", () => {
+    localStorage.clear();
+    sessionStorage.clear();
+  });
+  chrome.runtime.sendMessage("removeCookies");
+  event.target.classList = "success";
+  event.target.innerText = "Done!";
 }
 
 function switchTheme(event){

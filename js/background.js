@@ -5,7 +5,7 @@ async function tabChangedCallback(){
   const tab = (await chrome.tabs.query({ active: true, currentWindow: true }))[0];
   if (!isTabLegal(tab)){return false;}
   setFavicon();
-  setDebugLogicListener();
+  messageListenerRouter();
 }
 
 main();
@@ -14,14 +14,16 @@ chrome.runtime.onStartup.addListener(checkSettings);
 chrome.runtime.onInstalled.addListener(checkSettings);
 
 async function main() {
-  setDebugLogicListener();
+  messageListenerRouter();
   mainListener();
 }
 
-function setDebugLogicListener() {
+function messageListenerRouter() {
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.type === 'setDebug') {
+    if (message?.type === 'setDebug') {
       setDebug(message.value);
+    } else if (message === 'removeCookies'){
+      deleteAllCookiesOfActiveTab();
     }
   });
 }
@@ -215,4 +217,19 @@ function isTabLegal(tab){
   const isLegal = !!tab.url && !/^(about:|chrome:\/\/)/i.test(tab.url);
   //console.log("@@@ Debugging, the tab legality is", isLegal);
   return isLegal;
+}
+
+function deleteAllCookiesOfActiveTab() {
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (!tabs.length) return;
+      const url = new URL(tabs[0].url);
+      chrome.cookies.getAll({ domain: url.hostname.replace("www.", "") }, (cookies) => {
+          cookies.forEach(cookie => {
+              chrome.cookies.remove({
+                  url: (cookie.secure ? "https://" : "http://") + cookie.domain + cookie.path,
+                  name: cookie.name
+              });
+          });
+      });
+  });
 }
