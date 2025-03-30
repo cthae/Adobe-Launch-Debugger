@@ -66,6 +66,7 @@ function logAAServerCall(fullURL, _satelliteInfo, settings, networkError) {
   const pvBackgroundColor = settings?.colors?.["aa-pv-bg"] || "#008000";
   const pvTextColor = settings?.colors?.["aa-pv-txt"] || "#FFFF00";
   const linkBackgroundColor = settings?.colors?.["aa-link-bg"] || "#483d8b";
+  const linkTextColor = settings?.colors?.["aa-link-txt"] || "#483d8b";
   const errorBackgroundColor = settings?.colors?.["error-bg"] || "#FF0000";
   const errorTextColor = settings?.colors?.["error-txt"] || "#000000";
   document.sCallCounter = document.sCallCounter ? document.sCallCounter + 1 : 1;
@@ -424,16 +425,21 @@ function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) 
       console.error(e);
     }
     console.groupEnd();
-    logCustomXDMFields(settings.loggingHeadings, WSEvent.xdm, document.wSDKCounter, networkError, WSEvent.data?.__adobe?.analytics)
+    logCustomXDMFields(settings, WSEvent.xdm, document.wSDKCounter, networkError, WSEvent.data?.__adobe?.analytics)
   });
 }
 
-function logCustomXDMFields(loggingHeadings, xdm, counter, networkError, dataAnalytics = {}) {
+function logCustomXDMFields(settings, xdm, counter, networkError, dataAnalytics = {}) {
+  const loggingHeadings = settings.loggingHeadings;
   if (loggingHeadings?.length > 0) {
+    const customBackgroundColor = settings?.colors?.["custom-bg"] || "#FFA500";
+    const customTextColor = settings?.colors?.["custom-txt"] || "#000000";
+    const errorBackgroundColor = settings?.colors?.["error-bg"] || "#FF0000";
+    const errorTextColor = settings?.colors?.["error-txt"] || "#000000";
     const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 600;font-size: 1.2em;` +
-      ` background-color: ${networkError ? "Red" : "Orange"}; color: black`;
+      ` background-color: ${networkError ? errorBackgroundColor : customBackgroundColor}; color: ${customTextColor}`;
     const cssValueField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 400;font-size: 1.2em;` +
-      ` background-color: ${networkError ? "Red" : "Orange"}; color: black`;
+      ` background-color: ${networkError ? errorBackgroundColor : customBackgroundColor}; color: ${customTextColor}`;
     console.group(`%c Web SDK #${counter}${networkError ? " (ERROR)" : ""} User-customized additional logging:`, cssValueField);
     loggingHeadings.forEach(heading => {
       let shortCutValue = "";
