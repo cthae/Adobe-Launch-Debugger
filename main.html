@@ -85,7 +85,8 @@
     <table class="settingsTable">
       <tbody>
         <tr>
-          <td><button class="tablinks" name="Redirections">Redirection Rules</button></td>
+          <td><button class="tablinks" name="Redirections">↪️Redirection Rules</button></td>
+          <td><button class="tablinks" name="Colors">🎨Color picker</button></td>
         </tr>
         <tr>
           <td>Tab opened by default</td>
@@ -206,6 +207,58 @@
     </div>
     <p id="redirectionMessage" style="font-weight: 700; font-size:x-large "></p>
     <table class="redirectionsTable">
+    </table>
+  </div>
+  <div class="tab" id="Colors" style="display: none">
+    <table>
+      <tr>
+        <td><button id="resetColors">Reset</button></td>
+        <td style="width: 120px;"></td>
+        <td style="width: 100px;"></td>
+        <td style="width: 50px;"></td>
+        <td style="width: 100px;"></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Web SDK:</td>
+        <td style="width: 120px;">Background:</td>
+        <td style="width: 100px;"><input id="websdk-bg" type="color" data-value="#008B8B" value="#008B8B"/></td>
+        <td style="width: 50px;">Text:</td>
+        <td style="width: 100px;"><input id="websdk-txt" type="color" data-value="#FFFF00" value="#FFFF00"/></td>
+        <td name="example" style="border:#000000;border-width: 1px; border-style: solid; background-color: #008B8B; color: #FFFF00">Example</td>
+      </tr>
+      <tr>
+        <td>AA PVs:</td>
+        <td style="width: 120px;">Background:</td>
+        <td style="width: 100px;"><input id="aa-pv-bg" type="color" data-value="#008000" value="#008000"/></td>
+        <td style="width: 50px;">Text:</td>
+        <td style="width: 100px;"><input id="aa-pv-txt" type="color" data-value="#FFFF00" value="#FFFF00"/></td>
+        <td name="example" style="border:#000000;border-width: 1px; border-style: solid; width: 80px;background-color: #008000; color: #FFFF00">Example</td>
+      </tr>
+      <tr>
+        <td>AA Links:</td>
+        <td style="width: 120px;">Background:</td>
+        <td style="width: 100px;"><input id="aa-link-bg" type="color" data-value="#483d8b" value="#483d8b"/></td>
+        <td style="width: 50px;">Text:</td>
+        <td style="width: 100px;"><input id="aa-link-txt" type="color" data-value="#FFC0CB" value="#FFC0CB"/></td>
+        <td name="example" style="border:#000000;border-width: 1px; border-style: solid; width: 80px;background-color: #483d8b; color: #FFC0CB">Example</td>
+      </tr>
+      <tr>
+        <td>Custom Logs:</td>
+        <td style="width: 120px;">Background:</td>
+        <td style="width: 100px;"><input id="custom-bg" type="color" data-value="#FFA500" value="#FFA500"/></td>
+        <td style="width: 50px;">Text:</td>
+        <td style="width: 100px;"><input id="custom-txt" type="color" data-value="#000000" value="#000000"/></td>
+        <td name="example" style="border:#000000;border-width: 1px; border-style: solid; width: 80px;background-color: #FFA500; color: #000000">Example</td>
+      </tr>
+      <tr>
+        <td>Errors:</td>
+        <td style="width: 120px;">Background:</td>
+        <td style="width: 100px;"><input id="error-bg" type="color" data-value="#FF0000" value="#FF0000"/></td>
+        <td style="width: 50px;">Text:</td>
+        <td style="width: 100px;"><input id="error-txt" type="color" data-value="#000000" value="#000000"/></td>
+        <td name="example" style="border:#000000;border-width: 1px; border-style: solid; width: 80px;background-color: #FF0000; color: #000000">Example</td>
+      </tr>
     </table>
   </div>
   <div class="tab" id="Bookmarks" style="display: none">

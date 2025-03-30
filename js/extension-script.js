@@ -44,7 +44,17 @@ function deployClickListeners() {
   document.getElementById("defaultTab").addEventListener("change", defaultTabChange);
   document.getElementById("themeSwitcher").addEventListener("click", switchTheme);
   document.getElementById("clearCookies").addEventListener("click", clearCookies);
+  document.getElementById("resetColors").addEventListener("click", resetColors);
 }
+
+function resetColors(event){
+  const changeEvent = new Event("change");
+  document.querySelectorAll("input[type='color']").forEach(input => {
+    input.value = input.getAttribute("data-value");
+    input.dispatchEvent(changeEvent);
+  });  
+}
+
 function clearCookies(event){
   executeOnPage("", () => {
     localStorage.clear();
@@ -738,6 +748,22 @@ async function loadSettings() {
           document.getElementById(setting).checked = data.settings[setting];
         }
       });
+
+      Object.keys(data.settings?.colors).forEach(colorId => {
+        if (document.getElementById(colorId)){
+          const field = document.getElementById(colorId);
+          const exampleTd = field.parentElement.parentElement.querySelector("[name='example']");
+          field.value = data.settings.colors[colorId];
+
+          if(field.id.includes("-bg")){
+            exampleTd.style.background = field.value;
+          } else if(field.id.includes("-txt")){
+            exampleTd.style.color = field.value;
+          }
+          
+        }
+      });
+
       if (Array.isArray(data.settings?.loggingHeadings)){
         document.getElementById("loggingHeadings").value = data.settings.loggingHeadings.join(", ");
       }
@@ -763,6 +789,23 @@ async function settingsSetter(settings) {
         });
       }
     })
+  });
+
+  document.querySelectorAll("input[type='color']").forEach((input) => {
+    input.addEventListener("change", (event)=>{
+      const exampleTd = event.target.parentElement.parentElement.querySelector("[name='example']");
+      const newColor = event.target.value;
+      const targetId = event.target.id;
+      if(targetId.includes("-bg")){
+        exampleTd.style.background = newColor;
+      } else if(targetId.includes("-txt")){
+        exampleTd.style.color = newColor;
+      }
+
+      settings.colors = settings.colors || {};
+      settings.colors[targetId] = newColor;
+      chrome.storage.sync.set({ settings: settings });
+    });
   });
 
   const originalLaunchLib = await executeOnPage("", function(a){

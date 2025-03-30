@@ -26,13 +26,13 @@ chrome.runtime.onMessage.addListener(request => {
         //console.log("@@@ Debugging: webSDK Detected! The Info object is: ", request);
         logWebSDKServerCall(JSON.parse(request.postPayload || ""), data.settings, error, decodeURIComponent(request.info?.url || ""));
       } else if (request.type === "Beaconed webSDK") {
-        logWebSDKBeaconCall(decodeURIComponent(request.info?.url || ""));
+        logWebSDKBeaconCall(decodeURIComponent(request.info?.url || ""), data.settings);
       }
     }
   });
 });
 
-function logWebSDKBeaconCall(baseURL) {
+function logWebSDKBeaconCall(baseURL, settings) {
   document.wSDKCounter = document.wSDKCounter ? document.wSDKCounter + 1 : 1;
   const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: DarkCyan; color: yellow`;
   const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: DarkCyan; color: #fc0`;
@@ -63,23 +63,28 @@ function talkToBG(message) {
 }
 
 function logAAServerCall(fullURL, _satelliteInfo, settings, networkError) {
+  const pvBackgroundColor = settings?.colors?.["aa-pv-bg"] || "#008000";
+  const pvTextColor = settings?.colors?.["aa-pv-txt"] || "#FFFF00";
+  const linkBackgroundColor = settings?.colors?.["aa-link-bg"] || "#483d8b";
+  const errorBackgroundColor = settings?.colors?.["error-bg"] || "#FF0000";
+  const errorTextColor = settings?.colors?.["error-txt"] || "#000000";
   document.sCallCounter = document.sCallCounter ? document.sCallCounter + 1 : 1;
   const parsingResult = parseAAServerCall(fullURL);
-  let cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Green; color: yellow`;
-  let cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Green; color: #fc0`;
+  let cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: ${pvBackgroundColor}; color: ${pvTextColor}`;
+  let cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: ${pvBackgroundColor}; color: ${pvTextColor}`;
   let sCallType = 'Page View';
   let sCallName = parsingResult.pageName ? parsingResult.pageName : "[No Page Name]";
   if (parsingResult.customLinkType) {
     parsingResult.customLinkType === 'lnk_o' ? sCallType = "Custom Link" : "";
     parsingResult.customLinkType === 'lnk_e' ? sCallType = "Exit Link" : "";
     parsingResult.customLinkType === 'lnk_d' ? sCallType = "Download Link" : "";
-    cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: DarkSlateBlue; color: pink`;
-    cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: DarkSlateBlue; color: #fc0`;
+    cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: ${linkBackgroundColor}; color: ${linkTextColor}`;
+    cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: ${linkBackgroundColor}; color: ${linkTextColor}`;
     sCallName = parsingResult.customLinkName ? parsingResult.customLinkName : "[No Link Name]";
   }
   if (networkError) {
-    cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Red; color: black`;
-    cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Red; color: black`;
+    cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: ${errorBackgroundColor}; color: ${errorTextColor}`;
+    cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: ${errorBackgroundColor}; color: ${errorTextColor}`;
   }
   const pNameMessage = sCallType + " Name : %c" + sCallName;
   const eventsMessage = `%cEvents: %c${parsingResult.events ? parsingResult.events : "[No Events]"}`;
@@ -111,10 +116,13 @@ function logAAServerCall(fullURL, _satelliteInfo, settings, networkError) {
   logCustomAAFields(settings.loggingHeadings, fullURL, document.sCallCounter);
 }
 
-function logCustomAAFields(loggingHeadings, fullURL, counter) {
+function logCustomAAFields(settings, fullURL, counter) {
+  const customBackgroundColor = settings.colors?.["custom-bg"] || "#FFA500";
+  const customTextColor = settings.colors?.["custom-txt"] || "#000000";
+  const loggingHeadings = settings.loggingHeadings;
   if (loggingHeadings?.length > 0) {
-    const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Orange; color: black`;
-    const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 800;font-size: 1.2em; background-color: Orange; color: black`;
+    const cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: ${customBackgroundColor}; color: ${customTextColor}`;
+    const cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 800;font-size: 1.2em; background-color: ${customBackgroundColor}; color: ${customTextColor}`;
     console.group(`%cAA #${counter} User-customized additional logging:`, cssHeadField);
     loggingHeadings.forEach(heading => {
       if (/^(event\d|e\d)/i.test(heading)) {
@@ -341,6 +349,10 @@ function getComponent(allParams, paramName) {
 }
 
 function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) {
+  const websdkBackgroundColor = settings?.colors?.["websdk-bg"] || "#008B8B";
+  const websdkTextColor = settings?.colors?.["websdk-txt"] || "#FFFF00";
+  const errorBackgroundColor = settings?.colors?.["error-bg"] || "#FF0000";
+  const errorTextColor = settings?.colors?.["error-txt"] || "#000000";
   //console.log("@@@ Debugging: webSDK Detected! The post payload object is: ", postPayload);
   let edgeConfigId = "[Not Found]";
   try {
@@ -350,8 +362,8 @@ function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) 
   }
   postPayload.events.forEach((WSEvent) => {
     document.wSDKCounter = document.wSDKCounter ? document.wSDKCounter + 1 : 1;
-    let cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: DarkCyan; color: yellow`;
-    let cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: DarkCyan; color: #fc0`;
+    let cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: ${websdkBackgroundColor}; color: ${websdkTextColor}`;
+    let cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: ${websdkBackgroundColor}; color: ${websdkTextColor}`;
     const scType = WSEvent.xdm?.web?.webPageDetails?.name || WSEvent.xdm?.web?.webPageDetails?.URL ? "Page View" : "Link";
     let sCallName = "[No Name]";
     if (scType === "Page View") {
@@ -360,8 +372,8 @@ function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) 
       sCallName = WSEvent.xdm?.web?.webInteraction?.name || "[No Name]";
     }
     if (networkError) {
-      cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: Red; color: black`;
-      cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: Red; color: black`;
+      cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; ${errorBackgroundColor}; color: ${errorTextColor}`;
+      cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; ${errorBackgroundColor}; color: ${errorTextColor}`;
     }
     const pNameMessage = scType + ": %c" + sCallName;
     const mainLogHeader = `${networkError ? "%cERROR: " + networkError + "\n" : "%c"}` +
