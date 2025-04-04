@@ -40,6 +40,7 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * [ ] Reimplementation of AECB
   * [ ] Attempt to reimplement the Launch UI improvements.
 * [ ] Update screenshots.
+* [ ] Add an option to disable displaying of the Target "decisioning" web sdk requests. To reduce clutter.
 * [x] Release v1.24 to Chrome and FF.
 * [x] Add a color picker set of settings that would allow users configure the colors of console printouts.
 * [x] Make a snippet shortcut to delete all cookies and local storage present on the active tab.
