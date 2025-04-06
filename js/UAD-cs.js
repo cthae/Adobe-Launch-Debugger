@@ -66,7 +66,7 @@ function logAAServerCall(fullURL, _satelliteInfo, settings, networkError) {
   const pvBackgroundColor = settings?.colors?.["aa-pv-bg"] || "#008000";
   const pvTextColor = settings?.colors?.["aa-pv-txt"] || "#FFFF00";
   const linkBackgroundColor = settings?.colors?.["aa-link-bg"] || "#483d8b";
-  const linkTextColor = settings?.colors?.["aa-link-txt"] || "#483d8b";
+  const linkTextColor = settings?.colors?.["aa-link-txt"] || "#FFC0CB";
   const errorBackgroundColor = settings?.colors?.["error-bg"] || "#FF0000";
   const errorTextColor = settings?.colors?.["error-txt"] || "#000000";
   document.sCallCounter = document.sCallCounter ? document.sCallCounter + 1 : 1;
