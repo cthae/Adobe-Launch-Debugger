@@ -362,13 +362,17 @@ function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) 
     edgeConfigId = e;
   }
   postPayload.events.forEach((WSEvent) => {
-    document.wSDKCounter = document.wSDKCounter ? document.wSDKCounter + 1 : 1;
-    let cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: ${websdkBackgroundColor}; color: ${websdkTextColor}`;
-    let cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: ${websdkBackgroundColor}; color: ${websdkTextColor}`;
     let scType = WSEvent.xdm?.web?.webPageDetails?.name || WSEvent.xdm?.web?.webPageDetails?.URL ? "Page View" : "Link";
     if(WSEvent.xdm?.eventType.includes("decisioning")){
       scType = "Target call";
+      if (settings?.hideTargetHits){
+        return;
+      }
     }
+    document.wSDKCounter = document.wSDKCounter ? document.wSDKCounter + 1 : 1;
+    let cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: ${websdkBackgroundColor}; color: ${websdkTextColor}`;
+    let cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: ${websdkBackgroundColor}; color: ${websdkTextColor}`;
+
     let sCallName = "[No Name]";
     if (scType === "Page View") {
       sCallName = WSEvent.xdm?.web?.webPageDetails?.name || "[No Name]";
