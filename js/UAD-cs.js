@@ -365,12 +365,17 @@ function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) 
     document.wSDKCounter = document.wSDKCounter ? document.wSDKCounter + 1 : 1;
     let cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: ${websdkBackgroundColor}; color: ${websdkTextColor}`;
     let cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: ${websdkBackgroundColor}; color: ${websdkTextColor}`;
-    const scType = WSEvent.xdm?.web?.webPageDetails?.name || WSEvent.xdm?.web?.webPageDetails?.URL ? "Page View" : "Link";
+    let scType = WSEvent.xdm?.web?.webPageDetails?.name || WSEvent.xdm?.web?.webPageDetails?.URL ? "Page View" : "Link";
+    if(WSEvent.xdm?.eventType.includes("decisioning")){
+      scType = "Target call";
+    }
     let sCallName = "[No Name]";
     if (scType === "Page View") {
       sCallName = WSEvent.xdm?.web?.webPageDetails?.name || "[No Name]";
     } else if (scType === "Link") {
       sCallName = WSEvent.xdm?.web?.webInteraction?.name || "[No Name]";
+    } else if(scType === "Target Call"){
+      sCallName = WSEvent.xdm?.web?.webPageDetails?.name || WSEvent.xdm?.web?.webInteraction?.name;
     }
     if (networkError) {
       cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: ${errorBackgroundColor}; color: ${errorTextColor}`;
