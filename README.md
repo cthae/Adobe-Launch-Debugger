@@ -41,6 +41,7 @@ This extension essentially has four parts accomplishing different facets of AA/L
   * [ ] Attempt to reimplement the Launch UI improvements.
 * [ ] Update screenshots.
 * [ ] Rework the autodetection of links vs PVs using Adobe's new table at https://experienceleague.adobe.com/en/docs/analytics/implementation/aep-edge/overview 
+* [ ] Change the way bookmarks work. Inject the org id in the url. Seems like Adobe changed and it now doesn't inject it on it's own.
 * [x] Release v1.25 to Chrome and FF.
 * [x] Add an option to disable displaying of the Target "decisioning" web sdk requests. To reduce clutter.
 * [x] Identify "decisioning" web sdk requests as Target rather than PV. Correct the call name.
