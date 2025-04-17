@@ -43,7 +43,7 @@ This extension essentially has four parts accomplishing different facets of AA/L
 * [ ] Rework the autodetection of links vs PVs using Adobe's new table at https://experienceleague.adobe.com/en/docs/analytics/implementation/aep-edge/overview 
 * [ ] Change the way bookmarks work. Inject the org id in the url. Seems like Adobe changed and it now doesn't inject it on it's own.
 * [ ] WebSDK syntax is weird for lists. Easy to make mistakes. Counter-intuitively, it expects an array of objects rather than an array of values. Maybe consider checking for it. Maybe only in custom logging? 
-* [ ] Fix the custom logging for the data object.
+* [ ] Fix the custom logging for the data object. Allow full pathing there. Something like `data.__adobe.analytics.product`
 * [x] Release v1.25 to Chrome and FF.
 * [x] Add an option to disable displaying of the Target "decisioning" web sdk requests. To reduce clutter.
 * [x] Identify "decisioning" web sdk requests as Target rather than PV. Correct the call name.
