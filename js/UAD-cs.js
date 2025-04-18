@@ -362,8 +362,16 @@ function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) 
     edgeConfigId = e;
   }
   postPayload.events.forEach((WSEvent) => {
-    let scType = WSEvent.xdm?.web?.webPageDetails?.name || WSEvent.xdm?.web?.webPageDetails?.URL ? "Page View" : "Link";
-    if(WSEvent.xdm?.eventType.includes("decisioning")){
+    let scType = "Link";
+    if((WSEvent.xdm?.web?.webPageDetails?.name || WSEvent.xdm?.web?.webPageDetails?.URL) && !WSEvent.xdm?.web?.webInteraction?.type ||
+      WSEvent.xdm?.eventType?.includes("pageView")){
+      scType = "Page View";
+      console.log("@@@ DEBUGGING: sctype PV! and wsevent is ", WSEvent);
+    } else if (!WSEvent?.xdm?.web?.webInteraction?.type && !WSEvent?.xdm?.webPageDetails?.name && !WSEvent?.xdm?.webPageDetails?.URL){
+      scType = "ERROR: DROPPED";
+    }
+    
+    if(WSEvent.xdm?.eventType?.includes("decisioning")){
       scType = "Target call";
       if (settings?.hideTargetHits){
         return;
@@ -380,8 +388,8 @@ function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) 
       sCallName = WSEvent.xdm?.web?.webInteraction?.name || "[No Name]";
     } else if(scType === "Target Call"){
       sCallName = WSEvent.xdm?.web?.webPageDetails?.name || WSEvent.xdm?.web?.webInteraction?.name;
-    }
-    if (networkError) {
+    } 
+    if (networkError || scType === "ERROR: DROPPED") {
       cssHeadField = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 500;font-size: 1.2em; background-color: ${errorBackgroundColor}; color: ${errorTextColor}`;
       cssHeadValue = `border-bottom: 1px solid grey;font-family: 'Courier New', monospace;font-weight: 700;font-size: 1.2em; background-color: ${errorBackgroundColor}; color: ${errorTextColor}`;
     }
