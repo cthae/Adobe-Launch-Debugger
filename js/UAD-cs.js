@@ -468,7 +468,7 @@ function logCustomXDMFields(settings, xdm, counter, networkError, dataAnalytics 
         } else {
           heading = "_experience.analytics.customDimensions.eVars." + heading.replace(/evar/i, "eVar");
         }
-      } else if (/^(event)|e\d/i.test(heading.toLowerCase())) {
+      } else if (/^(event|e)\d/i.test(heading.toLowerCase())) {
         heading = heading.replace(/^(e)(\d+)/i, "event$2");
         const eventNumber = Number?.parseInt(heading.split("event")?.slice(-1));
         if (eventNumber) {
@@ -520,6 +520,9 @@ function logCustomXDMFields(settings, xdm, counter, networkError, dataAnalytics 
             heading = `_experience.analytics.customDimensions.lists.list${listNumber}.list`;
           }
         }
+      } else if(dataAnalytics[heading]){
+        shortCutValue = dataAnalytics[heading];
+        heading = `data.__adobe.analytics.` + heading;
       }
       if (shortCutValue || /^data\.__adobe/.test(heading)) {
         console.log(`%c${heading} :%o`, cssHeadField, shortCutValue);
