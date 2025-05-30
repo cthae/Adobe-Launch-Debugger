@@ -35,14 +35,8 @@ This extension essentially has four parts accomplishing different facets of AA/L
 
   <summary>The dev plan and event log:</summary>
 
-* [ ] Create an infrastructure around the codebase of the extension, introduce unit tests, look into CI.
-* [ ] Launch UI improvements: statuses of the rules and DEs both in the list and in the item's interface.
-* [ ] Reimplementation of AECB
-  * [ ] Attempt to reimplement the Launch UI improvements.
-* [ ] Update screenshots.
-* [ ] Change the way bookmarks work. Inject the org id in the url. Seems like Adobe changed and it now doesn't inject it on it's own.
 * [ ] WebSDK syntax is weird for lists. Easy to make mistakes. Counter-intuitively, it expects an array of objects rather than an array of values. Maybe consider checking for it. Maybe only in custom logging? 
-* [ ] Fix the custom logging for the data object. Allow full pathing there. Something like `data.__adobe.analytics.product`
+* [x] Fix the custom logging for the data object. Allow full pathing there. Something like `data.__adobe.analytics.product`
 * [x] Add tracing for when there's just not enough information on the event type, so Edge drops the event.
 * [x] Rework the autodetection of links vs PVs using Adobe's new table at https://experienceleague.adobe.com/en/docs/analytics/implementation/aep-edge/overview 
 * [x] Release v1.25 to Chrome and FF.
@@ -205,7 +199,12 @@ This extension essentially has four parts accomplishing different facets of AA/L
 <details>
 
   <summary>Questionable features</summary>
-
+  
+* [ ] Create an infrastructure around the codebase of the extension, introduce unit tests, look into CI.
+* [ ] Launch UI improvements: statuses of the rules and DEs both in the list and in the item's interface.
+* [ ] Reimplementation of AECB
+  * [ ] Attempt to reimplement the Launch UI improvements.
+* [ ] Update screenshots.
 * [ ] Consider integrating with devtools to better monitor all network tab activity. https://chromedevtools.github.io/devtools-protocol/tot/Network/#method-enable
 * [ ] Consider adding support for other consent management systems, mostly TrustArc and Adobe's Evidon. I would love to, but they lack documentation. Maybe next time I have to work with them.
 * [ ] Web SDK: Make an option to exclude Target Web Sdk calls when they don't land in Anaytics. Have them excluded by default. I'm not sure they don't land in AA. I think they do. Will skip this one until I run into it.
