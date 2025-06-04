@@ -366,7 +366,7 @@ function logWebSDKServerCall(postPayload, settings = {}, networkError, baseURL) 
     if((WSEvent.xdm?.web?.webPageDetails?.name || WSEvent.xdm?.web?.webPageDetails?.URL) && !WSEvent.xdm?.web?.webInteraction?.type ||
       WSEvent.xdm?.eventType?.includes("pageView")){
       scType = "Page View";
-      console.log("@@@ DEBUGGING: sctype PV! and wsevent is ", WSEvent);
+    //  console.log("@@@ DEBUGGING: sctype PV! and wsevent is ", WSEvent);
     } else if (!WSEvent?.xdm?.web?.webInteraction?.type && !WSEvent?.xdm?.webPageDetails?.name && !WSEvent?.xdm?.webPageDetails?.URL){
       scType = "ERROR: DROPPED";
     }
