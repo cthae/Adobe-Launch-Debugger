@@ -35,6 +35,7 @@ This extension essentially has four parts accomplishing different facets of AA/L
 
   <summary>The dev plan and event log:</summary>
   
+* [ ] Fix the "found the bug" link in the info tab. It points to a wrong repo.
 * [ ] Refactor the WebSDK logging to be easier to access. Seems like everyone uses the same schema, so no need for a universal solution. 
 * [ ] WebSDK syntax is weird for lists. Easy to make mistakes. Counter-intuitively, it expects an array of objects rather than an array of values. Maybe consider checking for it. Maybe only in custom logging? 
 * [x] Fix the custom logging for the data object. Allow full pathing there. Something like `data.__adobe.analytics.product`
