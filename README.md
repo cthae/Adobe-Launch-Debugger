@@ -35,6 +35,8 @@ This extension essentially has four parts accomplishing different facets of AA/L
 
   <summary>The dev plan and event log:</summary>
 
+* [ ] Rewrite the logic for the icon coloring. The browser performance API isn't very reliable, so duplicate that logic by sniffing for the launch library fetch network request and then override the value in case it's in the not found state. Tab ids must be synced.
+* [ ] Update the url for github issues.
 * [ ] WebSDK syntax is weird for lists. Easy to make mistakes. Counter-intuitively, it expects an array of objects rather than an array of values. Maybe consider checking for it. Maybe only in custom logging? 
 * [x] Fix the custom logging for the data object. Allow full pathing there. Something like `data.__adobe.analytics.product`
 * [x] Add tracing for when there's just not enough information on the event type, so Edge drops the event.
