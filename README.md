@@ -34,7 +34,7 @@ This extension essentially has four parts accomplishing different facets of AA/L
 <details>
 
   <summary>The dev plan and event log:</summary>
-
+* [ ] Totally introduce OneTrust.testLog() button for OT debugging.
 * [ ] Rewrite the logic for the icon coloring. The browser performance API isn't very reliable, so duplicate that logic by sniffing for the launch library fetch network request and then override the value in case it's in the not found state. Tab ids must be synced.
 * [ ] Fix the "found the bug" link in the info tab. It points to a wrong repo.
 * [ ] Refactor the WebSDK logging to be easier to access. Seems like everyone uses the same schema, so no need for a universal solution. 
