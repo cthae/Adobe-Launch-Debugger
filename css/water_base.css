@@ -813,11 +813,19 @@ th {
   color: var(--button-colors);
 }
 
+.error:hover {
+  background: var(--error-background-darker);
+}
+
 .success {
   border-style: solid;
   border-color: var(--success-border-color);
   background: var(--success-background);
   color: var(--button-colors);
+}
+
+.success:hover {
+  background: var(--success-background-darker);
 }
 
 .warn {
