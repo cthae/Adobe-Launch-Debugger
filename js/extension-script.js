@@ -35,6 +35,7 @@ function deployClickListeners() {
   document.getElementById("blockPageUnload").addEventListener("click", blockPageUnload);
   document.getElementById("printAlloy").addEventListener("click", printAlloy);
   document.getElementById("OTCheckConsent").addEventListener("click", OTCheckConsent);
+  document.getElementById("OTPrintDebug").addEventListener("click", OTPrintDebug);
   document.getElementById("OTOpenManager").addEventListener("click", OTOpenManager);
   document.getElementById("OTRejectAll").addEventListener("click", OTRejectAll);
   document.getElementById("OTAllowAll").addEventListener("click", OTAllowAll);
@@ -159,6 +160,24 @@ async function OTOpenManager(event){
       return false;
     } else {
       Optanon.ToggleInfoDisplay();
+      return true;
+    }
+  });
+  if (result){
+    event.target.classList = "success";
+    event.target.innerText = "Done!";
+  } else {
+    event.target.classList = "error";
+    event.target.innerText = "No Optanon!";
+  }
+}
+
+async function OTPrintDebug(event){
+  const result = await executeOnPage("", () => {
+    if (typeof Optanon === "undefined"){
+      return false;
+    } else {
+      Optanon.testLog();
       return true;
     }
   });

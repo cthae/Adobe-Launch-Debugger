@@ -34,11 +34,12 @@ This extension essentially has four parts accomplishing different facets of AA/L
 <details>
 
   <summary>The dev plan and event log:</summary>
-* [ ] Totally introduce OneTrust.testLog() button for OT debugging.
+
 * [ ] Rewrite the logic for the icon coloring. The browser performance API isn't very reliable, so duplicate that logic by sniffing for the launch library fetch network request and then override the value in case it's in the not found state. Tab ids must be synced.
 * [ ] Fix the "found the bug" link in the info tab. It points to a wrong repo.
 * [ ] Refactor the WebSDK logging to be easier to access. Seems like everyone uses the same schema, so no need for a universal solution. 
 * [ ] WebSDK syntax is weird for lists. Easy to make mistakes. Counter-intuitively, it expects an array of objects rather than an array of values. Maybe consider checking for it. Maybe only in custom logging? 
+* [x] Totally introduce OneTrust.testLog() button for OT debugging.
 * [x] Fix the custom logging for the data object. Allow full pathing there. Something like `data.__adobe.analytics.product`
 * [x] Add tracing for when there's just not enough information on the event type, so Edge drops the event.
 * [x] Rework the autodetection of links vs PVs using Adobe's new table at https://experienceleague.adobe.com/en/docs/analytics/implementation/aep-edge/overview 
